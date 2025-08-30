@@ -1,180 +1,248 @@
 'use client';
 
 import { useState } from 'react';
+import { IntakeForm } from '@/components/organisms/IntakeForm';
 import { Button } from '@/components/atoms/Button';
-import { Input } from '@/components/atoms/Input';
-import { Alert } from '@/components/atoms/Alert';
-import { ArrowRight, Mail, Lock } from 'lucide-react';
+import { ArrowRight, Users, Zap, Shield, Star } from 'lucide-react';
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 5000);
-    }, 2000);
-  };
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Next.js Funnel Template
-          </h1>
-          <p className="text-lg text-gray-600 mb-12">
-            High-converting landing pages with intake forms and Calendly integration
-          </p>
-
-          {/* Button Examples */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6">Button Components</h2>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-3">
-                <Button variant="primary">Primary Button</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="danger">Danger</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="link">Link</Button>
-              </div>
-              
-              <div className="flex flex-wrap gap-3">
-                <Button size="sm">Small</Button>
-                <Button size="md">Medium</Button>
-                <Button size="lg">Large</Button>
-              </div>
-              
-              <div className="flex flex-wrap gap-3">
-                <Button loading>Loading...</Button>
-                <Button disabled>Disabled</Button>
-                <Button rightIcon={<ArrowRight className="h-4 w-4" />}>
-                  With Icon
-                </Button>
-              </div>
-            </div>
-          </section>
-
-          {/* Alert Examples */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6">Alert Components</h2>
-            <div className="space-y-3">
-              <Alert variant="info" title="Information">
-                This is an informational alert message.
-              </Alert>
-              <Alert variant="success" title="Success!" dismissible>
-                Your form has been submitted successfully.
-              </Alert>
-              <Alert variant="warning" title="Warning" dismissible>
-                Please review your information before submitting.
-              </Alert>
-              <Alert variant="error" title="Error" dismissible>
-                There was a problem processing your request.
-              </Alert>
-              {showSuccess && (
-                <Alert variant="success" autoHide autoHideDelay={5000}>
-                  Form submitted! This alert will auto-hide in 5 seconds.
-                </Alert>
-              )}
-            </div>
-          </section>
-
-          {/* Input Examples */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6">Input Components</h2>
-            <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-sm">
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                label="Email Address"
-                placeholder="you@example.com"
-                leftIcon={<Mail className="h-4 w-4" />}
-                helperText="We'll never share your email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                placeholder="Enter your password"
-                leftIcon={<Lock className="h-4 w-4" />}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                label="Phone Number"
-                placeholder="(555) 123-4567"
-                helperText="Optional"
-              />
-              
-              <Input
-                id="error-example"
-                name="error"
-                type="text"
-                label="Error State Example"
-                error="This field has an error"
-                defaultValue="Invalid input"
-              />
-              
-              <Input
-                id="success-example"
-                name="success"
-                type="text"
-                label="Success State Example"
-                success
-                defaultValue="Valid input"
-              />
-              
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-16 lg:py-24">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+              Transform Your Business with 
+              <span className="text-blue-600"> Expert Solutions</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Get personalized consulting, development, and design services tailored to your unique needs. 
+              Start your journey with a free consultation.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                type="submit" 
-                fullWidth 
-                loading={loading}
                 size="lg"
+                onClick={() => setShowForm(true)}
+                rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Submit Form
+                Get Started Now
               </Button>
-            </form>
-          </section>
+              <Button 
+                size="lg" 
+                variant="secondary"
+                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Learn More
+              </Button>
+            </div>
+          </div>
 
-          {/* Status */}
-          <section className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-3">Components Built</h2>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Button Component
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Input Component
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Alert Component
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gray-400">○</span> IntakeForm Component (pending)
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gray-400">○</span> Landing Page Template (pending)
-              </li>
-            </ul>
-          </section>
+          {/* Trust Indicators */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-900">500+</div>
+              <div className="text-sm text-gray-600">Happy Clients</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-900">98%</div>
+              <div className="text-sm text-gray-600">Success Rate</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-900">24/7</div>
+              <div className="text-sm text-gray-600">Support</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-900">5⭐</div>
+              <div className="text-sm text-gray-600">Average Rating</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Why Choose Our Services?
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Zap className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
+                <p className="text-gray-600">
+                  Get your project completed on time with our agile development process.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Expert Team</h3>
+                <p className="text-gray-600">
+                  Work with seasoned professionals who understand your business needs.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Shield className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Secure & Reliable</h3>
+                <p className="text-gray-600">
+                  Your data and projects are protected with enterprise-grade security.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Form Section */}
+      {showForm && (
+        <section className="bg-gray-50 py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  Let&apos;s Get Started
+                </h2>
+                <p className="text-lg text-gray-600">
+                  Fill out the form below and we&apos;ll get back to you within 24 hours
+                </p>
+              </div>
+              <div className="bg-white rounded-lg shadow-lg p-8">
+                <IntakeForm 
+                  onSubmitSuccess={(data) => {
+                    console.log('Form submitted successfully:', data);
+                  }}
+                  onSubmitError={(error) => {
+                    console.error('Form submission error:', error);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Testimonials Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              What Our Clients Say
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4">
+                  &quot;Exceptional service! They delivered our project on time and exceeded our expectations.&quot;
+                </p>
+                <div className="font-semibold">Sarah Johnson</div>
+                <div className="text-sm text-gray-500">CEO, TechStart</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4">
+                  &quot;Professional team with deep expertise. Highly recommend for any development project.&quot;
+                </p>
+                <div className="font-semibold">Michael Chen</div>
+                <div className="text-sm text-gray-500">CTO, InnovateCo</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4">
+                  &quot;Great communication throughout the project. They truly understand client needs.&quot;
+                </p>
+                <div className="font-semibold">Emily Davis</div>
+                <div className="text-sm text-gray-500">Product Manager, ScaleUp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-blue-600 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Ready to Transform Your Business?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Join hundreds of satisfied clients who have accelerated their growth with us.
+          </p>
+          <Button 
+            size="lg"
+            variant="secondary"
+            onClick={() => setShowForm(true)}
+            rightIcon={<ArrowRight className="h-5 w-5" />}
+          >
+            Start Your Project Today
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-400 py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <h3 className="text-white font-semibold mb-4">Company</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="hover:text-white">About Us</a></li>
+                  <li><a href="#" className="hover:text-white">Services</a></li>
+                  <li><a href="#" className="hover:text-white">Portfolio</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold mb-4">Resources</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="hover:text-white">Blog</a></li>
+                  <li><a href="#" className="hover:text-white">Documentation</a></li>
+                  <li><a href="#" className="hover:text-white">Support</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold mb-4">Legal</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+                  <li><a href="#" className="hover:text-white">Terms of Service</a></li>
+                  <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold mb-4">Contact</h3>
+                <ul className="space-y-2">
+                  <li>contact@example.com</li>
+                  <li>1-800-123-4567</li>
+                  <li>123 Business St, Suite 100</li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 pt-8 text-center">
+              <p>&copy; 2024 Your Company. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

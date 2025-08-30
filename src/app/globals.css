@@ -120,3 +120,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes spin-fast {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+  
+  .animate-spin-fast {
+    animation: spin-fast 500ms linear infinite;
+  }
+  
+  .border-3 {
+    border-width: 3px;
+  }
+}
