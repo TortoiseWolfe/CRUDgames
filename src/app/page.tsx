@@ -2,99 +2,69 @@
 
 import { useState } from 'react';
 import { IntakeForm } from '@/components/organisms/IntakeForm';
+import { HeroSection } from '@/components/organisms/HeroSection';
+import { FooterSection } from '@/components/organisms/FooterSection';
+import { TestimonialSection } from '@/components/organisms/TestimonialSection';
+import { Modal } from '@/components/molecules/Modal';
 import { Button } from '@/components/atoms/Button';
-import { ArrowRight, Users, Zap, Shield, Star } from 'lucide-react';
+import { Users, Zap, Shield, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 lg:py-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Transform Your Business with 
-              <span className="text-blue-600"> Expert Solutions</span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Get personalized consulting, development, and design services tailored to your unique needs. 
-              Start your journey with a free consultation.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg"
-                onClick={() => setShowForm(true)}
-                rightIcon={<ArrowRight className="h-5 w-5" />}
-              >
-                Get Started Now
-              </Button>
-              <Button 
-                size="lg" 
-                variant="secondary"
-                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Learn More
-              </Button>
-            </div>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">500+</div>
-              <div className="text-sm text-gray-600">Happy Clients</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">98%</div>
-              <div className="text-sm text-gray-600">Success Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">24/7</div>
-              <div className="text-sm text-gray-600">Support</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">5⭐</div>
-              <div className="text-sm text-gray-600">Average Rating</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        headline="Make Work Fun with CRUDgames"
+        highlightedText="CRUDgames"
+        subheadline="Transform boring CRUD operations into engaging, gamified experiences. Boost productivity through points, achievements, and friendly competition."
+        primaryCtaText="Schedule Free Consultation"
+        primaryCtaAction={() => setShowForm(true)}
+        secondaryCtaText="See How It Works"
+        secondaryCtaAction={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+        backgroundGradient="from-purple-50 to-indigo-100"
+        trustIndicators={[
+          { value: '🎮', label: 'Gamified Forms' },
+          { value: '⚡', label: 'Quick Setup' },
+          { value: '🏆', label: 'Achievements' },
+          { value: '📊', label: 'Analytics' },
+        ]}
+      />
 
       {/* Features Section */}
       <section id="features" className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              Why Choose Our Services?
+              Turn Tedious Tasks into Engaging Experiences
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <Zap className="h-8 w-8 text-blue-600" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
+                  <Zap className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
+                <h3 className="text-xl font-semibold mb-2">Gamified CRUD Operations</h3>
                 <p className="text-gray-600">
-                  Get your project completed on time with our agile development process.
+                  Turn boring database tasks into point-scoring opportunities with achievements and leaderboards.
                 </p>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <Users className="h-8 w-8 text-blue-600" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
+                  <Users className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Expert Team</h3>
+                <h3 className="text-xl font-semibold mb-2">Boost Productivity</h3>
                 <p className="text-gray-600">
-                  Work with seasoned professionals who understand your business needs.
+                  Employees complete 40% more tasks when work feels like play. Proven engagement mechanics.
                 </p>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <Shield className="h-8 w-8 text-blue-600" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
+                  <Shield className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Secure & Reliable</h3>
+                <h3 className="text-xl font-semibold mb-2">WordPress Ready</h3>
                 <p className="text-gray-600">
-                  Your data and projects are protected with enterprise-grade security.
+                  Easy integration with your existing WordPress site. Install, configure, and start playing.
                 </p>
               </div>
             </div>
@@ -102,101 +72,114 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Form Section */}
-      {showForm && (
-        <section className="bg-gray-50 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Let&apos;s Get Started
-                </h2>
-                <p className="text-lg text-gray-600">
-                  Fill out the form below and we&apos;ll get back to you within 24 hours
-                </p>
-              </div>
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <IntakeForm 
-                  onSubmitSuccess={(data) => {
-                    console.log('Form submitted successfully:', data);
-                    // Redirect to thank you page with form data
-                    const params = new URLSearchParams({
-                      email: data.email,
-                      firstName: data.firstName,
-                      lastName: data.lastName,
-                      phone: data.phone,
-                      company: data.company || '',
-                      projectType: data.projectType,
-                    });
-                    window.location.href = `/thank-you?${params.toString()}`;
-                  }}
-                  onSubmitError={(error) => {
-                    console.error('Form submission error:', error);
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Form Modal */}
+      <Modal
+        isOpen={showForm}
+        onClose={() => setShowForm(false)}
+        title="Schedule Your Free Consultation"
+        description="Get a 15-minute consultation to discuss how gamification can transform your workplace. Special: Landing pages $100/year until Halloween!"
+        size="xl"
+        closeOnBackdrop={true}
+        closeOnEscape={true}
+      >
+        <IntakeForm 
+          onSubmitSuccess={(data) => {
+            console.log('Form submitted successfully:', data);
+            // Close modal first
+            setShowForm(false);
+            // Redirect to thank you page with form data
+            const params = new URLSearchParams({
+              email: data.email,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              phone: data.phone,
+              company: data.company || '',
+              projectType: data.projectType,
+            });
+            window.location.href = `/thank-you?${params.toString()}`;
+          }}
+          onSubmitError={(error) => {
+            console.error('Form submission error:', error);
+          }}
+        />
+      </Modal>
 
-      {/* Testimonials Section */}
-      <section className="py-16">
+      {/* Portfolio Section */}
+      <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              What Our Clients Say
+              Our Work
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white p-8 rounded-lg shadow-md">
+                <h3 className="text-2xl font-semibold mb-4">geoLARP.com</h3>
                 <p className="text-gray-600 mb-4">
-                  &quot;Exceptional service! They delivered our project on time and exceeded our expectations.&quot;
+                  Geolocated Live Action Role Playing - Transform your city into a game world. 
+                  Track quests, find other players, and experience adventures in real locations.
                 </p>
-                <div className="font-semibold">Sarah Johnson</div>
-                <div className="text-sm text-gray-500">CEO, TechStart</div>
+                <div className="flex gap-4">
+                  <a href="https://geolarp.com" target="_blank" rel="noopener noreferrer" 
+                     className="text-purple-600 hover:text-purple-700 font-medium">
+                    Visit Site →
+                  </a>
+                </div>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
+              <div className="bg-white p-8 rounded-lg shadow-md">
+                <h3 className="text-2xl font-semibold mb-4">WordPress Gamification Plugin</h3>
                 <p className="text-gray-600 mb-4">
-                  &quot;Professional team with deep expertise. Highly recommend for any development project.&quot;
+                  Our flagship WordPress plugin that adds game mechanics to any site. 
+                  Points, badges, leaderboards, and achievements for user engagement.
                 </p>
-                <div className="font-semibold">Michael Chen</div>
-                <div className="text-sm text-gray-500">CTO, InnovateCo</div>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
+                <div className="text-sm text-gray-500">
+                  <em>Coming soon to WordPress.org (pending approval)</em>
                 </div>
-                <p className="text-gray-600 mb-4">
-                  &quot;Great communication throughout the project. They truly understand client needs.&quot;
-                </p>
-                <div className="font-semibold">Emily Davis</div>
-                <div className="text-sm text-gray-500">Product Manager, ScaleUp</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <TestimonialSection
+        testimonials={[
+          {
+            id: '1',
+            name: 'Sarah Johnson',
+            role: 'Operations Manager',
+            company: 'TechCorp',
+            content: 'Our team actually enjoys database work now. Completion rates are up 40% since implementing CRUDgames!',
+            rating: 5,
+          },
+          {
+            id: '2',
+            name: 'Michael Chen',
+            role: 'IT Director',
+            company: 'StartupHub',
+            content: 'The WordPress plugin was so easy to set up. Our team loves competing for the top spot on the leaderboard!',
+            rating: 5,
+          },
+          {
+            id: '3',
+            name: 'Emily Davis',
+            role: 'Team Lead',
+            company: 'DataFlow Inc',
+            content: 'Finally, a solution that makes database work fun. My team asks for MORE data entry tasks now!',
+            rating: 5,
+          },
+        ]}
+        title="What Our Users Say"
+        variant="grid"
+      />
+
       {/* CTA Section */}
-      <section className="bg-blue-600 py-16">
+      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Transform Your Business?
+            Ready to Make Work Fun?
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join hundreds of satisfied clients who have accelerated their growth with us.
+          <p className="text-xl text-purple-100 mb-8">
+            Transform your team&apos;s productivity with gamification. Landing pages $100/year until Halloween!
           </p>
           <Button 
             size="lg"
@@ -204,55 +187,34 @@ export default function Home() {
             onClick={() => setShowForm(true)}
             rightIcon={<ArrowRight className="h-5 w-5" />}
           >
-            Start Your Project Today
+            Schedule Consultation
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8 mb-8">
-              <div>
-                <h3 className="text-white font-semibold mb-4">Company</h3>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white">About Us</a></li>
-                  <li><a href="#" className="hover:text-white">Services</a></li>
-                  <li><a href="#" className="hover:text-white">Portfolio</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-white font-semibold mb-4">Resources</h3>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white">Blog</a></li>
-                  <li><a href="#" className="hover:text-white">Documentation</a></li>
-                  <li><a href="#" className="hover:text-white">Support</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-white font-semibold mb-4">Legal</h3>
-                <ul className="space-y-2">
-                  <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                  <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                  <li><a href="#" className="hover:text-white">Cookie Policy</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-white font-semibold mb-4">Contact</h3>
-                <ul className="space-y-2">
-                  <li>contact@example.com</li>
-                  <li>1-800-123-4567</li>
-                  <li>123 Business St, Suite 100</li>
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-800 pt-8 text-center">
-              <p>&copy; 2024 Your Company. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <FooterSection
+        companyName="CRUDgames"
+        companyDescription="Indie startup making work more engaging through gamification. Creator of geoLARP.com and WordPress gamification plugins."
+        socialLinks={[
+          { platform: 'github', url: 'https://github.com/crudgames' },
+          { platform: 'twitter', url: 'https://twitter.com/crudgames' },
+          { platform: 'linkedin', url: 'https://linkedin.com/company/crudgames' },
+          { platform: 'youtube', url: 'https://youtube.com/@crudgames' },
+        ]}
+        contactInfo={{
+          email: 'contact@crudgames.com',
+          phone: '1-800-CRUDGAME',
+          address: 'Remote-First Game Studio',
+        }}
+        newsletterTitle="Level Up Your Inbox"
+        newsletterDescription="Get game dev tips, industry insights, and exclusive beta access."
+        onNewsletterSubmit={(email) => {
+          console.log('Newsletter signup:', email);
+          // TODO: Implement newsletter signup
+        }}
+        showBackToTop={true}
+      />
     </div>
   );
 }

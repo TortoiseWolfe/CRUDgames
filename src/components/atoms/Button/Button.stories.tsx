@@ -61,7 +61,7 @@ export const Secondary: Story = {
 export const Danger: Story = {
   args: {
     variant: 'danger',
-    children: 'Delete Account',
+    children: 'Delete Item',
   },
 };
 
@@ -86,24 +86,17 @@ export const Small: Story = {
   },
 };
 
+export const Medium: Story = {
+  args: {
+    size: 'md',
+    children: 'Medium Button',
+  },
+};
+
 export const Large: Story = {
   args: {
     size: 'lg',
     children: 'Large Button',
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    loading: true,
-    children: 'Submitting...',
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    children: 'Disabled Button',
   },
 };
 
@@ -125,7 +118,7 @@ export const WithBothIcons: Story = {
   args: {
     leftIcon: <Heart className="h-4 w-4" />,
     rightIcon: <ArrowRight className="h-4 w-4" />,
-    children: 'Like & Continue',
+    children: 'Favorite',
   },
 };
 
@@ -134,48 +127,73 @@ export const FullWidth: Story = {
     fullWidth: true,
     children: 'Full Width Button',
   },
-  parameters: {
-    layout: 'padded',
+};
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+    children: 'Loading...',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    children: 'Disabled Button',
+  },
+};
+
+export const AsLink: Story = {
+  args: {
+    variant: 'link',
+    children: 'Link as Button',
+    onClick: () => window.open('https://example.com', '_blank'),
+  },
+};
+
+export const InteractiveDemo: Story = {
+  render: () => {
+    const handleClick = () => alert('Button clicked!');
+    
+    return (
+      <div className="space-y-4">
+        <div className="flex gap-2">
+          <Button variant="primary" onClick={handleClick}>
+            Primary
+          </Button>
+          <Button variant="secondary" onClick={handleClick}>
+            Secondary
+          </Button>
+          <Button variant="danger" onClick={handleClick}>
+            Danger
+          </Button>
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" onClick={handleClick}>
+            Small
+          </Button>
+          <Button size="md" onClick={handleClick}>
+            Medium
+          </Button>
+          <Button size="lg" onClick={handleClick}>
+            Large
+          </Button>
+        </div>
+      </div>
+    );
   },
 };
 
 export const AllVariants: Story = {
-  args: {
-    children: 'Button',
-  },
   render: () => (
-    <div className="flex flex-col gap-4">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="danger">Danger</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
-    </div>
-  ),
-};
-
-export const AllSizes: Story = {
-  args: {
-    children: 'Button',
-  },
-  render: () => (
-    <div className="flex items-center gap-4">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  ),
-};
-
-export const AllStates: Story = {
-  args: {
-    children: 'Button',
-  },
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <Button>Normal</Button>
-      <Button loading>Loading</Button>
-      <Button disabled>Disabled</Button>
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="danger">Danger</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="link">Link</Button>
+      </div>
     </div>
   ),
 };
