@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'export',
-  // No basePath needed - domain will forward directly to GitHub Pages
+  basePath: process.env.NODE_ENV === 'production' ? '/CRUDgames' : '',
   images: {
     unoptimized: true,
   },
