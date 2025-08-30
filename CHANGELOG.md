@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-08-30
+
+### Hotfix - Build Errors for GitHub Pages Deployment
+
+### Fixed
+- ESLint no-explicit-any error in test/setup.ts - proper Storage type casting
+- Unused import warning in Button.test.tsx - removed ArrowRight import
+- Next.js img element warning in TestimonialSection - replaced with Image component
+- Missing args property in Button stories (InteractiveDemo, AllVariants)
+- Missing vi import from vitest in test/setup.ts
+- localStorage mock typing with proper Storage interface implementation
+
+### Technical Details
+- Build now passes all linting and type checking
+- GitHub Pages deployment pipeline restored
+- All ESLint rules properly enforced
+
 ## [1.2.0] - 2025-08-30
 
 ### Session 3 - Testing Infrastructure & Component Expansion
@@ -87,6 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-- **v1.2.0** (Current) - Testing infrastructure and expanded component library
+- **v1.2.1** (Current) - Build fixes for GitHub Pages deployment
+- **v1.2.0** - Testing infrastructure and expanded component library
 - **v1.1.0** - Brand update and core page components
 - **v1.0.0** - Initial release with form and scheduling functionality
