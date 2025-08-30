@@ -42,8 +42,8 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
   (
     {
       logo,
-      logoText = 'CRUDgames',
-      logoHref = '/',
+      logoText = 'CRUDgames.com',
+      logoHref = 'https://crudgames.com',
       links,
       ctaText = 'Get Started',
       ctaAction,

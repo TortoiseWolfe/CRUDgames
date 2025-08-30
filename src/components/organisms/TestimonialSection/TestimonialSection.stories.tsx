@@ -30,7 +30,7 @@ const sampleTestimonials = [
     name: 'Sarah Johnson',
     role: 'Operations Manager',
     company: 'TechCorp',
-    content: 'Our team actually enjoys database work now. Completion rates are up 40% since implementing CRUDgames!',
+    content: 'Our team actually enjoys database work now. Completion rates are up 40% since implementing CRUDgames.com!',
     rating: 5,
   },
   {
@@ -63,7 +63,7 @@ const sampleTestimonials = [
     name: 'Jordan Smith',
     role: 'HR Director',
     company: 'GlobalTech',
-    content: 'Employee engagement scores have never been higher. CRUDgames turned mundane tasks into achievements.',
+    content: 'Employee engagement scores have never been higher. CRUDgames.com turned mundane tasks into achievements.',
     rating: 5,
   },
   {
@@ -156,7 +156,7 @@ export const LongContent: Story = {
         name: 'Dr. Elizabeth Harper',
         role: 'Research Director',
         company: 'Data Science Institute',
-        content: 'After implementing CRUDgames, our research team saw a remarkable transformation. What used to be tedious data entry and database management became an engaging experience. The gamification elements - points, badges, and leaderboards - created healthy competition among team members. We\'ve seen a 40% increase in data processing speed and, more importantly, a significant reduction in errors. The platform has fundamentally changed how we approach routine tasks.',
+        content: 'After implementing CRUDgames.com, our research team saw a remarkable transformation. What used to be tedious data entry and database management became an engaging experience. The gamification elements - points, badges, and leaderboards - created healthy competition among team members. We\'ve seen a 40% increase in data processing speed and, more importantly, a significant reduction in errors. The platform has fundamentally changed how we approach routine tasks.',
         rating: 5,
       },
       {
@@ -164,7 +164,7 @@ export const LongContent: Story = {
         name: 'Marcus Thompson',
         role: 'Engineering Manager',
         company: 'TechFlow Solutions',
-        content: 'CRUDgames has been a game-changer for our engineering team. The WordPress plugin integration was seamless, and the immediate feedback through achievements keeps our developers motivated during long coding sessions. It\'s not just about productivity - it\'s about making work enjoyable.',
+        content: 'CRUDgames.com has been a game-changer for our engineering team. The WordPress plugin integration was seamless, and the immediate feedback through achievements keeps our developers motivated during long coding sessions. It\'s not just about productivity - it\'s about making work enjoyable.',
         rating: 5,
       },
     ],

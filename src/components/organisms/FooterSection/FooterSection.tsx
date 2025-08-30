@@ -68,7 +68,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
     {
       columns,
       socialLinks,
-      companyName = 'Your Company',
+      companyName = 'CRUDgames.com',
       companyDescription,
       copyrightText,
       contactInfo,
@@ -203,7 +203,11 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
         <footer ref={ref} className={cn('bg-gray-900 text-gray-400 py-16', className)}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">{companyName}</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                <Link href="https://crudgames.com" className="hover:text-blue-400 transition-colors">
+                  {companyName}
+                </Link>
+              </h3>
               {companyDescription && (
                 <p className="text-gray-400 mb-8 max-w-2xl mx-auto">{companyDescription}</p>
               )}
@@ -259,7 +263,11 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
               {/* Company Info */}
               <div className="lg:col-span-4">
-                <h3 className="text-xl font-bold text-white mb-4">{companyName}</h3>
+                <h3 className="text-xl font-bold text-white mb-4">
+                  <Link href="https://crudgames.com" className="hover:text-blue-400 transition-colors">
+                    {companyName}
+                  </Link>
+                </h3>
                 {companyDescription && (
                   <p className="text-gray-400 mb-6">{companyDescription}</p>
                 )}

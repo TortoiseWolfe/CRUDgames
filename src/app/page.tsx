@@ -16,8 +16,8 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <HeroSection
-        headline="Make Work Fun with CRUDgames"
-        highlightedText="CRUDgames"
+        headline="Make Work Fun with CRUDgames.com"
+        highlightedText="CRUDgames.com"
         subheadline="Transform boring CRUD operations into engaging, gamified experiences. Boost productivity through points, achievements, and friendly competition."
         primaryCtaText="Schedule Free Consultation"
         primaryCtaAction={() => setShowForm(true)}
@@ -148,7 +148,7 @@ export default function Home() {
             name: 'Sarah Johnson',
             role: 'Operations Manager',
             company: 'TechCorp',
-            content: 'Our team actually enjoys database work now. Completion rates are up 40% since implementing CRUDgames!',
+            content: 'Our team actually enjoys database work now. Completion rates are up 40% since implementing CRUDgames.com!',
             rating: 5,
           },
           {
@@ -194,7 +194,7 @@ export default function Home() {
 
       {/* Footer */}
       <FooterSection
-        companyName="CRUDgames"
+        companyName="CRUDgames.com"
         companyDescription="Indie startup making work more engaging through gamification. Creator of geoLARP.com and WordPress gamification plugins."
         socialLinks={[
           { platform: 'github', url: 'https://github.com/crudgames' },

@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    logoText: 'CRUDgames',
+    logoText: 'CRUDgames.com',
     ctaText: 'Start Project',
     ctaAction: () => console.log('Start project clicked'),
   },
@@ -110,7 +110,7 @@ export const WithCustomLogo: Story = {
         <span className="text-white font-bold text-xl">CG</span>
       </div>
     ),
-    logoText: 'CRUDgames',
+    logoText: 'CRUDgames.com',
     ctaText: 'Play Demo',
     ctaAction: () => console.log('Play demo clicked'),
   },
@@ -136,7 +136,7 @@ export const NoSticky: Story = {
 
 export const NoCTA: Story = {
   args: {
-    logoText: 'CRUDgames',
+    logoText: 'CRUDgames.com',
     // No ctaAction provided
   },
 };
@@ -155,7 +155,7 @@ export const MobileView: Story = {
 export const CompleteExample: Story = {
   args: {
     logo: <GamepadIcon className="h-8 w-8 text-purple-600" />,
-    logoText: 'CRUDgames',
+    logoText: 'CRUDgames.com',
     links: [
       { label: 'Home', href: '/' },
       { 
