@@ -152,6 +152,9 @@ export const AsLink: Story = {
 };
 
 export const InteractiveDemo: Story = {
+  args: {
+    children: 'Button',
+  },
   render: () => {
     const handleClick = () => alert('Button clicked!');
     
@@ -185,6 +188,9 @@ export const InteractiveDemo: Story = {
 };
 
 export const AllVariants: Story = {
+  args: {
+    children: 'Button',
+  },
   render: () => (
     <div className="space-y-4">
       <div className="flex gap-2">

@@ -3,6 +3,7 @@
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Star, Quote } from 'lucide-react';
+import Image from 'next/image';
 
 export interface Testimonial {
   id: string;
@@ -80,10 +81,12 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
           {/* Author */}
           <div className="flex items-center gap-3">
             {testimonial.image && (
-              <img
+              <Image
                 src={testimonial.image}
                 alt={testimonial.name}
-                className="w-12 h-12 rounded-full object-cover"
+                width={48}
+                height={48}
+                className="rounded-full object-cover"
               />
             )}
             <div>

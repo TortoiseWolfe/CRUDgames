@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { composeStories } from '@storybook/react';
 import * as stories from './Button.stories';
 import { Button } from './Button';
-import { ArrowRight } from 'lucide-react';
 
 // Compose all stories for testing
 const { Primary, Secondary, Danger, Small, Medium, Large, Loading, Disabled, WithLeftIcon, WithRightIcon, FullWidth } = composeStories(stories);
