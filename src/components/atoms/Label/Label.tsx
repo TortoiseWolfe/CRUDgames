@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
-  htmlFor: string;
+  htmlFor?: string;
   required?: boolean;
   disabled?: boolean;
   error?: boolean;

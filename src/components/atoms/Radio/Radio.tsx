@@ -134,7 +134,12 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
                   />
                   {isChecked && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className={cn('bg-white rounded-full', dotSizeClasses[size])} />
+                      <svg 
+                        className={cn('fill-white', dotSizeClasses[size])}
+                        viewBox="0 0 8 8"
+                      >
+                        <circle cx="4" cy="4" r="4" />
+                      </svg>
                     </div>
                   )}
                 </div>

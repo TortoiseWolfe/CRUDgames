@@ -119,6 +119,16 @@ export default function Home() {
                 <IntakeForm 
                   onSubmitSuccess={(data) => {
                     console.log('Form submitted successfully:', data);
+                    // Redirect to thank you page with form data
+                    const params = new URLSearchParams({
+                      email: data.email,
+                      firstName: data.firstName,
+                      lastName: data.lastName,
+                      phone: data.phone,
+                      company: data.company || '',
+                      projectType: data.projectType,
+                    });
+                    window.location.href = `/thank-you?${params.toString()}`;
                   }}
                   onSubmitError={(error) => {
                     console.error('Form submission error:', error);
