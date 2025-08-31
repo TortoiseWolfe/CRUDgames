@@ -19,16 +19,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const buttonVariants = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-  secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
-  danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-  ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 focus:ring-gray-500',
-  link: 'bg-transparent underline-offset-4 hover:underline text-blue-600 focus:ring-blue-500',
+  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600',
+  secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
+  danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 dark:bg-red-500 dark:hover:bg-red-600',
+  ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 focus:ring-gray-500 dark:text-gray-300 dark:hover:bg-gray-800',
+  link: 'bg-transparent underline-offset-4 hover:underline text-blue-600 focus:ring-blue-500 dark:text-blue-400',
 };
 
 const buttonSizes = {
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-4 text-base',
+  sm: 'h-9 px-3 text-base',
+  md: 'h-11 px-4 text-lg',
   lg: 'h-12 px-6 text-lg',
 };
 

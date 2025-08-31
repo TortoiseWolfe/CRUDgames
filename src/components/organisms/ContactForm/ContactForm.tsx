@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  company: z.string().optional(),
   subject: z.string().optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
 });
@@ -23,16 +25,24 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 export interface ContactFormProps {
   onSubmit?: (data: ContactFormData) => Promise<void> | void;
+  title?: string;
   variant?: 'default' | 'minimal' | 'detailed';
   showSubject?: boolean;
+  showPhone?: boolean;
+  showCompany?: boolean;
+  companyOptions?: string[];
   className?: string;
   submitText?: string;
 }
 
 export function ContactForm({ 
   onSubmit,
+  title,
   variant = 'default',
   showSubject = true,
+  showPhone = true,
+  showCompany = false,
+  companyOptions,
   className,
   submitText = 'Send Message'
 }: ContactFormProps) {
@@ -62,9 +72,8 @@ export function ContactForm({
       if (onSubmit) {
         await onSubmit(data);
       } else {
-        // Default behavior - log to console
-        console.log('Contact form submitted:', data);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+        // Default behavior - simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
       
       setSubmitSuccess(true);
@@ -72,8 +81,8 @@ export function ContactForm({
       
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (error) {
-      console.error('Form submission error:', error);
+    } catch {
+      // Error is handled by the UI state
     } finally {
       setIsSubmitting(false);
     }
@@ -88,12 +97,14 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className={formClasses}>
-      {variant === 'detailed' && (
+      {(title || variant === 'detailed') && (
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Get in Touch</h3>
-          <p className="text-gray-600">
-            Have a question? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
-          </p>
+          <h3 className="text-xl font-semibold mb-2">{title || 'Get in Touch'}</h3>
+          {variant === 'detailed' && (
+            <p className="text-gray-600">
+              Have a question? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
+            </p>
+          )}
         </div>
       )}
 
@@ -103,6 +114,7 @@ export function ContactForm({
       )}>
         <FormField
           label="Name"
+          id="contact-name"
           error={errors.name?.message}
           required
         >
@@ -116,6 +128,7 @@ export function ContactForm({
 
         <FormField
           label="Email"
+          id="contact-email"
           error={errors.email?.message}
           required
         >
@@ -127,11 +140,59 @@ export function ContactForm({
             disabled={isSubmitting}
           />
         </FormField>
+
+        {showPhone && (
+          <FormField
+            label="Phone"
+            id="contact-phone"
+            error={errors.phone?.message}
+          >
+            <Input
+              {...register('phone')}
+              id="contact-phone"
+              type="tel"
+              placeholder="Your phone number"
+              disabled={isSubmitting}
+            />
+          </FormField>
+        )}
+
+        {(showCompany || companyOptions) && (
+          <FormField
+            label="Company"
+            id="contact-company"
+            error={errors.company?.message}
+          >
+            {companyOptions ? (
+              <select
+                {...register('company')}
+                id="contact-company"
+                disabled={isSubmitting}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select a company</option>
+                {companyOptions.map((company) => (
+                  <option key={company} value={company}>
+                    {company}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <Input
+                {...register('company')}
+                id="contact-company"
+                placeholder="Your company"
+                disabled={isSubmitting}
+              />
+            )}
+          </FormField>
+        )}
       </div>
 
       {showSubject && variant !== 'minimal' && (
         <FormField
           label="Subject"
+          id="contact-subject"
           error={errors.subject?.message}
         >
           <Input
@@ -145,6 +206,7 @@ export function ContactForm({
 
       <FormField
         label="Message"
+        id="contact-message"
         error={errors.message?.message}
         required
       >
@@ -162,7 +224,7 @@ export function ContactForm({
 
       {submitSuccess && (
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
-          <p className="font-medium">Message sent successfully!</p>
+          <p className="font-medium">Thank you! Your message was successfully sent.</p>
           <p className="text-sm mt-1">We&apos;ll get back to you as soon as possible.</p>
         </div>
       )}

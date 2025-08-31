@@ -31,8 +31,7 @@ function ThankYouContent() {
     }
   }, []);
 
-  const handleSchedulingComplete = (event: unknown) => {
-    console.log('Appointment scheduled:', event);
+  const handleSchedulingComplete = () => {
     setHasScheduled(true);
     setShowScheduler(false);
     

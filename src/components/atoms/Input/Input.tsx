@@ -35,15 +35,15 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 }
 
 const inputSizes = {
-  sm: 'h-8 text-sm',
-  md: 'h-10 text-base',
+  sm: 'h-10 text-base',
+  md: 'h-11 text-lg',
   lg: 'h-12 text-lg',
 };
 
 const inputVariants = {
-  default: 'bg-white border-gray-300',
-  filled: 'bg-gray-50 border-gray-300',
-  ghost: 'bg-transparent border-transparent hover:border-gray-300',
+  default: 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600',
+  filled: 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600',
+  ghost: 'bg-transparent border-transparent hover:border-gray-300 dark:hover:border-gray-600',
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -92,8 +92,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={id}
             className={cn(
-              'text-sm font-medium text-gray-700',
-              disabled && 'text-gray-400'
+              'text-base font-medium text-gray-700 dark:text-gray-300',
+              disabled && 'text-gray-400 dark:text-gray-600'
             )}
           >
             {label}
@@ -117,7 +117,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full rounded-md border px-3 transition-all duration-200',
               'focus:outline-none focus:ring-2 focus:ring-offset-0',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'placeholder:text-gray-400',
+              'placeholder:text-gray-400 dark:placeholder:text-gray-600',
+              'text-gray-900 dark:text-gray-100',
               inputSizes[size],
               inputVariants[variant],
               leftIcon && 'pl-10',
@@ -162,13 +163,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         
         {helperText && !errorMessage && (
-          <span id={helperId} className="text-sm text-gray-500">
+          <span id={helperId} className="text-base text-gray-500 dark:text-gray-400">
             {helperText}
           </span>
         )}
         
         {errorMessage && (
-          <span id={errorId} role="alert" className="text-sm text-red-500 flex items-center gap-1">
+          <span id={errorId} role="alert" className="text-base text-red-500 dark:text-red-400 flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
             {errorMessage}
           </span>

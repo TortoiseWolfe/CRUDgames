@@ -5,6 +5,7 @@ import { IntakeForm } from '@/components/organisms/IntakeForm';
 import { HeroSection } from '@/components/organisms/HeroSection';
 import { FooterSection } from '@/components/organisms/FooterSection';
 import { TestimonialSection } from '@/components/organisms/TestimonialSection';
+import { NavigationHeader } from '@/components/organisms/NavigationHeader';
 import { Modal } from '@/components/molecules/Modal';
 import { Button } from '@/components/atoms/Button';
 import { Users, Zap, Shield, ArrowRight } from 'lucide-react';
@@ -14,6 +15,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      {/* Navigation Header */}
+      <NavigationHeader
+        logoText="CRUDgames.com"
+        links={[
+          { label: 'Features', href: '#features' },
+          { label: 'Portfolio', href: '#portfolio' },
+          { label: 'Testimonials', href: '#testimonials' },
+          { label: 'Contact', href: '#contact' },
+        ]}
+        ctaText="Get Started"
+        ctaAction={() => setShowForm(true)}
+        sticky={true}
+        variant="default"
+      />
+
       {/* Hero Section */}
       <HeroSection
         headline="Make Work Fun with CRUDgames.com"
@@ -23,7 +39,7 @@ export default function Home() {
         primaryCtaAction={() => setShowForm(true)}
         secondaryCtaText="See How It Works"
         secondaryCtaAction={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-        backgroundGradient="from-purple-50 to-indigo-100"
+        backgroundGradient=""
         trustIndicators={[
           { value: '🎮', label: 'Gamified Forms' },
           { value: '⚡', label: 'Quick Setup' },
@@ -33,19 +49,19 @@ export default function Home() {
       />
 
       {/* Features Section */}
-      <section id="features" className="bg-white py-16">
+      <section id="features" className="bg-white dark:bg-gray-900 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-8">
               Turn Tedious Tasks into Engaging Experiences
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                   <Zap className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Gamified CRUD Operations</h3>
-                <p className="text-gray-600">
+                <h3 className="text-2xl font-semibold mb-2 dark:text-white">Gamified CRUD Operations</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
                   Turn boring database tasks into point-scoring opportunities with achievements and leaderboards.
                 </p>
               </div>
@@ -53,8 +69,8 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                   <Users className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Boost Productivity</h3>
-                <p className="text-gray-600">
+                <h3 className="text-2xl font-semibold mb-2 dark:text-white">Boost Productivity</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
                   Employees complete 40% more tasks when work feels like play. Proven engagement mechanics.
                 </p>
               </div>
@@ -62,8 +78,8 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                   <Shield className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">WordPress Ready</h3>
-                <p className="text-gray-600">
+                <h3 className="text-2xl font-semibold mb-2 dark:text-white">WordPress Ready</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
                   Easy integration with your existing WordPress site. Install, configure, and start playing.
                 </p>
               </div>
@@ -84,7 +100,6 @@ export default function Home() {
       >
         <IntakeForm 
           onSubmitSuccess={(data) => {
-            console.log('Form submitted successfully:', data);
             // Close modal first
             setShowForm(false);
             // Redirect to thank you page with form data
@@ -98,23 +113,23 @@ export default function Home() {
             });
             window.location.href = `/thank-you?${params.toString()}`;
           }}
-          onSubmitError={(error) => {
-            console.error('Form submission error:', error);
+          onSubmitError={() => {
+            // Error is displayed in the form UI
           }}
         />
       </Modal>
 
       {/* Portfolio Section */}
-      <section className="bg-gray-50 py-16">
+      <section id="portfolio" className="bg-gray-50 dark:bg-gray-800 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-8">
               Our Work
             </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <h3 className="text-2xl font-semibold mb-4">geoLARP.com</h3>
-                <p className="text-gray-600 mb-4">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+                <h3 className="text-2xl font-semibold mb-4 dark:text-white">geoLARP.com</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
                   Geolocated Live Action Role Playing - Transform your city into a game world. 
                   Track quests, find other players, and experience adventures in real locations.
                 </p>
@@ -125,13 +140,13 @@ export default function Home() {
                   </a>
                 </div>
               </div>
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <h3 className="text-2xl font-semibold mb-4">WordPress Gamification Plugin</h3>
-                <p className="text-gray-600 mb-4">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+                <h3 className="text-2xl font-semibold mb-4 dark:text-white">WordPress Gamification Plugin</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
                   Our flagship WordPress plugin that adds game mechanics to any site. 
                   Points, badges, leaderboards, and achievements for user engagement.
                 </p>
-                <div className="text-sm text-gray-500">
+                <div className="text-base text-gray-500 dark:text-gray-400">
                   <em>Coming soon to WordPress.org (pending approval)</em>
                 </div>
               </div>
@@ -141,7 +156,8 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSection
+      <section id="testimonials">
+        <TestimonialSection
         testimonials={[
           {
             id: '1',
@@ -170,15 +186,16 @@ export default function Home() {
         ]}
         title="What Our Users Say"
         variant="grid"
-      />
+        />
+      </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 py-16">
+      <section id="contact" className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-800 dark:to-indigo-800 py-12">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-4xl font-bold text-white mb-4">
             Ready to Make Work Fun?
           </h2>
-          <p className="text-xl text-purple-100 mb-8">
+          <p className="text-2xl text-purple-100 mb-6">
             Transform your team&apos;s productivity with gamification. Landing pages $100/year until Halloween!
           </p>
           <Button 
@@ -209,8 +226,7 @@ export default function Home() {
         }}
         newsletterTitle="Level Up Your Inbox"
         newsletterDescription="Get game dev tips, industry insights, and exclusive beta access."
-        onNewsletterSubmit={(email) => {
-          console.log('Newsletter signup:', email);
+        onNewsletterSubmit={() => {
           // TODO: Implement newsletter signup
         }}
         showBackToTop={true}

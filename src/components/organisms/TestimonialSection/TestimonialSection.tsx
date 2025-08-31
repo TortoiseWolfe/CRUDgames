@@ -37,7 +37,7 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
     
     const renderRating = (rating: number) => {
       return (
-        <div className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
+        <div className="flex gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
           {[...Array(5)].map((_, i) => (
             <Star 
               key={i} 
@@ -58,7 +58,7 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
         <div
           key={testimonial.id}
           className={cn(
-            "bg-white rounded-lg shadow-md p-6 flex flex-col",
+            "bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/50 p-6 flex flex-col",
             isFeature && "md:col-span-2 lg:col-span-2",
             "hover:shadow-lg transition-shadow duration-200"
           )}
@@ -74,7 +74,7 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
           )}
           
           {/* Content */}
-          <blockquote className="flex-1 text-gray-600 mb-6 italic">
+          <blockquote className="flex-1 text-gray-600 dark:text-gray-300 mb-6 italic">
             &ldquo;{testimonial.content}&rdquo;
           </blockquote>
           
@@ -91,8 +91,8 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
             )}
             <div>
               <cite className="not-italic">
-                <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                <div className="text-sm text-gray-500">
+                <div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
                   {testimonial.role}
                   {testimonial.company && `, ${testimonial.company}`}
                 </div>
@@ -118,12 +118,12 @@ export const TestimonialSection = forwardRef<HTMLElement, TestimonialSectionProp
             {(title || subtitle) && (
               <div className="text-center mb-12">
                 {title && (
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                     {title}
                   </h2>
                 )}
                 {subtitle && (
-                  <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                     {subtitle}
                   </p>
                 )}

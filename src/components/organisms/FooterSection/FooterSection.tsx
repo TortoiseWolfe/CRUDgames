@@ -167,7 +167,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
 
     if (variant === 'minimal') {
       return (
-        <footer ref={ref} className={cn('bg-gray-900 text-gray-400 py-8', className)}>
+        <footer ref={ref} className={cn('bg-gray-900 dark:bg-black text-gray-400 dark:text-gray-500 py-8', className)}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
@@ -200,7 +200,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
 
     if (variant === 'centered') {
       return (
-        <footer ref={ref} className={cn('bg-gray-900 text-gray-400 py-16', className)}>
+        <footer ref={ref} className={cn('bg-gray-900 dark:bg-black text-gray-400 dark:text-gray-500 py-16', className)}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h3 className="text-2xl font-bold text-white mb-4">
@@ -252,7 +252,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
       <footer 
         ref={ref} 
         className={cn(
-          'bg-gray-900 text-gray-400',
+          'bg-gray-900 dark:bg-black text-gray-400 dark:text-gray-500',
           variant === 'modern' ? 'py-20' : 'py-16',
           className
         )}
@@ -263,13 +263,13 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
               {/* Company Info */}
               <div className="lg:col-span-4">
-                <h3 className="text-xl font-bold text-white mb-4">
+                <h3 className="text-xl font-bold text-white dark:text-gray-100 mb-4">
                   <Link href="https://crudgames.com" className="hover:text-blue-400 transition-colors">
                     {companyName}
                   </Link>
                 </h3>
                 {companyDescription && (
-                  <p className="text-gray-400 mb-6">{companyDescription}</p>
+                  <p className="text-gray-400 dark:text-gray-500 mb-6">{companyDescription}</p>
                 )}
                 
                 {/* Contact Info */}
@@ -345,7 +345,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
               <div className="mb-4 sm:mb-0">
                 <p className="text-sm">{copyrightText || defaultCopyright}</p>
                 <div className="flex space-x-4 mt-2">
-                  {defaultColumns[3].links.map((link, index) => (
+                  {defaultColumns[3] && defaultColumns[3].links.map((link, index) => (
                     <span key={index} className="text-sm">
                       {renderLink(link)}
                     </span>

@@ -87,13 +87,10 @@ export const CalendlyScheduler = forwardRef<HTMLDivElement, CalendlySchedulerPro
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('event', eventName, eventData);
       }
-      
-      console.log(`[Analytics] ${eventName}`, eventData);
     };
 
     useCalendlyEventListener({
       onEventScheduled: (e: unknown) => {
-        console.log('Event scheduled:', e);
         trackEvent('calendly_appointment_scheduled', {});
         onScheduled?.(e);
         setIsLoading(false);
@@ -132,7 +129,7 @@ export const CalendlyScheduler = forwardRef<HTMLDivElement, CalendlySchedulerPro
 
     // handleError function is currently not used but kept for future implementation
     // const handleError = (error: Error) => {
-    //   console.error('Calendly loading error:', error);
+    //   Handle loading error if needed
     //   setHasError(true);
     //   setErrorMessage(error.message || 'Unable to load the scheduler');
     //   setIsLoading(false);

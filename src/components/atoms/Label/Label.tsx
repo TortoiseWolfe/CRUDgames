@@ -26,9 +26,9 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
     ...props
   }, ref) => {
     const sizeClasses = {
-      sm: 'text-xs',
-      md: 'text-sm',
-      lg: 'text-base',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
     };
 
     const labelClasses = cn(
@@ -37,9 +37,9 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
       {
         'block mb-1': variant === 'default',
         'inline-flex items-center': variant === 'inline',
-        'text-gray-700': !error && !disabled,
-        'text-red-600': error && !disabled,
-        'text-gray-400 cursor-not-allowed': disabled,
+        'text-gray-700 dark:text-gray-300': !error && !disabled,
+        'text-red-600 dark:text-red-400': error && !disabled,
+        'text-gray-400 dark:text-gray-600 cursor-not-allowed': disabled,
         'cursor-pointer': !disabled,
       },
       className

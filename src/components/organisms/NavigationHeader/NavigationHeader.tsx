@@ -14,7 +14,9 @@ import {
   Users,
   Mail,
   ExternalLink,
-  ArrowRight
+  ArrowRight,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export interface NavLink {
@@ -57,6 +59,34 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+    // Initialize theme from localStorage or system preference
+    useEffect(() => {
+      const stored = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = stored === 'dark' || (!stored && systemPrefersDark) ? 'dark' : 'light';
+      
+      setTheme(initialTheme);
+      if (initialTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }, []);
+
+    // Handle theme toggle
+    const toggleTheme = () => {
+      const newTheme = theme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
 
     useEffect(() => {
       if (!sticky) return;
@@ -89,22 +119,22 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
 
     const variantClasses = {
       default: cn(
-        'bg-white border-b',
+        'bg-white dark:bg-gray-900 border-b dark:border-gray-700',
         isScrolled && sticky && 'shadow-md'
       ),
       transparent: cn(
         'bg-transparent',
-        isScrolled && sticky && 'bg-white/95 backdrop-blur-md shadow-md'
+        isScrolled && sticky && 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md'
       ),
       dark: 'bg-gray-900 text-white border-b border-gray-800',
-      minimal: 'bg-white',
+      minimal: 'bg-white dark:bg-gray-900',
     };
 
     const textColorClasses = {
-      default: 'text-gray-700 hover:text-gray-900',
-      transparent: isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200',
+      default: 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white',
+      transparent: isScrolled ? 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' : 'text-white hover:text-gray-200',
       dark: 'text-gray-300 hover:text-white',
-      minimal: 'text-gray-600 hover:text-gray-900',
+      minimal: 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white',
     };
 
     const renderLink = (link: NavLink, index: number) => {
@@ -132,12 +162,12 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
             </button>
             
             {isOpen && link.children && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                 {link.children.map((child, childIndex) => (
                   <Link
                     key={childIndex}
                     href={child.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     onClick={() => setOpenDropdown(null)}
                   >
                     {child.label}
@@ -184,7 +214,7 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
               className="flex items-center gap-2 font-bold text-xl"
             >
               {logo || <GamepadIcon className="h-8 w-8 text-purple-600" />}
-              <span className={variant === 'dark' ? 'text-white' : ''}>
+              <span className={cn(variant === 'dark' ? 'text-white' : 'text-gray-900 dark:text-white')}>
                 {logoText}
               </span>
             </Link>
@@ -194,8 +224,23 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
               {defaultLinks.map((link, index) => renderLink(link, index))}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:block">
+            {/* CTA Button and Theme Toggle */}
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={toggleTheme}
+                className={cn(
+                  "p-2 rounded-lg transition-colors",
+                  "hover:bg-gray-100 dark:hover:bg-gray-800",
+                  variant === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'
+                )}
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? (
+                  <Moon className="h-5 w-5" />
+                ) : (
+                  <Sun className="h-5 w-5" />
+                )}
+              </button>
               {ctaAction && (
                 <Button
                   onClick={ctaAction}
@@ -228,7 +273,7 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
 
           {/* Mobile Navigation */}
           {showMobileMenu && isMobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-gray-200">
+            <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
               <div className="space-y-2">
                 {defaultLinks.map((link, index) => {
                   if (link.children) {
@@ -261,7 +306,7 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
                               <Link
                                 key={childIndex}
                                 href={child.href}
-                                className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900"
+                                className="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                                 onClick={() => {
                                   setOpenDropdown(null);
                                   setIsMobileMenuOpen(false);
@@ -292,8 +337,25 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
                   );
                 })}
                 
+                {/* Theme Toggle for Mobile */}
+                <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={toggleTheme}
+                    className={cn(
+                      "w-full flex items-center justify-between px-3 py-2 rounded-lg",
+                      "hover:bg-gray-100 dark:hover:bg-gray-800",
+                      textColorClasses[variant]
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+                      <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                    </span>
+                  </button>
+                </div>
+                
                 {ctaAction && (
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-4">
                     <Button
                       onClick={() => {
                         ctaAction();

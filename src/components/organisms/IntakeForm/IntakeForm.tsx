@@ -190,14 +190,14 @@ export function IntakeForm({
                 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors',
                 index <= currentStep
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-600'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
               )}>
                 {index < currentStep ? <Check className="h-4 w-4" /> : index + 1}
               </div>
               {index < FORM_STEPS.length - 1 && (
                 <div className={cn(
                   'w-full h-1 mx-2',
-                  index < currentStep ? 'bg-blue-600' : 'bg-gray-200'
+                  index < currentStep ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
                 )} />
               )}
             </div>
@@ -205,15 +205,15 @@ export function IntakeForm({
         </div>
         
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             {FORM_STEPS[currentStep].title}
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {FORM_STEPS[currentStep].description}
           </p>
         </div>
         
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
           <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${progressPercentage}%` }}
@@ -363,42 +363,42 @@ export function IntakeForm({
 
         {currentStep === 2 && (
           <div className="space-y-6">
-            <div className="bg-gray-50 p-6 rounded-lg space-y-4">
-              <h3 className="font-semibold text-gray-900">Review Your Information</h3>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg space-y-4">
+              <h3 className="font-semibold text-gray-900 dark:text-white">Review Your Information</h3>
               
               <div className="space-y-2">
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Name</span>
-                  <span className="font-medium">{formData.firstName} {formData.lastName}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Name</span>
+                  <span className="font-medium dark:text-gray-200">{formData.firstName} {formData.lastName}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-gray-600">Email</span>
-                  <span className="font-medium">{formData.email}</span>
+                  <span className="font-medium dark:text-gray-200">{formData.email}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-gray-600">Phone</span>
-                  <span className="font-medium">{formData.phone}</span>
+                  <span className="font-medium dark:text-gray-200">{formData.phone}</span>
                 </div>
                 {formData.company && (
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Company</span>
-                    <span className="font-medium">{formData.company}</span>
+                    <span className="font-medium dark:text-gray-200">{formData.company}</span>
                   </div>
                 )}
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-gray-600">Project Type</span>
-                  <span className="font-medium capitalize">{formData.projectType}</span>
+                  <span className="font-medium capitalize dark:text-gray-200">{formData.projectType}</span>
                 </div>
                 {formData.budget && (
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Budget</span>
-                    <span className="font-medium">{formData.budget}</span>
+                    <span className="font-medium dark:text-gray-200">{formData.budget}</span>
                   </div>
                 )}
                 {formData.timeline && (
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Timeline</span>
-                    <span className="font-medium">{formData.timeline}</span>
+                    <span className="font-medium dark:text-gray-200">{formData.timeline}</span>
                   </div>
                 )}
               </div>

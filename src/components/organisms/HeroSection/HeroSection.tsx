@@ -39,7 +39,7 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
       secondaryCtaText,
       secondaryCtaAction,
       backgroundImage,
-      backgroundGradient = 'from-blue-50 to-indigo-100',
+      backgroundGradient = 'from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-purple-950',
       videoUrl,
       showVideoButton,
       trustIndicators,
@@ -89,17 +89,17 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
     };
 
     const headlineClasses = {
-      default: 'text-4xl lg:text-6xl font-bold text-gray-900 mb-6',
-      centered: 'text-5xl lg:text-7xl font-bold text-gray-900 mb-8',
-      split: 'text-4xl lg:text-5xl font-bold text-gray-900 mb-6',
-      minimal: 'text-3xl lg:text-5xl font-semibold text-gray-900 mb-4',
+      default: 'text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6',
+      centered: 'text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-8',
+      split: 'text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6',
+      minimal: 'text-4xl lg:text-6xl font-semibold text-gray-900 dark:text-white mb-4',
     };
 
     const subheadlineClasses = {
-      default: 'text-xl text-gray-600 mb-8 max-w-3xl mx-auto',
-      centered: 'text-2xl text-gray-600 mb-10 max-w-3xl mx-auto',
-      split: 'text-lg lg:text-xl text-gray-600 mb-8 max-w-2xl lg:mx-auto',
-      minimal: 'text-lg text-gray-600 mb-6',
+      default: 'text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto',
+      centered: 'text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto',
+      split: 'text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-2xl lg:mx-auto',
+      minimal: 'text-xl text-gray-600 dark:text-gray-300 mb-5',
     };
 
     return (
@@ -107,7 +107,8 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
         ref={ref}
         className={cn(
           'relative overflow-hidden',
-          backgroundImage ? '' : `bg-gradient-to-br ${backgroundGradient}`,
+          !backgroundImage && !backgroundGradient && 'bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-purple-950',
+          !backgroundImage && backgroundGradient && `bg-gradient-to-br ${backgroundGradient}`,
           className
         )}
         style={

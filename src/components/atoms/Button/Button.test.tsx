@@ -35,10 +35,10 @@ describe('Button Component', () => {
 
     it('renders size variants from stories', () => {
       const { rerender } = render(<Small />);
-      expect(screen.getByRole('button')).toHaveClass('h-8');
+      expect(screen.getByRole('button')).toHaveClass('h-9');
       
       rerender(<Medium />);
-      expect(screen.getByRole('button')).toHaveClass('h-10');
+      expect(screen.getByRole('button')).toHaveClass('h-11');
       
       rerender(<Large />);
       expect(screen.getByRole('button')).toHaveClass('h-12');
