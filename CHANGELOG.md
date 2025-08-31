@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-08-31
+
+### Session 5 - Complete Storybook Coverage & Template Components
+
+### Added
+- **100% Storybook Coverage**
+  - Created stories for all 34 components
+  - Added comprehensive story variants for each component
+  - Interactive controls and documentation for all props
+  - Multiple use case examples per component
+
+- **New Template Components**
+  - SchedulingPage: Calendly integration with benefits and testimonials
+  - ThankYouPage: Post-submission confirmation with next steps
+  - Complete test coverage for both new templates
+
+- **New Application Routes**
+  - /scheduling: Appointment booking page with Calendly
+  - Integration with existing navigation and form flow
+
+- **Storybook Stories Created**
+  - Templates: LandingPage, ErrorPage, ConfirmationPage, ThankYouPage, SchedulingPage
+  - Atoms: Avatar, Card, Label
+  - Molecules: Modal, TestimonialCard
+
+### Changed
+- Fixed TypeScript errors in ThankYouPage component
+- Updated test suite to 514 passing tests
+- Improved component prop types for strict mode compliance
+
+### Technical Details
+- 34 components with 34 matching story files
+- 514 tests passing, 26 skipped for future features
+- Full template library ready for production use
+- Comprehensive visual testing through Storybook
+
+---
+
 ## [1.3.0] - 2025-08-30
 
 ### Session 4 - Complete Component Library & Email Integration

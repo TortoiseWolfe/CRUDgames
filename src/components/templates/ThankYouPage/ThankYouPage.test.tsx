@@ -182,7 +182,7 @@ describe('ThankYouPage', () => {
     
     expect(window.location.href).toBe('mailto:contact@company.com');
     
-    window.location = originalLocation as any;
+    window.location = originalLocation as Location & typeof globalThis.location;
   });
 
   it('calls onTrackConversion on mount', () => {

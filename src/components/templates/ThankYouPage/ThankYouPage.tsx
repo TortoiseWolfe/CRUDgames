@@ -190,7 +190,7 @@ export function ThankYouPage({
 
               {hasScheduled && (
                 <Alert variant="success" className="mb-6">
-                  <strong>Appointment Confirmed!</strong> We've sent a confirmation email with your appointment details.
+                  <strong>Appointment Confirmed!</strong> We&apos;ve sent a confirmation email with your appointment details.
                 </Alert>
               )}
 
