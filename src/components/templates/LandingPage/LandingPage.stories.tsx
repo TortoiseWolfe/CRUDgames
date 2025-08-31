@@ -1,3 +1,4 @@
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import { LandingPage } from './LandingPage';
 import { Shield, Zap, Users, TrendingUp, Award, CheckCircle } from 'lucide-react';

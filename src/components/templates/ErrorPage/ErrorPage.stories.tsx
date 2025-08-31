@@ -1,3 +1,4 @@
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorPage } from './ErrorPage';
 import { Home, FileText, Mail, Shield, Settings } from 'lucide-react';

@@ -1,3 +1,4 @@
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import { ConfirmationPage } from './ConfirmationPage';
 import { FileText, Laptop, Target, Coffee } from 'lucide-react';

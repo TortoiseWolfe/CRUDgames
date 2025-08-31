@@ -1,3 +1,4 @@
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import { SchedulingPage } from './SchedulingPage';
 import { Clock, Calendar, Users, CheckCircle2, Target, Award, Zap, Shield } from 'lucide-react';

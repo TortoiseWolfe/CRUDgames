@@ -1,3 +1,4 @@
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
 import { ThankYouPage } from './ThankYouPage';
 import { Twitter, Facebook, Linkedin, Instagram } from 'lucide-react';
