@@ -110,22 +110,17 @@ describe('ErrorBoundary', () => {
   });
 
   it('shows error details when showDetails is true', () => {
-    // Set NODE_ENV to development for this test
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'development';
+    // Use showDebugInfo prop instead of manipulating NODE_ENV
     
     render(
-      <ErrorBoundary showDetails={true}>
+      <ErrorBoundary showDetails={true} showDebugInfo={true}>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
     
-    // Should show details summary in development
+    // Should show details summary when showDebugInfo is true
     const detailsSummary = screen.getByText(/Error details \(development only\)/);
     expect(detailsSummary).toBeInTheDocument();
-    
-    // Restore NODE_ENV
-    process.env.NODE_ENV = originalEnv;
   });
 
   it('hides error details when showDetails is false', () => {
@@ -149,13 +144,11 @@ describe('ErrorBoundary', () => {
     expect(container.querySelector('.custom-error-boundary')).toBeInTheDocument();
   });
 
-  it('logs error in development mode', () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'development';
+  it('logs error when showDebugInfo is true', () => {
     const consoleSpy = vi.spyOn(console, 'error');
     
     render(
-      <ErrorBoundary>
+      <ErrorBoundary showDebugInfo={true}>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
@@ -171,6 +164,5 @@ describe('ErrorBoundary', () => {
     expect(errorBoundaryCall?.[1]).toMatchObject({ message: 'Test error message' });
     
     consoleSpy.mockRestore();
-    process.env.NODE_ENV = originalEnv;
   });
 });

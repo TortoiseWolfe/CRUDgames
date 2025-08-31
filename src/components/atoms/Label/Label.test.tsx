@@ -34,7 +34,7 @@ describe('Label', () => {
 
   it('renders error state', () => {
     render(<Label error={true}>Error Field</Label>);
-    expect(screen.getByText('Error Field')).toHaveClass('text-red-600');
+    expect(screen.getByText('Error Field')).toHaveClass('text-red-700');
   });
 
   it.skip('renders error state with message', () => {
@@ -96,7 +96,7 @@ describe('Label', () => {
     
     expect(screen.getByText('Complex Label')).toBeInTheDocument();
     expect(screen.getByText('*')).toBeInTheDocument();
-    expect(screen.getByText('Complex Label')).toHaveClass('text-red-600');
+    expect(screen.getByText('Complex Label')).toHaveClass('text-red-700');
   });
 
   it('renders children elements', () => {

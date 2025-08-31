@@ -73,7 +73,7 @@ describe('Badge', () => {
     expect(screen.getByText('Custom Badge')).toHaveClass('custom-badge');
   });
 
-  it.skip('renders as different HTML elements', () => {
+  it('renders as different HTML elements', () => {
     const { rerender, container } = render(<Badge as="div">Div Badge</Badge>);
     expect(container.querySelector('div')).toHaveTextContent('Div Badge');
 

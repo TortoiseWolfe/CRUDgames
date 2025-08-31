@@ -139,13 +139,13 @@ describe('Textarea', () => {
 
   it.skip('renders different sizes', () => {
     // Textarea doesn't have size prop
-    const { rerender } = render(<Textarea id="t1" name="t1" size="sm" />);
+    render(<Textarea id="t1" name="t1" size="sm" />);
     expect(screen.getByRole('textbox')).toHaveClass('text-sm');
   });
 
   it.skip('renders different variants', () => {
     // Textarea doesn't have variant prop
-    const { rerender } = render(<Textarea id="t1" name="t1" variant="default" />);
+    render(<Textarea id="t1" name="t1" variant="default" />);
     expect(screen.getByRole('textbox')).toHaveClass('bg-white');
   });
 

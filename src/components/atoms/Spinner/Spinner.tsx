@@ -9,6 +9,8 @@ export interface SpinnerProps {
   thickness?: 'thin' | 'normal' | 'thick';
   speed?: 'slow' | 'normal' | 'fast';
   label?: string;
+  labelPosition?: 'top' | 'bottom' | 'left' | 'right';
+  fullscreen?: boolean;
   className?: string;
 }
 
@@ -19,6 +21,8 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
     thickness = 'normal',
     speed = 'normal',
     label = 'Loading',
+    labelPosition = 'bottom',
+    fullscreen = false,
     className,
   }, ref) => {
     const sizeClasses = {
@@ -55,17 +59,54 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
       className
     );
 
-    return (
+    const containerClasses = cn(
+      'inline-flex items-center justify-center',
+      {
+        'flex-col': labelPosition === 'bottom',
+        'flex-col-reverse': labelPosition === 'top',
+        'flex-row': labelPosition === 'right',
+        'flex-row-reverse': labelPosition === 'left',
+      }
+    );
+
+    const labelClasses = cn(
+      'text-sm text-gray-600 dark:text-gray-400',
+      {
+        'mt-2': labelPosition === 'bottom',
+        'mb-2': labelPosition === 'top',
+        'ml-2': labelPosition === 'right',
+        'mr-2': labelPosition === 'left',
+      }
+    );
+
+    const spinner = (
       <div 
-        ref={ref}
+        ref={!fullscreen ? ref : undefined}
         role="status" 
         aria-label={label}
-        className="inline-flex items-center justify-center"
+        className={containerClasses}
       >
         <div className={spinnerClasses} />
-        <span className="sr-only">{label}</span>
+        {label && labelPosition !== 'bottom' && labelPosition !== 'top' && labelPosition !== 'left' && labelPosition !== 'right' ? (
+          <span className="sr-only">{label}</span>
+        ) : label ? (
+          <span className={labelClasses}>{label}</span>
+        ) : null}
       </div>
     );
+
+    if (fullscreen) {
+      return (
+        <div 
+          ref={ref}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+        >
+          {spinner}
+        </div>
+      );
+    }
+
+    return spinner;
   }
 );
 

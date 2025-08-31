@@ -2,6 +2,7 @@
 
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   id: string;
@@ -9,6 +10,8 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   value?: string;
   defaultValue?: string;
   
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'filled' | 'ghost';
   resize?: 'none' | 'vertical' | 'horizontal' | 'both';
   autoResize?: boolean;
   minRows?: number;
@@ -23,6 +26,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   disabled?: boolean;
   readOnly?: boolean;
   success?: boolean;
+  loading?: boolean;
   
   label?: string;
   placeholder?: string;
@@ -41,6 +45,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     name,
     value,
     defaultValue,
+    size = 'md',
+    variant = 'default',
     resize = 'vertical',
     autoResize = false,
     minRows = 3,
@@ -53,6 +59,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     disabled = false,
     readOnly = false,
     success = false,
+    loading = false,
     label,
     placeholder,
     helperText,
@@ -95,16 +102,31 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const hasError = !!error;
     const errorMessage = typeof error === 'string' ? error : '';
+    const isDisabled = disabled || loading;
+    
+    const sizeClasses = {
+      sm: 'text-sm py-1.5 px-2.5',
+      md: 'text-base py-2 px-3',
+      lg: 'text-lg py-2.5 px-3.5',
+    };
+
+    const variantClasses = {
+      default: 'bg-white dark:bg-gray-800',
+      filled: 'bg-gray-50 dark:bg-gray-900',
+      ghost: 'bg-transparent',
+    };
     
     const textareaClasses = cn(
-      'w-full px-3 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-600',
+      'w-full text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-600',
       'border rounded-md transition-colors duration-200',
       'focus:outline-none focus:ring-2 focus:ring-offset-2',
       'disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500 disabled:cursor-not-allowed',
       'read-only:bg-gray-50 dark:read-only:bg-gray-800 read-only:cursor-default',
-      'bg-white dark:bg-gray-800',
+      sizeClasses[size],
+      variantClasses[variant],
       {
-        'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 focus:border-blue-500 focus:ring-blue-500': !hasError && !success,
+        'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 focus:border-blue-500 focus:ring-blue-500': !hasError && !success && variant !== 'ghost',
+        'border-transparent hover:border-gray-300 dark:hover:border-gray-600': variant === 'ghost' && !hasError && !success,
         'border-red-500 hover:border-red-600 focus:border-red-600 focus:ring-red-500': hasError,
         'border-green-500 hover:border-green-600 focus:border-green-600 focus:ring-green-500': success,
         'resize-none': resize === 'none' || autoResize,
@@ -137,28 +159,33 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           </label>
         )}
         
-        <textarea
-          ref={combinedRef}
-          id={id}
-          name={name}
-          value={value}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-          readOnly={readOnly}
-          maxLength={maxLength}
-          minLength={minLength}
-          onChange={handleChange}
-          onBlur={onBlur}
-          aria-label={ariaLabel || label}
-          aria-describedby={describedBy || undefined}
-          aria-invalid={hasError}
-          aria-required={required}
-          className={textareaClasses}
-          rows={minRows}
-          {...props}
-        />
+        <div className="relative">
+          <textarea
+            ref={combinedRef}
+            id={id}
+            name={name}
+            value={value}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            required={required}
+            disabled={isDisabled}
+            readOnly={readOnly}
+            maxLength={maxLength}
+            minLength={minLength}
+            onChange={handleChange}
+            onBlur={onBlur}
+            aria-label={ariaLabel || label}
+            aria-describedby={describedBy || undefined}
+            aria-invalid={hasError}
+            aria-required={required}
+            className={textareaClasses}
+            rows={minRows}
+            {...props}
+          />
+          {loading && (
+            <Loader2 className="absolute right-2 top-2 h-4 w-4 text-gray-400 animate-spin" />
+          )}
+        </div>
         
         <div className="mt-1 flex justify-between items-start">
           <div className="flex-1">

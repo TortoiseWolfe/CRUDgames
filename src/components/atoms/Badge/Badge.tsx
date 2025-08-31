@@ -40,6 +40,7 @@ export interface BadgeProps
   onRemove?: () => void;
   removable?: boolean;
   removeLabel?: string;
+  as?: React.ElementType;
 }
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
@@ -48,6 +49,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     variant,
     size,
     children,
+    as: Component = 'span',
     icon,
     onRemove,
     removable = false,
@@ -57,7 +59,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     const showRemoveButton = removable || onRemove;
 
     return (
-      <span
+      <Component
         ref={ref}
         className={cn(badgeVariants({ variant, size }), className)}
         {...props}
@@ -87,7 +89,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             )} />
           </button>
         )}
-      </span>
+      </Component>
     );
   }
 );

@@ -74,7 +74,8 @@ describe('Spinner', () => {
 
   it('uses custom label', () => {
     render(<Spinner label="Processing..." />);
-    expect(screen.getByText('Processing...')).toHaveClass('sr-only');
+    // With default labelPosition='bottom', label is visible
+    expect(screen.getByText('Processing...')).toHaveClass('text-sm');
   });
 
   it.skip('renders with custom label position', () => {
@@ -99,10 +100,11 @@ describe('Spinner', () => {
     expect(overlay).toHaveClass('bg-black', 'bg-opacity-50');
   });
 
-  it('shows screen reader text', () => {
+  it('shows visible label text', () => {
     render(<Spinner />);
-    const srText = screen.getByText('Loading');
-    expect(srText).toHaveClass('sr-only');
+    // With default labelPosition='bottom', label is visible
+    const labelText = screen.getByText('Loading');
+    expect(labelText).toHaveClass('text-sm');
   });
 
   it('combines multiple props correctly', () => {

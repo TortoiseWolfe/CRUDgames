@@ -9,6 +9,7 @@ interface ErrorBoundaryProps {
   fallback?: (error: Error, resetError: () => void) => ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
   showDetails?: boolean;
+  showDebugInfo?: boolean;
   className?: string;
 }
 
@@ -36,10 +37,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const { onError } = this.props;
+    const { onError, showDebugInfo } = this.props;
     
-    // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
+    // Log error to console in development or when showDebugInfo is true
+    if (showDebugInfo ?? process.env.NODE_ENV === 'development') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
     
@@ -64,7 +65,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render() {
     const { hasError, error } = this.state;
-    const { children, fallback, showDetails = false, className } = this.props;
+    const { children, fallback, showDetails = false, showDebugInfo, className } = this.props;
 
     if (hasError && error) {
       // Use custom fallback if provided
@@ -88,7 +89,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               We encountered an unexpected error. Please try refreshing the page or contact support if the problem persists.
             </p>
             
-            {showDetails && process.env.NODE_ENV === 'development' && (
+            {showDetails && (showDebugInfo ?? process.env.NODE_ENV === 'development') && (
               <details className="mb-6 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                   Error details (development only)

@@ -3,6 +3,7 @@
 import { forwardRef, useState, useEffect } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
 const switchVariants = cva(
   'relative inline-flex shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2',
@@ -52,6 +53,8 @@ export interface SwitchProps
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   labelPosition?: 'left' | 'right';
+  error?: boolean | string;
+  loading?: boolean;
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
@@ -66,11 +69,16 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     onCheckedChange,
     labelPosition = 'right',
     disabled = false,
+    error = false,
+    loading = false,
     id,
     ...props
   }, ref) => {
     const [isChecked, setIsChecked] = useState(controlledChecked ?? defaultChecked);
     const isControlled = controlledChecked !== undefined;
+    const hasError = !!error;
+    const errorMessage = typeof error === 'string' ? error : '';
+    const isDisabled = disabled || loading;
 
     useEffect(() => {
       if (isControlled) {
@@ -79,6 +87,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     }, [controlledChecked, isControlled]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (loading) return;
+      
       const newChecked = e.target.checked;
       
       if (!isControlled) {
@@ -90,8 +100,10 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     };
 
     const getBackgroundColor = () => {
-      if (disabled) return 'bg-gray-200';
-      if (!isChecked) return 'bg-gray-200';
+      if (isDisabled) return 'bg-gray-200';
+      if (!isChecked) return hasError ? 'bg-red-200' : 'bg-gray-200';
+      
+      if (hasError) return 'bg-red-600';
       
       switch (variant) {
         case 'success': return 'bg-green-600';
@@ -119,32 +131,44 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           className="sr-only"
           checked={isChecked}
           onChange={handleChange}
-          disabled={disabled}
+          disabled={isDisabled}
           id={id}
+          aria-invalid={hasError}
           aria-describedby={description ? `${id}-description` : undefined}
+          required={props.required}
           {...props}
         />
         <span
           className={cn(
-            switchVariants({ variant, size }),
+            switchVariants({ variant: hasError ? 'danger' : variant, size }),
             getBackgroundColor(),
-            disabled && 'opacity-50 cursor-not-allowed',
+            isDisabled && 'opacity-50 cursor-not-allowed',
+            hasError && 'ring-2 ring-red-500 ring-offset-2',
             className
           )}
           aria-hidden="true"
         >
-          <span
-            className={cn(
-              thumbVariants({ size }),
-              getTranslateClass(),
-              disabled && 'opacity-75'
-            )}
-          />
+          {loading ? (
+            <Loader2 className={cn(
+              'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-gray-600',
+              size === 'sm' && 'h-3 w-3',
+              size === 'md' && 'h-4 w-4',
+              size === 'lg' && 'h-5 w-5'
+            )} />
+          ) : (
+            <span
+              className={cn(
+                thumbVariants({ size }),
+                getTranslateClass(),
+                isDisabled && 'opacity-75'
+              )}
+            />
+          )}
         </span>
       </>
     );
 
-    if (!label && !description) {
+    if (!label && !description && !errorMessage) {
       return (
         <label htmlFor={id} className="inline-flex items-center">
           {switchElement}
@@ -153,7 +177,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     }
 
     return (
-      <div className="flex items-start">
+      <div>
+        <div className="flex items-start">
         {labelPosition === 'left' && (
           <div className="mr-3">
             {label && (
@@ -211,6 +236,12 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               </p>
             )}
           </div>
+        )}
+        </div>
+        {errorMessage && (
+          <p className="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
+            {errorMessage}
+          </p>
         )}
       </div>
     );

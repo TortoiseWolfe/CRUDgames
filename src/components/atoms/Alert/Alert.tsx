@@ -15,6 +15,10 @@ export interface AlertProps {
   fullWidth?: boolean;
   role?: 'alert' | 'status';
   ariaLive?: 'polite' | 'assertive' | 'off';
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
   className?: string;
 }
 
@@ -56,6 +60,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
       fullWidth = false,
       role = 'alert',
       ariaLive = variant === 'error' ? 'assertive' : 'polite',
+      action,
       className,
     },
     ref
@@ -115,7 +120,24 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
               {title}
             </h3>
           )}
-          <div className="text-sm">{children}</div>
+          <div className="text-sm">
+            {children}
+            {action && (
+              <button
+                type="button"
+                onClick={action.onClick}
+                className={cn(
+                  'mt-2 text-sm font-medium underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-1 rounded',
+                  variant === 'info' && 'text-blue-700 hover:text-blue-800 focus:ring-blue-500',
+                  variant === 'success' && 'text-green-700 hover:text-green-800 focus:ring-green-500',
+                  variant === 'warning' && 'text-yellow-700 hover:text-yellow-800 focus:ring-yellow-500',
+                  variant === 'error' && 'text-red-700 hover:text-red-800 focus:ring-red-500'
+                )}
+              >
+                {action.label}
+              </button>
+            )}
+          </div>
         </div>
 
         {dismissible && (

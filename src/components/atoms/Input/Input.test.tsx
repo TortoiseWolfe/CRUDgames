@@ -143,7 +143,7 @@ describe('Input', () => {
     expect(screen.getByRole('textbox')).toHaveClass('bg-gray-50');
   });
 
-  it.skip('handles loading state', () => {
+  it('handles loading state', () => {
     render(<Input id="i1" name="i1" loading />);
     const input = screen.getByRole('textbox');
     expect(input).toBeDisabled();
@@ -167,7 +167,7 @@ describe('Input', () => {
     expect(input).toHaveAttribute('aria-label', 'Custom input');
   });
 
-  it.skip('handles aria-describedby', () => {
+  it('handles aria-describedby', () => {
     render(
       <Input 
         id="i1" 

@@ -48,7 +48,7 @@ describe('Alert', () => {
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
-  it.skip('renders action buttons', () => {
+  it('renders action buttons', () => {
     const onAction = vi.fn();
     render(
       <Alert

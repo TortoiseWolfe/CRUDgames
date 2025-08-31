@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   id: string;
@@ -31,7 +31,9 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   ariaLabel?: string;
   ariaDescribedBy?: string;
+  ariaDescribedby?: string; // Support both casings
   ariaInvalid?: boolean;
+  loading?: boolean;
 }
 
 const inputSizes = {
@@ -67,7 +69,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       name,
       ariaLabel,
       ariaDescribedBy,
+      ariaDescribedby,
       ariaInvalid,
+      loading = false,
       ...props
     },
     ref
@@ -81,7 +85,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const helperId = `${id}-helper`;
     
     const ariaDescribedByIds = [
-      ariaDescribedBy,
+      ariaDescribedBy || ariaDescribedby,
       helperText && helperId,
       errorMessage && errorId,
     ].filter(Boolean).join(' ');
@@ -129,7 +133,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               !hasError && !success && 'focus:border-blue-500 focus:ring-blue-500',
               className
             )}
-            disabled={disabled}
+            disabled={disabled || loading}
             readOnly={readOnly}
             required={required}
             aria-label={ariaLabel || label}
@@ -157,7 +161,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
           
-          {success && !rightIcon && !type.includes('password') && (
+          {loading && !rightIcon && !type.includes('password') && (
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 animate-spin" />
+          )}
+          
+          {success && !loading && !rightIcon && !type.includes('password') && (
             <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500" />
           )}
         </div>
