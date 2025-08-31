@@ -116,7 +116,7 @@ export function SchedulingPage({
             <Badge variant="success" size="lg">
               Available {availability.hours}
             </Badge>
-            <Badge variant="secondary" size="lg">
+            <Badge variant="info" size="lg">
               {availability.timezone}
             </Badge>
             <Badge variant="default" size="lg">

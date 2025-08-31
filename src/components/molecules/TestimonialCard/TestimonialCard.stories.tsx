@@ -15,38 +15,26 @@ const meta: Meta<typeof TestimonialCard> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    name: {
-      control: 'text',
-      description: 'Name of the person giving testimonial',
-    },
-    role: {
-      control: 'text',
-      description: 'Job title or role',
-    },
-    company: {
-      control: 'text',
-      description: 'Company name',
-    },
-    content: {
-      control: 'text',
-      description: 'Testimonial content',
-    },
-    rating: {
-      control: { type: 'number', min: 1, max: 5 },
-      description: 'Star rating (1-5)',
-    },
-    image: {
-      control: 'text',
-      description: 'Profile image URL',
+    testimonial: {
+      control: 'object',
+      description: 'Testimonial object with all data',
     },
     variant: {
       control: 'select',
-      options: ['default', 'bordered', 'elevated'],
+      options: ['default', 'compact', 'detailed', 'minimal'],
       description: 'Visual style variant',
     },
-    featured: {
+    showRating: {
       control: 'boolean',
-      description: 'Featured testimonial styling',
+      description: 'Show star rating',
+    },
+    showImage: {
+      control: 'boolean',
+      description: 'Show profile image',
+    },
+    showQuotes: {
+      control: 'boolean',
+      description: 'Show quote icons',
     },
   },
 };
@@ -56,34 +44,45 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    name: 'Sarah Johnson',
-    role: 'Marketing Director',
-    company: 'Tech Solutions Inc',
-    content: 'Working with this team has been an absolute pleasure. They delivered our project on time and exceeded all expectations. The quality of work and attention to detail is outstanding.',
-    rating: 5,
+    testimonial: {
+      id: '1',
+      name: 'Sarah Johnson',
+      role: 'Marketing Director',
+      company: 'Tech Solutions Inc',
+      content: 'Working with this team has been an absolute pleasure. They delivered our project on time and exceeded all expectations. The quality of work and attention to detail is outstanding.',
+      rating: 5,
+    },
   },
 };
 
 export const WithImage: Story = {
   args: {
-    name: 'John Doe',
-    role: 'CEO',
-    company: 'Startup Co',
-    content: 'The best decision we made was partnering with this team. Their expertise and professionalism transformed our vision into reality.',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    testimonial: {
+      id: '2',
+      name: 'John Doe',
+      role: 'CEO',
+      company: 'Startup Co',
+      content: 'The best decision we made was partnering with this team. Their expertise and professionalism transformed our vision into reality.',
+      rating: 5,
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    },
+    showImage: true,
   },
 };
 
 export const Featured: Story = {
   args: {
-    name: 'Emily Chen',
-    role: 'Product Manager',
-    company: 'Innovation Labs',
-    content: 'Exceptional service and incredible results! This team went above and beyond to ensure our project was successful. I highly recommend them to anyone looking for top-tier development.',
-    rating: 5,
-    featured: true,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    testimonial: {
+      id: '3',
+      name: 'Emily Chen',
+      role: 'Product Manager',
+      company: 'Innovation Labs',
+      content: 'Exceptional service and incredible results! This team went above and beyond to ensure our project was successful. I highly recommend them to anyone looking for top-tier development.',
+      rating: 5,
+      featured: true,
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    },
+    showImage: true,
   },
 };
 
@@ -92,27 +91,36 @@ export const Variants: Story = {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
       <TestimonialCard
         variant="default"
-        name="Alice Brown"
-        role="Designer"
-        company="Creative Studio"
-        content="Great experience working with this team. Highly professional!"
-        rating={5}
+        testimonial={{
+          id: '4',
+          name: 'Alice Brown',
+          role: 'Designer',
+          company: 'Creative Studio',
+          content: 'Great experience working with this team. Highly professional!',
+          rating: 5,
+        }}
       />
       <TestimonialCard
-        variant="bordered"
-        name="Bob Smith"
-        role="Developer"
-        company="Tech Corp"
-        content="Excellent communication and fantastic results. Would work with them again."
-        rating={5}
+        variant="compact"
+        testimonial={{
+          id: '5',
+          name: 'Bob Smith',
+          role: 'Developer',
+          company: 'Tech Corp',
+          content: 'Excellent communication and fantastic results. Would work with them again.',
+          rating: 5,
+        }}
       />
       <TestimonialCard
-        variant="elevated"
-        name="Carol White"
-        role="Manager"
-        company="Business Inc"
-        content="They delivered exactly what we needed, on time and on budget."
-        rating={5}
+        variant="detailed"
+        testimonial={{
+          id: '6',
+          name: 'Carol White',
+          role: 'Manager',
+          company: 'Business Inc',
+          content: 'They delivered exactly what we needed, on time and on budget.',
+          rating: 5,
+        }}
       />
     </div>
   ),
@@ -122,25 +130,34 @@ export const DifferentRatings: Story = {
   render: () => (
     <div className="space-y-4 max-w-md">
       <TestimonialCard
-        name="5 Star Review"
-        role="Customer"
-        company="Company A"
-        content="Absolutely perfect! Exceeded all expectations."
-        rating={5}
+        testimonial={{
+          id: '7',
+          name: '5 Star Review',
+          role: 'Customer',
+          company: 'Company A',
+          content: 'Absolutely perfect! Exceeded all expectations.',
+          rating: 5,
+        }}
       />
       <TestimonialCard
-        name="4 Star Review"
-        role="Customer"
-        company="Company B"
-        content="Very good service with minor room for improvement."
-        rating={4}
+        testimonial={{
+          id: '8',
+          name: '4 Star Review',
+          role: 'Customer',
+          company: 'Company B',
+          content: 'Very good service with minor room for improvement.',
+          rating: 4,
+        }}
       />
       <TestimonialCard
-        name="3 Star Review"
-        role="Customer"
-        company="Company C"
-        content="Good overall, but could be better in some areas."
-        rating={3}
+        testimonial={{
+          id: '9',
+          name: '3 Star Review',
+          role: 'Customer',
+          company: 'Company C',
+          content: 'Good overall, but could be better in some areas.',
+          rating: 3,
+        }}
       />
     </div>
   ),
@@ -148,12 +165,16 @@ export const DifferentRatings: Story = {
 
 export const LongContent: Story = {
   args: {
-    name: 'David Miller',
-    role: 'CTO',
-    company: 'Enterprise Solutions',
-    content: 'I have worked with many development teams over the years, and I can confidently say this is one of the best. Their technical expertise is matched only by their commitment to customer satisfaction. They took the time to understand our complex requirements and delivered a solution that not only met but exceeded our expectations. The project was completed on schedule, within budget, and the quality of the code is exceptional. I would not hesitate to recommend them to anyone looking for a reliable and skilled development partner.',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    testimonial: {
+      id: '10',
+      name: 'David Miller',
+      role: 'CTO',
+      company: 'Enterprise Solutions',
+      content: 'I have worked with many development teams over the years, and I can confidently say this is one of the best. Their technical expertise is matched only by their commitment to customer satisfaction. They took the time to understand our complex requirements and delivered a solution that not only met but exceeded our expectations. The project was completed on schedule, within budget, and the quality of the code is exceptional. I would not hesitate to recommend them to anyone looking for a reliable and skilled development partner.',
+      rating: 5,
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    },
+    showImage: true,
   },
 };
 
@@ -210,7 +231,7 @@ export const Grid: Story = {
           image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400',
         },
       ].map((testimonial, index) => (
-        <TestimonialCard key={index} {...testimonial} />
+        <TestimonialCard key={index} testimonial={{ id: String(index + 100), ...testimonial }} showImage />
       ))}
     </div>
   ),
@@ -219,19 +240,27 @@ export const Grid: Story = {
 export const MinimalStyle: Story = {
   render: () => (
     <TestimonialCard
-      name="Jane Smith"
-      content="Simple and elegant testimonial without role or company information."
-      rating={5}
+      variant="minimal"
+      testimonial={{
+        id: '200',
+        name: 'Jane Smith',
+        content: 'Simple and elegant testimonial without role or company information.',
+        rating: 5,
+      }}
     />
   ),
 };
 
 export const NoRating: Story = {
   args: {
-    name: 'Alex Johnson',
-    role: 'Developer',
-    company: 'Code Factory',
-    content: 'This testimonial card displays without a star rating, focusing purely on the textual feedback.',
+    testimonial: {
+      id: '201',
+      name: 'Alex Johnson',
+      role: 'Developer',
+      company: 'Code Factory',
+      content: 'This testimonial card displays without a star rating, focusing purely on the textual feedback.',
+    },
+    showRating: false,
   },
 };
 
@@ -239,10 +268,14 @@ export const CompactView: Story = {
   render: () => (
     <div className="max-w-sm">
       <TestimonialCard
-        name="Chris Lee"
-        role="Manager"
-        content="Compact testimonial for smaller spaces."
-        rating={4}
+        variant="compact"
+        testimonial={{
+          id: '202',
+          name: 'Chris Lee',
+          role: 'Manager',
+          content: 'Compact testimonial for smaller spaces.',
+          rating: 4,
+        }}
       />
     </div>
   ),
@@ -253,29 +286,38 @@ export const ColoredBackground: Story = {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
       <div className="bg-blue-50 p-1 rounded-lg">
         <TestimonialCard
-          name="Blue Theme"
-          role="Designer"
-          company="Color Co"
-          content="Testimonial with blue background theme."
-          rating={5}
+          testimonial={{
+            id: '203',
+            name: 'Blue Theme',
+            role: 'Designer',
+            company: 'Color Co',
+            content: 'Testimonial with blue background theme.',
+            rating: 5,
+          }}
         />
       </div>
       <div className="bg-green-50 p-1 rounded-lg">
         <TestimonialCard
-          name="Green Theme"
-          role="Developer"
-          company="Eco Tech"
-          content="Testimonial with green background theme."
-          rating={5}
+          testimonial={{
+            id: '204',
+            name: 'Green Theme',
+            role: 'Developer',
+            company: 'Eco Tech',
+            content: 'Testimonial with green background theme.',
+            rating: 5,
+          }}
         />
       </div>
       <div className="bg-purple-50 p-1 rounded-lg">
         <TestimonialCard
-          name="Purple Theme"
-          role="Manager"
-          company="Creative Inc"
-          content="Testimonial with purple background theme."
-          rating={5}
+          testimonial={{
+            id: '205',
+            name: 'Purple Theme',
+            role: 'Manager',
+            company: 'Creative Inc',
+            content: 'Testimonial with purple background theme.',
+            rating: 5,
+          }}
         />
       </div>
     </div>

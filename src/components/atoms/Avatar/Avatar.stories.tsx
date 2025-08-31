@@ -1,5 +1,5 @@
 // eslint-disable-next-line storybook/no-renderer-packages
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar';
 import { User } from 'lucide-react';
 

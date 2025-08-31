@@ -184,7 +184,8 @@ describe('ThankYouPage', () => {
     
     expect(window.location.href).toBe('mailto:contact@company.com');
     
-    window.location = originalLocation as Location & typeof globalThis.location;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    window.location = originalLocation as any;
   });
 
   it('calls onTrackConversion on mount', () => {

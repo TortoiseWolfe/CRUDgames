@@ -19,7 +19,7 @@ const meta: Meta<typeof Card> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'bordered', 'elevated', 'ghost'],
+      options: ['flat', 'elevated', 'outlined', 'filled'],
       description: 'Visual style variant',
     },
     padding: {
@@ -27,7 +27,7 @@ const meta: Meta<typeof Card> = {
       options: ['none', 'sm', 'md', 'lg', 'xl'],
       description: 'Internal padding size',
     },
-    hover: {
+    hoverable: {
       control: 'boolean',
       description: 'Enable hover effects',
     },
@@ -59,21 +59,21 @@ export const Default: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-4 w-[600px]">
-      <Card variant="default">
-        <h3 className="font-semibold mb-2">Default Card</h3>
+      <Card variant="flat">
+        <h3 className="font-semibold mb-2">Flat Card</h3>
         <p className="text-sm text-gray-600">Standard card appearance</p>
       </Card>
-      <Card variant="bordered">
-        <h3 className="font-semibold mb-2">Bordered Card</h3>
+      <Card variant="outlined">
+        <h3 className="font-semibold mb-2">Outlined Card</h3>
         <p className="text-sm text-gray-600">Card with border</p>
       </Card>
       <Card variant="elevated">
         <h3 className="font-semibold mb-2">Elevated Card</h3>
         <p className="text-sm text-gray-600">Card with shadow elevation</p>
       </Card>
-      <Card variant="ghost">
-        <h3 className="font-semibold mb-2">Ghost Card</h3>
-        <p className="text-sm text-gray-600">Minimal card style</p>
+      <Card variant="filled">
+        <h3 className="font-semibold mb-2">Filled Card</h3>
+        <p className="text-sm text-gray-600">Filled card style</p>
       </Card>
     </div>
   ),
@@ -103,7 +103,7 @@ export const PaddingSizes: Story = {
 
 export const WithHover: Story = {
   args: {
-    hover: true,
+    hoverable: true,
     children: (
       <div>
         <h3 className="text-lg font-semibold mb-2">Hover Me</h3>
@@ -116,7 +116,7 @@ export const WithHover: Story = {
 export const Clickable: Story = {
   args: {
     clickable: true,
-    hover: true,
+    hoverable: true,
     onClick: () => alert('Card clicked!'),
     children: (
       <div>
@@ -162,7 +162,7 @@ export const ProfileCard: Story = {
           <p className="text-gray-600">Software Engineer</p>
           <div className="flex gap-2 mt-2">
             <Badge size="sm" variant="primary">React</Badge>
-            <Badge size="sm" variant="secondary">TypeScript</Badge>
+            <Badge size="sm" variant="info">TypeScript</Badge>
           </div>
         </div>
       </div>
@@ -187,7 +187,7 @@ export const CardGrid: Story = {
   render: () => (
     <div className="grid grid-cols-3 gap-4 w-[800px]">
       {[1, 2, 3, 4, 5, 6].map((i) => (
-        <Card key={i} hover clickable>
+        <Card key={i} hoverable clickable>
           <h3 className="font-semibold mb-2">Card {i}</h3>
           <p className="text-sm text-gray-600">Content for card number {i}</p>
         </Card>

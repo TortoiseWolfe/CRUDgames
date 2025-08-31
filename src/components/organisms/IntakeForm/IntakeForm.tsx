@@ -70,8 +70,7 @@ const FORM_STEPS = [
 
 export function IntakeForm({ 
   onSubmitSuccess, 
-  onSubmitError,
-  emailServiceConfig 
+  onSubmitError
 }: IntakeFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);

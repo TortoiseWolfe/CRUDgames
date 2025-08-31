@@ -38,7 +38,7 @@ const meta: Meta<typeof Modal> = {
       control: 'boolean',
       description: 'Close modal when clicking backdrop',
     },
-    closeOnEsc: {
+    closeOnEscape: {
       control: 'boolean',
       description: 'Close modal when pressing Escape key',
     },
