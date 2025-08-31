@@ -11,6 +11,7 @@ import { FormField } from '@/components/molecules/FormField';
 import { HoneypotField } from '@/components/molecules/HoneypotField';
 import { Send, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { sendEmail } from '@/lib/email';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -72,8 +73,20 @@ export function ContactForm({
       if (onSubmit) {
         await onSubmit(data);
       } else {
-        // Default behavior - simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Default behavior - use email service
+        const emailResult = await sendEmail({
+          subject: data.subject || `Contact Form Submission from ${data.name}`,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          company: data.company,
+          message: data.message,
+          source: 'Contact Form'
+        });
+
+        if (!emailResult.success) {
+          throw new Error(emailResult.error || 'Failed to send message');
+        }
       }
       
       setSubmitSuccess(true);
@@ -81,7 +94,8 @@ export function ContactForm({
       
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch {
+    } catch (error) {
+      console.error('Contact form error:', error);
       // Error is handled by the UI state
     } finally {
       setIsSubmitting(false);

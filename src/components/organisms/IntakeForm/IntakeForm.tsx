@@ -13,6 +13,7 @@ import { RadioGroup } from '@/components/atoms/Radio';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { Alert } from '@/components/atoms/Alert';
 import { ChevronLeft, ChevronRight, Check, Calendar } from 'lucide-react';
+import { sendEmail } from '@/lib/email';
 
 export const intakeFormSchema = z.object({
   firstName: z.string()
@@ -121,31 +122,23 @@ export function IntakeForm({
         throw new Error('Bot detected');
       }
       
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          access_key: emailServiceConfig?.publicKey || process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || 'YOUR_ACCESS_KEY',
-          subject: `New Intake Form Submission from ${data.firstName} ${data.lastName}`,
-          from_name: `${data.firstName} ${data.lastName}`,
-          email: data.email,
-          phone: data.phone,
-          company: data.company || 'Not provided',
-          job_title: data.jobTitle || 'Not provided',
-          company_size: data.companySize || 'Not specified',
-          project_type: data.projectType,
-          budget: data.budget || 'Not specified',
-          timeline: data.timeline || 'Not specified',
-          message: data.message,
-          submitted_at: new Date().toISOString(),
-        })
+      // Use the unified email service
+      const emailResult = await sendEmail({
+        subject: `New Intake Form Submission from ${data.firstName} ${data.lastName}`,
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.phone,
+        company: data.company,
+        projectType: data.projectType,
+        budget: data.budget,
+        timeline: data.timeline,
+        message: data.message || 'No additional message provided',
+        source: 'Intake Form',
+        timestamp: new Date().toISOString()
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send form');
+      if (!emailResult.success) {
+        throw new Error(emailResult.error || 'Failed to send form');
       }
       
       setSubmitSuccess(true);
