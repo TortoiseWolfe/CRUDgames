@@ -80,13 +80,14 @@ export function IntakeForm({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     watch,
     setValue,
     trigger,
   } = useForm<FormData>({
     resolver: zodResolver(intakeFormSchema),
-    mode: 'onBlur',
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   });
 
   const formData = watch();
@@ -223,22 +224,38 @@ export function IntakeForm({
         {currentStep === 0 && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                id="firstName"
-                label="First Name"
-                placeholder="John"
-                required
-                {...register('firstName')}
-                error={errors.firstName?.message}
-              />
-              <Input
-                id="lastName"
-                label="Last Name"
-                placeholder="Doe"
-                required
-                {...register('lastName')}
-                error={errors.lastName?.message}
-              />
+              <div className="relative">
+                <Input
+                  id="firstName"
+                  label="First Name"
+                  placeholder="John"
+                  required
+                  {...register('firstName')}
+                  error={errors.firstName?.message}
+                  className={cn(
+                    dirtyFields.firstName && !errors.firstName && 'border-green-500 focus:ring-green-500'
+                  )}
+                />
+                {dirtyFields.firstName && !errors.firstName && (
+                  <Check className="absolute right-3 top-9 h-5 w-5 text-green-500" />
+                )}
+              </div>
+              <div className="relative">
+                <Input
+                  id="lastName"
+                  label="Last Name"
+                  placeholder="Doe"
+                  required
+                  {...register('lastName')}
+                  error={errors.lastName?.message}
+                  className={cn(
+                    dirtyFields.lastName && !errors.lastName && 'border-green-500 focus:ring-green-500'
+                  )}
+                />
+                {dirtyFields.lastName && !errors.lastName && (
+                  <Check className="absolute right-3 top-9 h-5 w-5 text-green-500" />
+                )}
+              </div>
             </div>
             
             <Input

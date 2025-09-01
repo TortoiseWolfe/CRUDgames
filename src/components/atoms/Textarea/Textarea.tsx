@@ -111,24 +111,24 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     const variantClasses = {
-      default: 'bg-white dark:bg-gray-800',
-      filled: 'bg-gray-50 dark:bg-gray-900',
+      default: 'bg-input',
+      filled: 'bg-card',
       ghost: 'bg-transparent',
     };
     
     const textareaClasses = cn(
-      'w-full text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-600',
-      'border rounded-md transition-colors duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      'disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500 disabled:cursor-not-allowed',
-      'read-only:bg-gray-50 dark:read-only:bg-gray-800 read-only:cursor-default',
+      'w-full text-foreground placeholder-muted-foreground',
+      'border rounded-md transition-all duration-200',
+      'focus:outline-none focus:ring-2 focus:ring-offset-0',
+      'disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed',
+      'read-only:bg-muted read-only:cursor-default',
       sizeClasses[size],
       variantClasses[variant],
       {
-        'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 focus:border-blue-500 focus:ring-blue-500': !hasError && !success && variant !== 'ghost',
-        'border-transparent hover:border-gray-300 dark:hover:border-gray-600': variant === 'ghost' && !hasError && !success,
-        'border-red-500 hover:border-red-600 focus:border-red-600 focus:ring-red-500': hasError,
-        'border-green-500 hover:border-green-600 focus:border-green-600 focus:ring-green-500': success,
+        'border-border hover:border-ring focus:border-ring focus:ring-ring/50': !hasError && !success && variant !== 'ghost',
+        'border-transparent hover:border-border': variant === 'ghost' && !hasError && !success,
+        'border-destructive hover:border-destructive focus:border-destructive focus:ring-destructive/50': hasError,
+        'border-accent hover:border-accent focus:border-accent focus:ring-accent/50': success,
         'resize-none': resize === 'none' || autoResize,
         'resize-y': resize === 'vertical' && !autoResize,
         'resize-x': resize === 'horizontal' && !autoResize,
@@ -152,7 +152,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label 
             htmlFor={id}
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             {label}
             {required && <span className="text-red-500 ml-1" aria-label="required">*</span>}
@@ -183,20 +183,20 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {...props}
           />
           {loading && (
-            <Loader2 className="absolute right-2 top-2 h-4 w-4 text-gray-400 animate-spin" />
+            <Loader2 className="absolute right-2 top-2 h-4 w-4 text-muted-foreground animate-spin" />
           )}
         </div>
         
         <div className="mt-1 flex justify-between items-start">
           <div className="flex-1">
             {helperText && !hasError && (
-              <p id={helperId} className="text-sm text-gray-500 dark:text-gray-400">
+              <p id={helperId} className="text-sm text-muted-foreground">
                 {helperText}
               </p>
             )}
             
             {hasError && errorMessage && (
-              <p id={errorId} className="text-sm text-red-600 dark:text-red-400" role="alert">
+              <p id={errorId} className="text-sm text-destructive" role="alert">
                 {errorMessage}
               </p>
             )}
@@ -207,7 +207,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               id={countId}
               className={cn(
                 'text-sm ml-2',
-                charCount > maxLength ? 'text-red-600' : 'text-gray-500'
+                charCount > maxLength ? 'text-destructive' : 'text-muted-foreground'
               )}
               aria-live="polite"
               aria-atomic="true"

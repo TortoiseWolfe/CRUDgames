@@ -48,6 +48,30 @@ export const Centered: Story = {
   },
 };
 
+export const HolographicTerminal: Story = {
+  args: {
+    ...Default.args,
+    headline: 'Make Work Fun with CRUDgames.com',
+    highlightedText: 'CRUDgames.com',
+    subheadline: 'Reality is just another database. We engineer existence through gamified CRUD operations where every query matters.',
+    primaryCtaText: 'Engineer Your Reality',
+    secondaryCtaText: 'See The Matrix',
+    badges: ['Database Philosophers', 'Code Artists', 'Reality Engineers'],
+    trustIndicators: [
+      { value: '∞', label: 'Uptime' },
+      { value: '1337', label: 'QPS' },
+      { value: '42', label: 'Answers' },
+      { value: '100%', label: 'Magic' },
+    ],
+    className: 'texture-holo-terminal',
+  },
+  parameters: {
+    backgrounds: {
+      default: 'dark',
+    },
+  },
+};
+
 export const WithVideo: Story = {
   args: {
     ...Default.args,

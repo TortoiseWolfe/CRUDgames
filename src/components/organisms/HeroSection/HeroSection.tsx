@@ -63,6 +63,26 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
     ];
 
     const renderHeadline = () => {
+      // Special handling for CRUDgames.com branding
+      if (headline.includes('CRUDgames.com')) {
+        const parts = headline.split('CRUDgames.com');
+        return (
+          <>
+            {parts[0]}
+            <span className="hero-crud-logo inline-flex items-baseline" aria-label="CRUDgames.com">
+              <span className="hero-crud-letters">
+                <span className="hero-crud-letter hero-crud-letter-c">C</span>
+                <span className="hero-crud-letter hero-crud-letter-r">R</span>
+                <span className="hero-crud-letter hero-crud-letter-u">U</span>
+                <span className="hero-crud-letter hero-crud-letter-d">D</span>
+              </span>
+              <span className="hero-games-text">games.com</span>
+            </span>
+            {parts.slice(1).join('CRUDgames.com')}
+          </>
+        );
+      }
+
       if (!highlightedText) {
         return headline;
       }
@@ -75,7 +95,9 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
       return (
         <>
           {parts[0]}
-          <span className="text-blue-600">{highlightedText}</span>
+          <span className="holographic-text" aria-label={highlightedText}>
+            <span aria-hidden="true">{highlightedText}</span>
+          </span>
           {parts.slice(1).join(highlightedText)}
         </>
       );
@@ -89,25 +111,24 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
     };
 
     const headlineClasses = {
-      default: 'text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6',
-      centered: 'text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-8',
-      split: 'text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6',
-      minimal: 'text-4xl lg:text-6xl font-semibold text-gray-900 dark:text-white mb-4',
+      default: 'text-5xl lg:text-7xl font-bold text-foreground mb-6',
+      centered: 'text-5xl lg:text-7xl font-bold text-foreground mb-8',
+      split: 'text-5xl lg:text-6xl font-bold text-foreground mb-6',
+      minimal: 'text-4xl lg:text-6xl font-semibold text-foreground mb-4',
     };
 
     const subheadlineClasses = {
-      default: 'text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-3xl mx-auto',
-      centered: 'text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto',
-      split: 'text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 max-w-2xl lg:mx-auto',
-      minimal: 'text-xl text-gray-600 dark:text-gray-300 mb-5',
+      default: 'text-2xl text-muted-foreground mb-6 max-w-3xl mx-auto',
+      centered: 'text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto',
+      split: 'text-xl lg:text-2xl text-muted-foreground mb-6 max-w-2xl lg:mx-auto',
+      minimal: 'text-xl text-muted-foreground mb-5',
     };
 
     return (
       <section
         ref={ref}
         className={cn(
-          'relative overflow-hidden',
-          !backgroundImage && !backgroundGradient && 'bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-purple-950',
+          'relative overflow-hidden texture-holo-terminal',
           !backgroundImage && backgroundGradient && `bg-gradient-to-br ${backgroundGradient}`,
           className
         )}
@@ -121,12 +142,17 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
             : undefined
         }
       >
+        {/* Holographic Terminal Effects */}
+        <div className="grid-overlay" aria-hidden="true" role="presentation" />
+        <div className="scan-beam" aria-hidden="true" role="presentation" />
+        <div className="terminal-scanlines" aria-hidden="true" role="presentation" />
+        
         {/* Background overlay for images */}
         {backgroundImage && (
           <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
         )}
 
-        <div className="relative container mx-auto px-4 py-16 lg:py-24">
+        <div className="relative container mx-auto px-8 py-20 lg:px-12 lg:py-32">
           <div className="max-w-6xl mx-auto">
             {/* Badges */}
             {badges && badges.length > 0 && (

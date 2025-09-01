@@ -10,7 +10,7 @@ export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   closeOnBackdrop?: boolean;
@@ -18,6 +18,7 @@ export interface ModalProps {
   showCloseButton?: boolean;
   className?: string;
   overlayClassName?: string;
+  variant?: 'default' | 'holographic' | 'cyberpunk';
 }
 
 const sizeClasses = {
@@ -42,6 +43,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       showCloseButton = true,
       className,
       overlayClassName,
+      variant = 'default',
     },
     ref
   ) => {
@@ -50,7 +52,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         <Dialog.Portal>
           <Dialog.Overlay
             className={cn(
-              'fixed inset-0 z-50 bg-black/50 backdrop-blur-sm',
+              'fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
               overlayClassName
@@ -60,8 +62,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           <Dialog.Content
             ref={ref}
             className={cn(
-              'fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]',
-              'bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-[95vw]',
+              'fixed left-[50%] top-[50%] z-[101] translate-x-[-50%] translate-y-[-50%]',
+              'bg-card rounded-xl shadow-2xl w-[95vw]',
               'max-h-[90vh] overflow-hidden flex flex-col',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -70,6 +72,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               'data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
               'duration-200',
               sizeClasses[size],
+              variant === 'holographic' && 'texture-holographic',
+              variant === 'cyberpunk' && 'texture-cyberpunk-panel',
               className
             )}
             onEscapeKeyDown={closeOnEscape ? undefined : (e) => e.preventDefault()}
@@ -77,17 +81,21 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
             onInteractOutside={closeOnBackdrop ? undefined : (e) => e.preventDefault()}
           >
             {/* Header */}
-            {(title || showCloseButton) && (
-              <div className="flex items-start justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            {(title || showCloseButton) ? (
+              <div className="flex items-start justify-between p-6 border-b border-border">
                 <div>
-                  {title && (
-                    <Dialog.Title className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {title ? (
+                    <Dialog.Title className="text-2xl font-bold text-foreground">
                       {title}
+                    </Dialog.Title>
+                  ) : (
+                    <Dialog.Title className="sr-only">
+                      Modal Dialog
                     </Dialog.Title>
                   )}
                   {description && (
-                    <Dialog.Description className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                      {description}
+                    <Dialog.Description className="mt-2 text-sm text-muted-foreground" asChild>
+                      <div>{description}</div>
                     </Dialog.Description>
                   )}
                 </div>
@@ -104,6 +112,17 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
                   </Dialog.Close>
                 )}
               </div>
+            ) : (
+              <>
+                <Dialog.Title className="sr-only">
+                  Modal Dialog
+                </Dialog.Title>
+                {description && (
+                  <Dialog.Description className="sr-only" asChild>
+                    <div>{description}</div>
+                  </Dialog.Description>
+                )}
+              </>
             )}
 
             {/* Content */}

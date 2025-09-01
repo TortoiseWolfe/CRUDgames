@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { SchedulingPage } from '@/components/templates/SchedulingPage';
 
 export const metadata: Metadata = {
-  title: 'Schedule a Consultation | CRUDgames',
+  title: 'Schedule a Consultation | CRUDgames.com',
   description: 'Book a free 30-minute consultation with our experts to discuss your project requirements and get personalized advice.',
   openGraph: {
     title: 'Schedule Your Free Consultation',

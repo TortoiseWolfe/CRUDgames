@@ -44,8 +44,8 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
   (
     {
       logo,
-      logoText = 'CRUDgames.com',
-      logoHref = 'https://crudgames.com',
+      logoText: _logoText = 'CRUDgames.com',
+      logoHref = '/',
       links,
       ctaText = 'Get Started',
       ctaAction,
@@ -211,12 +211,23 @@ export const NavigationHeader = forwardRef<HTMLElement, NavigationHeaderProps>(
             {/* Logo */}
             <Link 
               href={logoHref}
-              className="flex items-center gap-2 font-bold text-xl"
+              className="flex items-center gap-2"
             >
               {logo || <GamepadIcon className="h-8 w-8 text-purple-600" />}
-              <span className={cn(variant === 'dark' ? 'text-white' : 'text-gray-900 dark:text-white')}>
-                {logoText}
-              </span>
+              <div className="flex flex-col">
+                <div className="crud-logo text-xl crud-glitch" data-text="CRUDgames.com">
+                  <span className="crud-letter crud-letter-c">C</span>
+                  <span className="crud-letter crud-letter-r">R</span>
+                  <span className="crud-letter crud-letter-u">U</span>
+                  <span className="crud-letter crud-letter-d">D</span>
+                  <span className={cn("font-bold", variant === 'dark' ? 'text-white' : 'text-gray-900 dark:text-white')}>
+                    games.com
+                  </span>
+                </div>
+                <span className="text-xs text-muted-foreground philosophy-text">
+                  Reality is just another database
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}

@@ -43,9 +43,9 @@ const inputSizes = {
 };
 
 const inputVariants = {
-  default: 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600',
-  filled: 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600',
-  ghost: 'bg-transparent border-transparent hover:border-gray-300 dark:hover:border-gray-600',
+  default: 'bg-input border-border',
+  filled: 'bg-card border-border',
+  ghost: 'bg-transparent border-transparent hover:border-border',
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -96,8 +96,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={id}
             className={cn(
-              'text-base font-medium text-gray-700 dark:text-gray-300',
-              disabled && 'text-gray-400 dark:text-gray-600'
+              'text-base font-medium text-foreground',
+              disabled && 'text-muted-foreground'
             )}
           >
             {label}
@@ -107,7 +107,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         
         <div className="relative">
           {leftIcon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               {leftIcon}
             </div>
           )}
@@ -121,16 +121,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full rounded-md border px-3 transition-all duration-200',
               'focus:outline-none focus:ring-2 focus:ring-offset-0',
               'disabled:cursor-not-allowed disabled:opacity-50',
-              'placeholder:text-gray-400 dark:placeholder:text-gray-600',
-              'text-gray-900 dark:text-gray-100',
+              'placeholder:text-muted-foreground',
+              'text-foreground',
               inputSizes[size],
               inputVariants[variant],
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               type === 'password' && 'pr-10',
-              hasError && 'border-red-500 focus:ring-red-500',
-              success && 'border-green-500 focus:ring-green-500',
-              !hasError && !success && 'focus:border-blue-500 focus:ring-blue-500',
+              hasError && 'border-destructive focus:ring-destructive/50',
+              success && 'border-accent focus:ring-accent/50',
+              !hasError && !success && 'focus:border-ring focus:ring-ring/50',
               className
             )}
             disabled={disabled || loading}
@@ -146,7 +146,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {type === 'password' && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               onClick={() => setShowPassword(!showPassword)}
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
@@ -156,28 +156,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           
           {!type.includes('password') && rightIcon && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               {rightIcon}
             </div>
           )}
           
           {loading && !rightIcon && !type.includes('password') && (
-            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 animate-spin" />
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground animate-spin" />
           )}
           
           {success && !loading && !rightIcon && !type.includes('password') && (
-            <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500" />
+            <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-accent" />
           )}
         </div>
         
         {helperText && !errorMessage && (
-          <span id={helperId} className="text-base text-gray-500 dark:text-gray-400">
+          <span id={helperId} className="text-base text-muted-foreground">
             {helperText}
           </span>
         )}
         
         {errorMessage && (
-          <span id={errorId} role="alert" className="text-base text-red-500 dark:text-red-400 flex items-center gap-1">
+          <span id={errorId} role="alert" className="text-base text-destructive flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
             {errorMessage}
           </span>

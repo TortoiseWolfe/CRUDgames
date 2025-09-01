@@ -61,7 +61,7 @@ function ModalDemo({
   children, 
   buttonText = 'Open Modal',
   ...modalProps 
-}: any) {
+}: React.PropsWithChildren<{ buttonText?: string } & Partial<React.ComponentProps<typeof Modal>>>) {
   const [isOpen, setIsOpen] = useState(false);
   
   return (
@@ -123,14 +123,12 @@ export const WithFooter: Story = {
   render: () => (
     <ModalDemo 
       title="Modal with Footer"
-      footer={
-        <div className="flex justify-end gap-3">
-          <Button variant="secondary">Cancel</Button>
-          <Button variant="primary">Save Changes</Button>
-        </div>
-      }
     >
       <p>This modal includes footer actions for user interactions.</p>
+      <div className="flex justify-end gap-3 mt-6">
+        <Button variant="secondary">Cancel</Button>
+        <Button variant="primary">Save Changes</Button>
+      </div>
     </ModalDemo>
   ),
 };
@@ -140,13 +138,11 @@ export const NoCloseButton: Story = {
     <ModalDemo 
       title="Modal without Close Button"
       showCloseButton={false}
-      footer={
-        <div className="flex justify-end">
-          <Button variant="primary">Got it</Button>
-        </div>
-      }
     >
-      <p>This modal doesn't have a close button in the header. Users must use the footer action or ESC key.</p>
+      <p>This modal doesn&apos;t have a close button in the header. Users must use the footer action or ESC key.</p>
+      <div className="flex justify-end mt-6">
+        <Button variant="primary">Got it</Button>
+      </div>
     </ModalDemo>
   ),
 };
@@ -157,7 +153,7 @@ export const NoBackdropClose: Story = {
       title="Backdrop Click Disabled"
       closeOnBackdrop={false}
     >
-      <p>Clicking the backdrop won't close this modal. Use the close button or ESC key.</p>
+      <p>Clicking the backdrop won&apos;t close this modal. Use the close button or ESC key.</p>
     </ModalDemo>
   ),
 };
@@ -169,15 +165,6 @@ export const FormExample: Story = {
       title="User Registration"
       description="Please fill in your details to create an account"
       size="lg"
-      footer={
-        <div className="flex justify-between w-full">
-          <Button variant="ghost">Already have an account?</Button>
-          <div className="flex gap-3">
-            <Button variant="secondary">Cancel</Button>
-            <Button variant="primary">Register</Button>
-          </div>
-        </div>
-      }
     >
       <form className="space-y-4">
         <div>
@@ -199,6 +186,13 @@ export const FormExample: Story = {
           </label>
         </div>
       </form>
+      <div className="flex justify-between w-full mt-6">
+        <Button variant="ghost">Already have an account?</Button>
+        <div className="flex gap-3">
+          <Button variant="secondary">Cancel</Button>
+          <Button variant="primary">Register</Button>
+        </div>
+      </div>
     </ModalDemo>
   ),
 };
@@ -209,14 +203,12 @@ export const ConfirmationDialog: Story = {
       buttonText="Delete Item"
       title="Confirm Deletion"
       size="sm"
-      footer={
-        <div className="flex justify-end gap-3 w-full">
-          <Button variant="secondary">Cancel</Button>
-          <Button variant="danger">Delete</Button>
-        </div>
-      }
     >
       <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+      <div className="flex justify-end gap-3 w-full mt-6">
+        <Button variant="secondary">Cancel</Button>
+        <Button variant="danger">Delete</Button>
+      </div>
     </ModalDemo>
   ),
 };

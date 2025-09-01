@@ -38,8 +38,8 @@ export interface SocialLink {
 export interface FooterSectionProps {
   columns?: FooterColumn[];
   socialLinks?: SocialLink[];
-  companyName?: string;
-  companyDescription?: string;
+  companyName?: string | React.ReactNode;
+  companyDescription?: string | React.ReactNode;
   copyrightText?: string;
   contactInfo?: {
     email?: string;
@@ -269,7 +269,7 @@ export const FooterSection = forwardRef<HTMLElement, FooterSectionProps>(
                   </Link>
                 </h3>
                 {companyDescription && (
-                  <p className="text-muted-foreground mb-6">{companyDescription}</p>
+                  <div className="text-muted-foreground mb-6">{companyDescription}</div>
                 )}
                 
                 {/* Contact Info */}
