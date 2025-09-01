@@ -105,30 +105,29 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const isDisabled = disabled || loading;
     
     const sizeClasses = {
-      sm: 'text-sm py-1.5 px-2.5',
-      md: 'text-base py-2 px-3',
-      lg: 'text-lg py-2.5 px-3.5',
+      sm: 'text-lg py-2 px-3',
+      md: 'text-xl py-2.5 px-3.5',
+      lg: 'text-xl py-3 px-4',
     };
 
     const variantClasses = {
-      default: 'bg-input',
-      filled: 'bg-card',
-      ghost: 'bg-transparent',
+      default: 'bg-white dark:bg-black/40 backdrop-blur-sm border-gray-300 dark:border-cyan-500/50',
+      filled: 'bg-gray-50 dark:bg-black/60 backdrop-blur-md border-gray-400 dark:border-cyan-500/60',
+      ghost: 'bg-transparent border-transparent hover:border-gray-300 dark:hover:border-cyan-500/50',
     };
     
     const textareaClasses = cn(
-      'w-full text-foreground placeholder-muted-foreground',
-      'border rounded-md transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-0',
-      'disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed',
+      'w-full text-gray-900 dark:text-cyan-100 font-mono placeholder:text-gray-400 dark:placeholder:text-cyan-800/60',
+      'border-2 rounded-sm transition-all duration-300',
+      'focus:outline-none focus:ring-0',
+      'disabled:cursor-not-allowed disabled:opacity-30',
       'read-only:bg-muted read-only:cursor-default',
       sizeClasses[size],
       variantClasses[variant],
       {
-        'border-border hover:border-ring focus:border-ring focus:ring-ring/50': !hasError && !success && variant !== 'ghost',
-        'border-transparent hover:border-border': variant === 'ghost' && !hasError && !success,
-        'border-destructive hover:border-destructive focus:border-destructive focus:ring-destructive/50': hasError,
-        'border-accent hover:border-accent focus:border-accent focus:ring-accent/50': success,
+        'hover:border-gray-400 dark:hover:border-cyan-500/70 focus:border-blue-500 dark:focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(59,130,246,0.5)] dark:focus:shadow-[0_0_15px_rgba(0,255,255,0.6)]': !hasError && !success,
+        'border-red-500 dark:border-red-500 focus:shadow-[0_0_10px_rgba(255,0,64,0.5)]': hasError,
+        'border-green-500 dark:border-green-400 focus:shadow-[0_0_10px_rgba(57,255,20,0.5)]': success,
         'resize-none': resize === 'none' || autoResize,
         'resize-y': resize === 'vertical' && !autoResize,
         'resize-x': resize === 'horizontal' && !autoResize,
@@ -152,10 +151,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label 
             htmlFor={id}
-            className="block text-sm font-medium text-foreground mb-1"
+            className="block text-sm font-mono text-gray-700 dark:text-cyan-300 mb-1"
           >
-            {label}
-            {required && <span className="text-red-500 ml-1" aria-label="required">*</span>}
+            {'> '}{label}
+            {required && <span className="text-red-400 ml-1 animate-pulse" aria-label="required">*</span>}
           </label>
         )}
         

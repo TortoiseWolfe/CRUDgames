@@ -172,48 +172,15 @@ export default function Home() {
         isOpen={showForm}
         onClose={() => setShowForm(false)}
         title="Schedule Your Free Consultation"
-        description={(
-          <div className="w-full">
-            <div className="text-center mb-4">
-              Get a 15-minute consultation to discuss how gamification can transform your workplace.
-            </div>
-            <div className="halloween-terminal">
-              <div className="halloween-header">
-                <span className="pumpkin-icon" aria-label="pumpkin">🎃</span>
-                SPECIAL OFFER DETECTED
-                <span className="pumpkin-icon" aria-label="pumpkin">🎃</span>
-              </div>
-              <div className="text-center">
-                <span className="halloween-price">
-                  Landing Pages<br />
-                  $ 123 / year
-                </span>
-                <div className="spooky-text mt-2">
-                  Valid Until Halloween!
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        description="Get a 15-minute consultation to discuss how gamification can transform your workplace."
         size="xl"
         closeOnBackdrop={true}
         closeOnEscape={true}
         variant="default"
       >
         <IntakeForm 
-          onSubmitSuccess={(data) => {
-            // Close modal first
-            setShowForm(false);
-            // Redirect to thank you page with form data
-            const params = new URLSearchParams({
-              email: data.email,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              phone: data.phone,
-              company: data.company || '',
-              projectType: data.projectType,
-            });
-            window.location.href = `/thank-you?${params.toString()}`;
+          onSubmitSuccess={() => {
+            // Do nothing - let the form handle its own flow
           }}
           onSubmitError={() => {
             // Error is displayed in the form UI

@@ -64,6 +64,7 @@ body::before {
 }
 
 /* Fix autofill background for cyberpunk theme */
+/* Light mode autofill - white background, dark text */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -76,14 +77,12 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus,
 select:-webkit-autofill:active {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: var(--foreground) !important;
+  -webkit-text-fill-color: rgb(17, 24, 39) !important; /* gray-900 */
   transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 20px 20px var(--input) !important;
-  border-color: var(--border) !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-/* Dark mode autofill */
+/* Dark mode autofill - dark background, cyan text */
 .dark input:-webkit-autofill,
 .dark input:-webkit-autofill:hover,
 .dark input:-webkit-autofill:focus,
@@ -92,13 +91,16 @@ select:-webkit-autofill:active {
 .dark textarea:-webkit-autofill:hover,
 .dark textarea:-webkit-autofill:focus,
 .dark textarea:-webkit-autofill:active {
-  -webkit-text-fill-color: var(--foreground) !important;
-  box-shadow: inset 0 0 20px 20px var(--input) !important;
+  -webkit-text-fill-color: #00ffff !important;
+  box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.4) inset !important;
 }
 
-/* Ensure autofill works with our cyberpunk theme */
+/* Focus state for autofilled inputs */
 input:-webkit-autofill:focus {
-  box-shadow: inset 0 0 20px 20px var(--input), 0 0 0 2px var(--ring) !important;
+  box-shadow: 0 0 0px 1000px white inset, 0 0 15px rgba(59, 130, 246, 0.5) !important;
+}
+.dark input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.4) inset, 0 0 15px rgba(0, 255, 255, 0.6) !important;
 }
 
 /* Custom animations for ProgressIndicator */

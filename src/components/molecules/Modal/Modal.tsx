@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/atoms/Button';
+import { ThemeToggle } from '@/components/atoms/ThemeToggle/ThemeToggle';
 import { X } from 'lucide-react';
 
 export interface ModalProps {
@@ -52,7 +53,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         <Dialog.Portal>
           <Dialog.Overlay
             className={cn(
-              'fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm',
+              'fixed inset-0 z-[100] bg-black/50 dark:bg-black/80 backdrop-blur-md',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
               overlayClassName
@@ -63,7 +64,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
             ref={ref}
             className={cn(
               'fixed left-[50%] top-[50%] z-[101] translate-x-[-50%] translate-y-[-50%]',
-              'bg-card rounded-xl shadow-2xl w-[95vw]',
+              'bg-white dark:bg-background/95 backdrop-blur-md rounded-xl shadow-2xl w-[95vw]',
+              'border-2 border-gray-300 dark:border-primary/30 shadow-lg dark:shadow-[0_0_30px_rgba(0,255,255,0.3)]',
               'max-h-[90vh] overflow-hidden flex flex-col',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -82,11 +84,11 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           >
             {/* Header */}
             {(title || showCloseButton) ? (
-              <div className="flex items-start justify-between p-6 border-b border-border">
+              <div className="flex items-start justify-between p-5 border-b-2 border-gray-200 dark:border-cyan-400/30">
                 <div>
                   {title ? (
-                    <Dialog.Title className="text-2xl font-bold text-foreground">
-                      {title}
+                    <Dialog.Title className="text-xl font-mono font-bold text-gray-900 dark:text-cyan-300 uppercase tracking-widest">
+                      {'> '}{title}
                     </Dialog.Title>
                   ) : (
                     <Dialog.Title className="sr-only">
@@ -94,23 +96,26 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
                     </Dialog.Title>
                   )}
                   {description && (
-                    <Dialog.Description className="mt-2 text-sm text-muted-foreground" asChild>
+                    <Dialog.Description className="mt-1 text-xs font-mono text-gray-600 dark:text-cyan-600 uppercase tracking-wider" asChild>
                       <div>{description}</div>
                     </Dialog.Description>
                   )}
                 </div>
-                {showCloseButton && (
-                  <Dialog.Close asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="ml-4 -mr-2 -mt-2"
-                      aria-label="Close modal"
-                    >
-                      <X className="h-5 w-5" />
-                    </Button>
-                  </Dialog.Close>
-                )}
+                <div className="flex items-center gap-2">
+                  <ThemeToggle size="sm" />
+                  {showCloseButton && (
+                    <Dialog.Close asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="!bg-transparent !border-gray-300 dark:!border-cyan-500/30 hover:!border-gray-400 dark:hover:!border-cyan-400 hover:!bg-gray-100 dark:hover:!bg-cyan-900/20"
+                        aria-label="Close modal"
+                      >
+                        <X className="h-5 w-5" />
+                      </Button>
+                    </Dialog.Close>
+                  )}
+                </div>
               </div>
             ) : (
               <>
@@ -126,7 +131,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
             )}
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6 lg:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/50 [&::-webkit-scrollbar-thumb]:bg-cyan-500/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-cyan-400/70">
               {children}
             </div>
           </Dialog.Content>

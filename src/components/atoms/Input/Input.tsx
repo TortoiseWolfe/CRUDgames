@@ -38,15 +38,15 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 }
 
 const inputSizes = {
-  sm: 'h-10 text-base',
-  md: 'h-11 text-lg',
-  lg: 'h-12 text-lg',
+  sm: 'h-11 text-base',
+  md: 'h-12 text-lg',
+  lg: 'h-14 text-lg',
 };
 
 const inputVariants = {
-  default: 'bg-input border-border',
-  filled: 'bg-card border-border',
-  ghost: 'bg-transparent border-transparent hover:border-border',
+  default: 'bg-white dark:bg-black/40 backdrop-blur-sm border-gray-300 dark:border-cyan-500/50',
+  filled: 'bg-gray-50 dark:bg-black/60 backdrop-blur-md border-gray-400 dark:border-cyan-500/60',
+  ghost: 'bg-transparent border-transparent hover:border-gray-300 dark:hover:border-cyan-500/50',
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -98,12 +98,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={id}
             className={cn(
-              'text-base font-medium text-foreground',
-              disabled && 'text-muted-foreground'
+              'text-sm font-mono font-semibold text-gray-700 dark:text-cyan-300',
+              disabled && 'opacity-50'
             )}
           >
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {'> '}{label}
+            {required && <span className="text-red-500 dark:text-red-400 ml-1 animate-pulse">*</span>}
           </label>
         )}
         
@@ -121,19 +121,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={inputType}
             autoComplete={autoComplete}
             className={cn(
-              'w-full rounded-md border px-3 transition-all duration-200',
-              'focus:outline-none focus:ring-2 focus:ring-offset-0',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              'placeholder:text-muted-foreground',
-              'text-foreground',
+              'w-full rounded-sm border-2 px-3 transition-all duration-300',
+              'focus:outline-none focus:ring-0',
+              'disabled:cursor-not-allowed disabled:opacity-30',
+              'placeholder:text-gray-400 dark:placeholder:text-cyan-800/60',
+              'text-gray-900 dark:text-cyan-100 font-mono',
               inputSizes[size],
               inputVariants[variant],
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               type === 'password' && 'pr-10',
-              hasError && 'border-destructive focus:ring-destructive/50',
-              success && 'border-accent focus:ring-accent/50',
-              !hasError && !success && 'focus:border-ring focus:ring-ring/50',
+              hasError && 'border-red-500 dark:border-red-500 shadow-[0_0_10px_rgba(255,0,64,0.5)]',
+              success && 'border-green-500 dark:border-green-400 shadow-[0_0_10px_rgba(57,255,20,0.5)]',
+              !hasError && !success && 'hover:border-gray-400 dark:hover:border-cyan-500/70 focus:border-blue-500 dark:focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(59,130,246,0.5)] dark:focus:shadow-[0_0_15px_rgba(0,255,255,0.6)]',
               className
             )}
             disabled={disabled || loading}
@@ -149,7 +149,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {type === 'password' && (
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-cyan-300"
               onClick={() => setShowPassword(!showPassword)}
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
@@ -159,28 +159,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           
           {!type.includes('password') && rightIcon && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
               {rightIcon}
             </div>
           )}
           
           {loading && !rightIcon && !type.includes('password') && (
-            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground animate-spin" />
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400 animate-spin" />
           )}
           
           {success && !loading && !rightIcon && !type.includes('password') && (
-            <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-accent" />
+            <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 dark:text-green-400" />
           )}
         </div>
         
         {helperText && !errorMessage && (
-          <span id={helperId} className="text-base text-muted-foreground">
+          <span id={helperId} className="text-base text-gray-600 dark:text-gray-400">
             {helperText}
           </span>
         )}
         
         {errorMessage && (
-          <span id={errorId} role="alert" className="text-base text-destructive flex items-center gap-1">
+          <span id={errorId} role="alert" className="text-base text-red-600 dark:text-red-400 flex items-center gap-1">
             <AlertCircle className="h-3 w-3" />
             {errorMessage}
           </span>

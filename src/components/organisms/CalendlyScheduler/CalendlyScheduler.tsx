@@ -62,9 +62,9 @@ export const CalendlyScheduler = forwardRef<HTMLDivElement, CalendlySchedulerPro
     hideEventTypeDetails = false,
     hideLandingPageDetails = false,
     hideGdprBanner = false,
-    backgroundColor = 'ffffff',
-    textColor = '4d5055',
-    primaryColor = '00a2ff',
+    backgroundColor = '000000',
+    textColor = '00ffff',
+    primaryColor = '00ffff',
     // autoLoad = true, // Reserved for future use
     iframeTitle = 'Schedule an appointment',
     utm,
@@ -195,8 +195,9 @@ export const CalendlyScheduler = forwardRef<HTMLDivElement, CalendlySchedulerPro
         ref={ref}
         className={cn(
           'calendly-wrapper relative',
-          'rounded-lg overflow-hidden',
-          'shadow-lg border border-gray-200',
+          'rounded-sm overflow-hidden',
+          'border-2 border-cyan-400/50 shadow-[0_0_40px_rgba(0,255,255,0.5)]',
+          'bg-black/90 backdrop-blur-md',
           className
         )}
         role="region"
@@ -204,15 +205,19 @@ export const CalendlyScheduler = forwardRef<HTMLDivElement, CalendlySchedulerPro
         {...props}
       >
         {isLoading && (
-          <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+          <div className="absolute inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-10 border-2 border-cyan-400/30">
             <div className="text-center">
               <Spinner size="lg" className="mb-4" />
-              <p className="text-gray-600">Loading scheduler...</p>
+              <p className="text-cyan-400 font-mono animate-pulse">{'> '}INITIALIZING SCHEDULING INTERFACE...</p>
             </div>
           </div>
         )}
         
-        <div className="calendly-inline-widget-container">
+        <div className="calendly-inline-widget-container relative">
+          {/* Scan lines effect overlay */}
+          <div className="absolute inset-0 pointer-events-none z-10 opacity-20">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent animate-pulse" />
+          </div>
           <InlineWidget
             url={url}
             styles={{

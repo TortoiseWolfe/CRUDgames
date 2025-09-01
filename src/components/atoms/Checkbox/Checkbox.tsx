@@ -55,29 +55,29 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const errorMessage = typeof error === 'string' ? error : '';
 
     const sizeClasses = {
+      sm: 'h-6 w-6',
+      md: 'h-8 w-8',
+      lg: 'h-10 w-10',
+    };
+
+    const iconSizeClasses = {
       sm: 'h-4 w-4',
       md: 'h-5 w-5',
       lg: 'h-6 w-6',
     };
 
-    const iconSizeClasses = {
-      sm: 'h-3 w-3',
-      md: 'h-3.5 w-3.5',
-      lg: 'h-4 w-4',
-    };
-
     const checkboxClasses = cn(
-      'appearance-none border-2 transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+      'appearance-none border-2 transition-all duration-300 backdrop-blur-sm',
+      'focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,255,0.8)]',
+      'disabled:cursor-not-allowed disabled:opacity-30',
       sizeClasses[size],
       {
-        'rounded': variant === 'default',
+        'rounded-sm': variant === 'default',
         'rounded-full': variant === 'rounded',
-        'border-gray-300 hover:border-gray-400 focus:border-blue-500 focus:ring-blue-500': !hasError && !disabled && !isChecked,
-        'border-red-500 hover:border-red-600 focus:border-red-600 focus:ring-red-500': hasError && !isChecked,
-        'bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700': isChecked && !hasError && !disabled,
-        'bg-red-600 border-red-600': isChecked && hasError,
+        'bg-white dark:bg-black/40 border-gray-300 dark:border-cyan-500/50 hover:border-gray-400 dark:hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] dark:hover:shadow-[0_0_15px_rgba(0,255,255,0.6)]': !hasError && !disabled && !isChecked,
+        'border-red-500 dark:border-red-500 hover:border-red-400 shadow-[0_0_15px_rgba(255,0,64,0.6)]': hasError && !isChecked,
+        'bg-blue-600 dark:bg-cyan-900/60 border-blue-600 dark:border-cyan-400 hover:bg-blue-700 dark:hover:bg-cyan-800/70 hover:border-blue-700 dark:hover:border-cyan-300 shadow-[0_0_20px_rgba(59,130,246,0.6)] dark:shadow-[0_0_20px_rgba(0,255,255,0.8)]': isChecked && !hasError && !disabled,
+        'bg-red-600 dark:bg-red-900/60 border-red-600 dark:border-red-400 shadow-[0_0_20px_rgba(255,0,64,0.8)]': isChecked && hasError,
       }
     );
 
@@ -124,35 +124,35 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             {isChecked && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 {indeterminate ? (
-                  <Minus className={cn('text-white', iconSizeClasses[size])} />
+                  <Minus className={cn('text-white dark:text-cyan-100', iconSizeClasses[size])} />
                 ) : (
-                  <Check className={cn('text-white', iconSizeClasses[size])} />
+                  <Check className={cn('text-white dark:text-cyan-100', iconSizeClasses[size])} />
                 )}
               </div>
             )}
           </div>
           {(label || description || errorMessage) && (
-            <div className="ml-3 text-sm">
+            <div className="ml-3">
               {label && (
                 <label 
                   htmlFor={id}
                   className={cn(
-                    'font-medium cursor-pointer',
-                    hasError ? 'text-red-900' : 'text-gray-900',
-                    disabled && 'cursor-not-allowed opacity-50'
+                    'text-sm font-mono font-semibold cursor-pointer',
+                    hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-cyan-300',
+                    disabled && 'cursor-not-allowed opacity-30'
                   )}
                 >
                   {label}
-                  {required && <span className="text-red-500 ml-1" aria-label="required">*</span>}
+                  {required && <span className="text-red-500 dark:text-red-400 ml-1 animate-pulse" aria-label="required">*</span>}
                 </label>
               )}
               {description && !hasError && (
-                <p id={descriptionId} className="text-gray-500 mt-0.5">
+                <p id={descriptionId} className="text-muted-foreground text-base mt-1">
                   {description}
                 </p>
               )}
               {hasError && errorMessage && (
-                <p id={errorId} className="text-red-600 mt-0.5" role="alert">
+                <p id={errorId} className="text-destructive text-base mt-1" role="alert">
                   {errorMessage}
                 </p>
               )}

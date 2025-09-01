@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12,7 +12,8 @@ import { Select } from '@/components/atoms/Select';
 import { RadioGroup } from '@/components/atoms/Radio';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { Alert } from '@/components/atoms/Alert';
-import { ChevronLeft, ChevronRight, Check, Calendar } from 'lucide-react';
+import { CalendlyScheduler } from '@/components/organisms/CalendlyScheduler';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { sendEmail } from '@/lib/email';
 
 export const intakeFormSchema = z.object({
@@ -35,7 +36,7 @@ export const intakeFormSchema = z.object({
   jobTitle: z.string().optional(),
   companySize: z.enum(['1-10', '11-50', '51-200', '201-500', '500+']).optional(),
   
-  projectType: z.enum(['consulting', 'development', 'design', 'other']),
+  projectType: z.enum(['consulting', 'development', 'design', 'landing', 'other']),
   budget: z.enum(['<10k', '10k-50k', '50k-100k', '100k+']).optional(),
   timeline: z.enum(['asap', '1-3months', '3-6months', '6months+']).optional(),
   
@@ -66,6 +67,7 @@ const FORM_STEPS = [
   { id: 'personal', title: 'Personal Information', description: 'Tell us about yourself' },
   { id: 'project', title: 'Project Details', description: 'Share your project requirements' },
   { id: 'review', title: 'Review & Submit', description: 'Review your information' },
+  { id: 'schedule', title: 'Schedule Consultation', description: 'Pick a time that works for you' },
 ];
 
 export function IntakeForm({ 
@@ -75,7 +77,28 @@ export function IntakeForm({
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [savedMessages, setSavedMessages] = useState<string[]>([]);
+  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
+  
+  // Load saved messages on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('projectMessages');
+      if (saved) {
+        setSavedMessages(JSON.parse(saved));
+      }
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }, []);
+  
+  // Format phone number as user types
+  const formatPhoneNumber = (value: string) => {
+    const phone = value.replace(/\D/g, '');
+    if (phone.length <= 3) return phone;
+    if (phone.length <= 6) return `(${phone.slice(0, 3)}) ${phone.slice(3)}`;
+    return `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`;
+  };
 
   const {
     register,
@@ -91,6 +114,24 @@ export function IntakeForm({
   });
 
   const formData = watch();
+
+  // Save message to localStorage when it changes
+  useEffect(() => {
+    if (formData.message) {
+      try {
+        // Get existing messages from localStorage
+        const savedMessages = JSON.parse(localStorage.getItem('projectMessages') || '[]');
+        
+        // Add new message if it's not already saved (avoid duplicates)
+        if (!savedMessages.includes(formData.message)) {
+          const updatedMessages = [formData.message, ...savedMessages].slice(0, 5); // Keep last 5
+          localStorage.setItem('projectMessages', JSON.stringify(updatedMessages));
+        }
+      } catch (e) {
+        // Ignore localStorage errors
+      }
+    }
+  }, [formData.message]);
 
   const handleStepChange = async (direction: 'next' | 'prev') => {
     if (direction === 'next') {
@@ -141,7 +182,9 @@ export function IntakeForm({
         throw new Error(emailResult.error || 'Failed to send form');
       }
       
-      setSubmitSuccess(true);
+      // Save submitted data and move to scheduling step
+      setSubmittedData(data);
+      setCurrentStep(3); // Move to scheduling step
       onSubmitSuccess?.(data);
     } catch (error) {
       setSubmitError('Failed to submit form. Please try again.');
@@ -153,111 +196,119 @@ export function IntakeForm({
 
   const progressPercentage = ((currentStep + 1) / FORM_STEPS.length) * 100;
 
-  if (submitSuccess) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-          <Check className="h-8 w-8 text-green-600" />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Form Submitted Successfully!</h2>
-        <p className="text-gray-600 mb-6">
-          Thank you for your submission. We&apos;ll be in touch within 24 hours.
-        </p>
-        <Button
-          onClick={() => window.location.href = '#schedule'}
-          rightIcon={<Calendar className="h-4 w-4" />}
-        >
-          Schedule a Call
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
+    <div className="w-full relative">
+      {/* Terminal Window Frame */}
+      <div className="bg-black/90 backdrop-blur-md border-2 border-cyan-400/50 rounded-lg shadow-[0_0_40px_rgba(0,255,255,0.3)] overflow-hidden">
+        {/* Terminal Header Bar */}
+        <div className="bg-cyan-900/50 border-b-2 border-cyan-400/30 px-3 py-1.5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(255,0,0,0.8)]"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_5px_rgba(255,176,0,0.8)]"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_5px_rgba(0,255,0,0.8)]"></div>
+          </div>
+          <div className="text-gray-900 dark:text-cyan-300 font-mono text-xs uppercase tracking-wide">SYSTEM ACCESS // INTAKE PROTOCOL</div>
+          <div className="text-cyan-500 font-mono text-xs">v2.0.1</div>
+        </div>
+        
+        {/* Terminal Content Area */}
+        <div className="relative p-4 lg:p-6 bg-white dark:bg-transparent dark:texture-holo-terminal rounded-lg">
+          {/* CRT Monitor Effects */}
+          <div className="grid-overlay" aria-hidden="true" role="presentation" />
+          <div className="scan-beam" aria-hidden="true" role="presentation" />
+          <div className="terminal-scanlines" aria-hidden="true" role="presentation" />
+          
+          <div className="relative z-10">
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-3">
           {FORM_STEPS.map((step, index) => (
             <div key={step.id} className="flex items-center">
-              <div className={cn(
-                'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors',
-                index <= currentStep
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-              )}>
-                {index < currentStep ? <Check className="h-4 w-4" /> : index + 1}
+              <div className="relative">
+                <div className={cn(
+                  'w-12 h-12 rotate-45 flex items-center justify-center text-xs font-mono font-bold transition-all duration-500',
+                  index <= currentStep
+                    ? 'bg-blue-100 dark:bg-cyan-900/50 border-2 border-blue-500 dark:border-cyan-400 shadow-lg dark:shadow-[0_0_20px_rgba(0,255,255,0.6)]'
+                    : 'bg-gray-100 dark:bg-black/50 border-2 border-gray-300 dark:border-cyan-800/30'
+                )}>
+                  <div className="-rotate-45">
+                    {index < currentStep ? <Check className="h-5 w-5 text-green-600 dark:text-green-400" /> : <span className="text-gray-700 dark:text-cyan-500">{index + 1}</span>}
+                  </div>
+                </div>
+                {index <= currentStep && (
+                  <div className="absolute inset-0 w-12 h-12 rotate-45 border-2 border-blue-500 dark:border-cyan-400 animate-pulse" />
+                )}
               </div>
               {index < FORM_STEPS.length - 1 && (
-                <div className={cn(
-                  'w-full h-1 mx-2',
-                  index < currentStep ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
-                )} />
+                <div className="relative flex-1 mx-3">
+                  <div className={cn(
+                    'h-0.5 w-full',
+                    index < currentStep ? 'bg-blue-500 dark:bg-cyan-400' : 'bg-gray-300 dark:bg-cyan-800/30'
+                  )} />
+                  {index < currentStep && (
+                    <div className="absolute top-0 left-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400 dark:via-cyan-300 to-transparent w-full animate-pulse" />
+                  )}
+                </div>
               )}
             </div>
           ))}
         </div>
         
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="mb-3">
+          <h2 className="text-2xl font-mono font-semibold text-gray-900 dark:text-cyan-300">
             {FORM_STEPS[currentStep].title}
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm font-mono text-gray-600 dark:text-cyan-600">
             {FORM_STEPS[currentStep].description}
           </p>
         </div>
         
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-          <div
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${progressPercentage}%` }}
-          />
+        <div className="relative">
+          <div className="text-xs font-mono text-gray-700 dark:text-cyan-500 mb-1 uppercase">{'> '}Data Upload Progress: {Math.round(progressPercentage)}%</div>
+          <div className="w-full bg-gray-100 dark:bg-black/60 rounded-sm h-3 border border-gray-300 dark:border-cyan-500/30 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-cyan-600 via-cyan-400 to-green-400 transition-all duration-500 shadow-[0_0_20px_rgba(0,255,255,0.8)] relative"
+              style={{ width: `${progressPercentage}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+            </div>
+          </div>
         </div>
       </div>
 
       {submitError && (
-        <Alert variant="error" title="Submission Error" dismissible className="mb-6">
+        <Alert variant="error" title="Submission Error" dismissible className="mb-4">
           {submitError}
         </Alert>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {currentStep === 0 && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative">
-                <Input
-                  id="firstName"
-                  label="First Name"
-                  placeholder="John"
-                  required
-                  autoComplete="given-name"
-                  {...register('firstName')}
-                  error={errors.firstName?.message}
-                  className={cn(
-                    dirtyFields.firstName && !errors.firstName && 'border-green-500 focus:ring-green-500'
-                  )}
-                />
-                {dirtyFields.firstName && !errors.firstName && (
-                  <Check className="absolute right-3 top-9 h-5 w-5 text-green-500" />
-                )}
-              </div>
-              <div className="relative">
-                <Input
-                  id="lastName"
-                  label="Last Name"
-                  placeholder="Doe"
-                  required
-                  autoComplete="family-name"
-                  {...register('lastName')}
-                  error={errors.lastName?.message}
-                  className={cn(
-                    dirtyFields.lastName && !errors.lastName && 'border-green-500 focus:ring-green-500'
-                  )}
-                />
-                {dirtyFields.lastName && !errors.lastName && (
-                  <Check className="absolute right-3 top-9 h-5 w-5 text-green-500" />
-                )}
-              </div>
+      {/* Show form for steps 0-2, show Calendly for step 3 */}
+      {currentStep < 3 ? (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {currentStep === 0 && (
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <Input
+                id="firstName"
+                label="First Name"
+                placeholder="John"
+                required
+                size="lg"
+                autoComplete="given-name"
+                {...register('firstName')}
+                error={errors.firstName?.message}
+                success={dirtyFields.firstName && !errors.firstName}
+              />
+              <Input
+                id="lastName"
+                label="Last Name"
+                placeholder="Doe"
+                required
+                size="lg"
+                autoComplete="family-name"
+                {...register('lastName')}
+                error={errors.lastName?.message}
+                success={dirtyFields.lastName && !errors.lastName}
+              />
             </div>
             
             <Input
@@ -266,9 +317,11 @@ export function IntakeForm({
               label="Email Address"
               placeholder="john@example.com"
               required
+              size="lg"
               autoComplete="email"
               {...register('email')}
               error={errors.email?.message}
+              success={dirtyFields.email && !errors.email}
             />
             
             <Input
@@ -277,25 +330,36 @@ export function IntakeForm({
               label="Phone Number"
               placeholder="(555) 123-4567"
               required
+              size="lg"
               autoComplete="tel"
               {...register('phone')}
+              onChange={(e) => {
+                const formatted = formatPhoneNumber(e.target.value);
+                e.target.value = formatted;
+                register('phone').onChange(e);
+              }}
               error={errors.phone?.message}
+              success={dirtyFields.phone && !errors.phone}
             />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <Input
                 id="company"
                 label="Company"
                 placeholder="Acme Inc."
+                size="lg"
                 autoComplete="organization"
                 {...register('company')}
+                success={dirtyFields.company && !errors.company}
               />
               <Input
                 id="jobTitle"
                 label="Job Title"
                 placeholder="CEO"
+                size="lg"
                 autoComplete="organization-title"
                 {...register('jobTitle')}
+                success={dirtyFields.jobTitle && !errors.jobTitle}
               />
             </div>
             
@@ -303,6 +367,8 @@ export function IntakeForm({
               id="companySize"
               label="Company Size"
               placeholder="Select company size"
+              size="lg"
+              value={watch('companySize')}
               options={[
                 { value: '1-10', label: '1-10 employees' },
                 { value: '11-50', label: '11-50 employees' },
@@ -310,55 +376,68 @@ export function IntakeForm({
                 { value: '201-500', label: '201-500 employees' },
                 { value: '500+', label: '500+ employees' },
               ]}
-              onChange={(value) => setValue('companySize', value as z.infer<typeof intakeFormSchema>['companySize'])}
+              onChange={(value) => setValue('companySize', value as z.infer<typeof intakeFormSchema>['companySize'], { shouldValidate: true })}
               error={errors.companySize?.message}
+              success={!!watch('companySize') && !errors.companySize}
             />
           </div>
         )}
 
         {currentStep === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <RadioGroup
               id="projectType"
               name="projectType"
               label="Project Type"
               required
+              size="lg"
+              orientation="horizontal"
+              className=""
+              value={watch('projectType')}
               options={[
-                { value: 'consulting', label: 'Consulting', description: 'Strategic guidance and expertise' },
-                { value: 'development', label: 'Development', description: 'Custom software solutions' },
-                { value: 'design', label: 'Design', description: 'UI/UX and visual design' },
-                { value: 'other', label: 'Other', description: 'Something else' },
+                { value: 'consulting', label: 'Consulting' },
+                { value: 'development', label: 'Development' },
+                { value: 'design', label: 'Design' },
+                { value: 'landing', label: '🎃 Landing Page 👻', isHalloween: true },
+                { value: 'other', label: 'Other' },
               ]}
-              onChange={(value) => setValue('projectType', value as z.infer<typeof intakeFormSchema>['projectType'])}
+              onChange={(value) => setValue('projectType', value as z.infer<typeof intakeFormSchema>['projectType'], { shouldValidate: true })}
               error={errors.projectType?.message}
+              success={!!watch('projectType') && !errors.projectType}
             />
             
             <Select
               id="budget"
               label="Budget Range"
               placeholder="Select budget"
+              size="lg"
+              value={watch('budget')}
               options={[
                 { value: '<10k', label: 'Less than $10,000' },
                 { value: '10k-50k', label: '$10,000 - $50,000' },
                 { value: '50k-100k', label: '$50,000 - $100,000' },
                 { value: '100k+', label: 'More than $100,000' },
               ]}
-              onChange={(value) => setValue('budget', value as z.infer<typeof intakeFormSchema>['budget'])}
+              onChange={(value) => setValue('budget', value as z.infer<typeof intakeFormSchema>['budget'], { shouldValidate: true })}
               error={errors.budget?.message}
+              success={!!watch('budget') && !errors.budget}
             />
             
             <Select
               id="timeline"
               label="Timeline"
               placeholder="Select timeline"
+              size="lg"
+              value={watch('timeline')}
               options={[
                 { value: 'asap', label: 'ASAP' },
                 { value: '1-3months', label: '1-3 months' },
                 { value: '3-6months', label: '3-6 months' },
                 { value: '6months+', label: '6+ months' },
               ]}
-              onChange={(value) => setValue('timeline', value as z.infer<typeof intakeFormSchema>['timeline'])}
+              onChange={(value) => setValue('timeline', value as z.infer<typeof intakeFormSchema>['timeline'], { shouldValidate: true })}
               error={errors.timeline?.message}
+              success={!!watch('timeline') && !errors.timeline}
             />
             
             <Textarea
@@ -366,56 +445,154 @@ export function IntakeForm({
               label="Project Details"
               placeholder="Tell us about your project..."
               required
+              size="lg"
               minRows={4}
               maxRows={8}
               showCount
               maxLength={1000}
               {...register('message')}
               error={errors.message?.message}
+              success={dirtyFields.message && !errors.message}
             />
+            <datalist id="project-messages">
+              {savedMessages.map((msg, idx) => (
+                <option key={idx} value={msg} />
+              ))}
+            </datalist>
           </div>
         )}
 
         {currentStep === 2 && (
-          <div className="space-y-6">
-            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg space-y-4">
-              <h3 className="font-semibold text-gray-900 dark:text-white">Review Your Information</h3>
+          <div className="space-y-3">
+            <div className="bg-gray-50 dark:bg-black/80 backdrop-blur-sm p-4 rounded-sm border-2 border-gray-300 dark:border-cyan-400/50 shadow-lg dark:shadow-[0_0_30px_rgba(0,255,255,0.3)]">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-mono font-semibold text-gray-900 dark:text-cyan-300 text-sm uppercase tracking-wide">{'> '}DATA VERIFICATION</h3>
+                <span className="text-cyan-500 font-mono text-xs animate-pulse">█</span>
+              </div>
               
-              <div className="space-y-2">
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600 dark:text-gray-400">Name</span>
-                  <span className="font-medium dark:text-gray-200">{formData.firstName} {formData.lastName}</span>
+              <div className="space-y-2 font-mono text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}NAME............</span>
+                  <div className="flex items-center gap-2">
+                    {formData.firstName || formData.lastName ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.firstName || '---'} {formData.lastName || '---'}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Email</span>
-                  <span className="font-medium dark:text-gray-200">{formData.email}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}EMAIL...........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.email ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.email || '---'}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Phone</span>
-                  <span className="font-medium dark:text-gray-200">{formData.phone}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}PHONE...........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.phone ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.phone || '---'}</span>
+                  </div>
                 </div>
-                {formData.company && (
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Company</span>
-                    <span className="font-medium dark:text-gray-200">{formData.company}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}COMPANY.........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.company ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.company || '---'}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}POSITION........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.jobTitle ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.jobTitle || '---'}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}SIZE............</span>
+                  <div className="flex items-center gap-2">
+                    {formData.companySize ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.companySize || '---'}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}PROJECT.........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.projectType ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.projectType || '---'}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}BUDGET..........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.budget ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.budget || '---'}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 dark:text-cyan-600">{'> '}TIMELINE........</span>
+                  <div className="flex items-center gap-2">
+                    {formData.timeline ? (
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <span className="h-3 w-3" />
+                    )}
+                    <span className="text-gray-800 dark:text-green-400">{formData.timeline || '---'}</span>
+                  </div>
+                </div>
+                {formData.message && (
+                  <div className="mt-2 pt-2 border-t border-cyan-500/30">
+                    <div className="flex items-start justify-between">
+                      <span className="text-gray-600 dark:text-cyan-600">{'> '}PROJECT DETAILS.</span>
+                      <Check className="h-3 w-3 text-green-600 dark:text-green-400 mt-1" />
+                    </div>
+                    <div className="mt-2 p-3 bg-gray-50 dark:bg-black/80 backdrop-blur-sm rounded-sm border-2 border-gray-300 dark:border-cyan-500/50 shadow-inner dark:shadow-[inset_0_0_20px_rgba(0,255,255,0.1)]">
+                      <div className="relative">
+                        <div className="absolute -top-1 -left-1 text-cyan-500 text-xs font-mono opacity-50">{'<'}</div>
+                        <div className="absolute -bottom-1 -right-1 text-cyan-500 text-xs font-mono opacity-50">{'>'}</div>
+                        <p className="text-gray-800 dark:text-green-400 text-xs font-mono whitespace-pre-wrap break-words leading-relaxed">
+                          {formData.message}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600">Project Type</span>
-                  <span className="font-medium capitalize dark:text-gray-200">{formData.projectType}</span>
+              </div>
+              
+              <div className="mt-3 pt-3 border-t border-cyan-500/30">
+                <div className="text-xs font-mono text-cyan-500 animate-pulse">
+                  {'> '}ALL DATA VERIFIED // READY FOR TRANSMISSION
                 </div>
-                {formData.budget && (
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Budget</span>
-                    <span className="font-medium dark:text-gray-200">{formData.budget}</span>
-                  </div>
-                )}
-                {formData.timeline && (
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Timeline</span>
-                    <span className="font-medium dark:text-gray-200">{formData.timeline}</span>
-                  </div>
-                )}
               </div>
             </div>
             
@@ -424,6 +601,7 @@ export function IntakeForm({
               label="I accept the terms and conditions"
               description="By submitting this form, you agree to our privacy policy and terms of service."
               required
+              size="lg"
               {...register('termsAccepted')}
               error={errors.termsAccepted?.message}
             />
@@ -444,10 +622,10 @@ export function IntakeForm({
           </div>
         )}
 
-        <div className="flex justify-between pt-6">
+        <div className="flex justify-between pt-4">
           <Button
             type="button"
-            variant="ghost"
+            variant="secondary"
             onClick={() => handleStepChange('prev')}
             disabled={currentStep === 0}
             leftIcon={<ChevronLeft className="h-4 w-4" />}
@@ -455,25 +633,85 @@ export function IntakeForm({
             Previous
           </Button>
           
-          {currentStep < FORM_STEPS.length - 1 ? (
+          {currentStep === 2 ? (
+            <Button
+              type="submit"
+              variant="primary"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit & Schedule'}
+            </Button>
+          ) : (
             <Button
               type="button"
+              variant="primary"
               onClick={() => handleStepChange('next')}
               rightIcon={<ChevronRight className="h-4 w-4" />}
             >
               Next
             </Button>
-          ) : (
-            <Button
-              type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit Form'}
-            </Button>
           )}
         </div>
-      </form>
+        </form>
+      ) : (
+        /* Step 3: Calendly Scheduler */
+        <div className="space-y-4">
+          <div className="bg-gray-50 dark:bg-black/80 backdrop-blur-sm p-4 rounded-sm border-2 border-gray-300 dark:border-cyan-400/50 shadow-lg dark:shadow-[0_0_30px_rgba(0,255,255,0.3)]">
+            <div className="text-sm font-mono text-green-600 dark:text-green-400 mb-2">
+              {'> '}FORM SUBMITTED SUCCESSFULLY
+            </div>
+            <p className="text-xs font-mono text-gray-600 dark:text-cyan-500">
+              Now let&apos;s schedule your consultation call
+            </p>
+          </div>
+          
+          <CalendlyScheduler
+            url={process.env.NEXT_PUBLIC_CALENDLY_URL || 'https://calendly.com/your-link'}
+            prefillData={{
+              email: submittedData?.email || '',
+              firstName: submittedData?.firstName || '',
+              lastName: submittedData?.lastName || '',
+              phone: submittedData?.phone || '',
+              company: submittedData?.company || '',
+              customAnswers: submittedData?.projectType ? {
+                a1: submittedData.projectType,
+              } : undefined,
+            }}
+            height="600px"
+            backgroundColor="001111"
+            textColor="00ffff"
+            primaryColor="00ff00"
+            onScheduled={() => {
+              // Redirect to thank you page after scheduling
+              window.location.href = '/thank-you';
+            }}
+            className="shadow-[0_0_50px_rgba(0,255,255,0.3)]"
+          />
+          
+          <div className="flex justify-between pt-4">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setCurrentStep(2)}
+              leftIcon={<ChevronLeft className="h-4 w-4" />}
+            >
+              Back to Review
+            </Button>
+            
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => window.location.href = '/thank-you'}
+            >
+              Skip Scheduling
+            </Button>
+          </div>
+        </div>
+      )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

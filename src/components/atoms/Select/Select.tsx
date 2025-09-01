@@ -44,14 +44,14 @@ export interface SelectProps {
 }
 
 const sizeClasses = {
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-4 text-base',
-  lg: 'h-12 px-4 text-lg',
+  sm: 'h-10 px-3 text-base',
+  md: 'h-12 px-4 text-lg',
+  lg: 'h-14 px-4 text-lg',
 };
 
 const variantClasses = {
-  default: 'bg-white border border-gray-300',
-  filled: 'bg-gray-50 border border-gray-300',
+  default: 'bg-white dark:bg-black/40 backdrop-blur-sm border-2 border-gray-300 dark:border-cyan-500/50',
+  filled: 'bg-gray-50 dark:bg-black/60 backdrop-blur-md border-2 border-gray-400 dark:border-cyan-500/60',
 };
 
 export const Select = forwardRef<HTMLDivElement, SelectProps>(
@@ -87,25 +87,27 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     }, {} as Record<string, SelectOption[]>);
 
     const triggerClasses = cn(
-      'inline-flex items-center justify-between rounded-md font-medium transition-colors',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+      'inline-flex items-center justify-between rounded-sm font-mono transition-all duration-300',
+      'text-gray-900 dark:text-cyan-100',
+      'focus:outline-none focus:shadow-[0_0_15px_rgba(59,130,246,0.5)] dark:focus:shadow-[0_0_15px_rgba(0,255,255,0.6)]',
+      'disabled:cursor-not-allowed disabled:opacity-30',
       sizeClasses[size],
       variantClasses[variant],
       {
-        'border-red-500 focus:ring-red-500': hasError,
-        'border-green-500 focus:ring-green-500': success,
-        'border-gray-300 focus:ring-blue-500': !hasError && !success,
-        'hover:bg-gray-50': !disabled && variant === 'default',
-        'hover:bg-gray-100': !disabled && variant === 'filled',
+        'border-red-500 dark:border-red-500 focus:shadow-[0_0_10px_rgba(255,0,64,0.5)]': hasError,
+        'border-green-500 dark:border-green-400 focus:shadow-[0_0_10px_rgba(57,255,20,0.5)]': success,
+        'hover:border-gray-400 dark:hover:border-cyan-500/70 focus:border-blue-500 dark:focus:border-cyan-400': !hasError && !success,
+        'hover:bg-gray-50 dark:hover:bg-cyan-900/20': !disabled && variant === 'default',
+        'hover:bg-gray-100 dark:hover:bg-cyan-900/30': !disabled && variant === 'filled',
       },
       'w-full',
       className
     );
 
     const contentClasses = cn(
-      'overflow-hidden bg-white rounded-md shadow-lg',
-      'border border-gray-200',
+      'overflow-hidden bg-white dark:bg-black/95 backdrop-blur-md rounded-sm shadow-2xl',
+      'border-2 border-gray-300 dark:border-cyan-400/50 shadow-lg dark:shadow-[0_0_30px_rgba(0,255,255,0.4)]',
+      'z-[9999]',
       'data-[state=open]:animate-in data-[state=closed]:animate-out',
       'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -116,8 +118,9 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     );
 
     const itemClasses = cn(
-      'relative flex w-full cursor-default select-none items-center rounded-sm py-2 px-3 text-sm outline-none',
-      'focus:bg-gray-100 focus:text-gray-900',
+      'relative flex w-full cursor-default select-none items-center rounded-sm py-3 px-4 text-sm font-mono outline-none',
+      'text-gray-900 dark:text-cyan-100 hover:bg-gray-100 dark:hover:bg-cyan-900/40 hover:text-gray-900 dark:hover:text-cyan-200 hover:shadow-[inset_0_0_20px_rgba(59,130,246,0.1)] dark:hover:shadow-[inset_0_0_20px_rgba(0,255,255,0.2)]',
+      'focus:bg-gray-100 dark:focus:bg-cyan-900/50 focus:text-gray-900 dark:focus:text-cyan-200',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
     );
 
@@ -126,9 +129,9 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       return (
         <div ref={ref} className="w-full">
           {label && (
-            <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
-              {label}
-              {required && <span className="text-red-500 ml-1">*</span>}
+            <label htmlFor={id} className="block text-sm font-mono text-gray-700 dark:text-cyan-300 mb-1">
+              {'> '}{label}
+              {required && <span className="text-red-500 dark:text-red-400 ml-1 animate-pulse">*</span>}
             </label>
           )}
           
@@ -145,19 +148,19 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
               aria-invalid={hasError}
               aria-required={required}
             >
-              <SelectPrimitive.Value placeholder={placeholder} />
+              <SelectPrimitive.Value placeholder={placeholder} className="text-gray-900 dark:text-cyan-100" />
               <SelectPrimitive.Icon asChild>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+                <ChevronDown className="h-4 w-4 text-gray-600 dark:text-gray-400" />
               </SelectPrimitive.Icon>
             </SelectPrimitive.Trigger>
             
             <SelectPrimitive.Portal>
-              <SelectPrimitive.Content className={contentClasses} position="popper">
-                <SelectPrimitive.Viewport className="p-1">
+              <SelectPrimitive.Content className={contentClasses} position="popper" sideOffset={5}>
+                <SelectPrimitive.Viewport className="p-1 max-h-[300px]">
                   {Object.entries(groupedOptions).map(([group, groupOptions]) => (
                     <div key={group}>
                       {group !== 'default' && (
-                        <SelectPrimitive.Label className="px-3 py-2 text-xs font-semibold text-gray-500">
+                        <SelectPrimitive.Label className="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400">
                           {group}
                         </SelectPrimitive.Label>
                       )}
@@ -177,7 +180,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                     </div>
                   ))}
                   {(!options || options.length === 0) && (
-                    <div className="px-3 py-2 text-sm text-gray-500">
+                    <div className="px-4 py-3 text-base text-gray-600 dark:text-gray-400">
                       {noOptionsMessage}
                     </div>
                   )}
@@ -189,7 +192,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
           {(helperText || errorMessage) && (
             <p className={cn(
               'mt-1 text-sm',
-              hasError ? 'text-red-600' : 'text-gray-500'
+              hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400'
             )}>
               {errorMessage || helperText}
             </p>

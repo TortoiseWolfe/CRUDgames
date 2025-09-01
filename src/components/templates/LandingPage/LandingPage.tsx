@@ -128,16 +128,11 @@ export function LandingPage({
     if (form?.onSubmitSuccess) {
       form.onSubmitSuccess(data);
     } else {
-      // Default behavior - redirect to thank you page
-      const params = new URLSearchParams({
-        email: data.email as string,
-        firstName: data.firstName as string,
-        lastName: data.lastName as string,
-        ...(data.phone ? { phone: data.phone as string } : {}),
-        ...(data.company ? { company: data.company as string } : {}),
-        ...(data.projectType ? { projectType: data.projectType as string } : {}),
-      });
-      window.location.href = `/thank-you?${params.toString()}`;
+      // Default behavior - scroll to scheduling section
+      const scheduleSection = document.getElementById('schedule');
+      if (scheduleSection) {
+        scheduleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
   
