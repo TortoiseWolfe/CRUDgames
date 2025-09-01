@@ -34,6 +34,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   ariaDescribedby?: string; // Support both casings
   ariaInvalid?: boolean;
   loading?: boolean;
+  autoComplete?: string;
 }
 
 const inputSizes = {
@@ -72,6 +73,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       ariaDescribedby,
       ariaInvalid,
       loading = false,
+      autoComplete,
       ...props
     },
     ref
@@ -117,6 +119,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={id}
             name={name}
             type={inputType}
+            autoComplete={autoComplete}
             className={cn(
               'w-full rounded-md border px-3 transition-all duration-200',
               'focus:outline-none focus:ring-2 focus:ring-offset-0',

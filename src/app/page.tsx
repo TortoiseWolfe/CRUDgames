@@ -45,9 +45,9 @@ export default function Home() {
       {/* Main Content */}
       <main id="main-content">
         {/* Hero and CTA Side by Side */}
-        <section className="flex flex-col lg:flex-row gap-4 lg:gap-8 min-h-[600px] p-8 lg:p-16">
+        <section className="flex flex-col xl:flex-row gap-4 xl:gap-8 min-h-[600px] p-8 xl:p-16">
           {/* Left Side: Hero Section */}
-          <div className="w-full lg:w-2/3 relative">
+          <div className="w-full xl:w-2/3 relative">
             <div className="binary-rain" aria-hidden="true"></div>
             <HeroSection
               headline="Make Work Fun with CRUDgames.com"
@@ -85,8 +85,8 @@ export default function Home() {
           </div>
 
           {/* Right Side: CTA Section with Halloween Special */}
-          <div className="w-full lg:w-1/3 relative texture-weathered-metal">
-            <div className="h-full flex flex-col justify-center items-center p-8 lg:p-12 relative z-10">
+          <div className="w-full xl:w-1/3 relative texture-weathered-metal">
+            <div className="h-full flex flex-col justify-center items-center p-8 xl:p-12 relative z-10">
               <div className="text-center max-w-md mx-auto">
                 <div className="halloween-terminal mb-6" role="region" aria-label="Special offer pricing">
                   <div className="halloween-header">
@@ -97,16 +97,17 @@ export default function Home() {
                   <div className="text-center">
                     <div className="mb-2">
                       <span className="halloween-price">
-                        Landing Pages $100/year
+                        Landing Pages<br />
+                        $ 123 / year
                       </span>
                     </div>
-                    <div className="spooky-text text-lg">
+                    <div className="spooky-text text-2xl">
                       Limited Time Offer!
                     </div>
-                    <div className="mt-3 text-sm spooky-text opacity-80">
-                      Normal Price: $500/year
+                    <div className="mt-3 text-lg spooky-text">
+                      Normal Price: $ 500 / year
                     </div>
-                    <div className="text-xs spooky-text mt-2">
+                    <div className="text-base spooky-text mt-2">
                       Expires October 31st
                     </div>
                   </div>
@@ -184,7 +185,8 @@ export default function Home() {
               </div>
               <div className="text-center">
                 <span className="halloween-price">
-                  Landing Pages $100/year
+                  Landing Pages<br />
+                  $ 123 / year
                 </span>
                 <div className="spooky-text mt-2">
                   Valid Until Halloween!

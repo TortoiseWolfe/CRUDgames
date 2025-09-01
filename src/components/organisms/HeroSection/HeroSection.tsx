@@ -7,7 +7,7 @@ import { Badge } from '@/components/atoms/Badge';
 import { ArrowRight, ChevronDown, Play, Star, Users, Zap, Shield } from 'lucide-react';
 
 export interface HeroSectionProps {
-  headline: string;
+  headline: string | React.ReactNode;
   highlightedText?: string;
   subheadline?: string;
   primaryCtaText: string;
@@ -63,6 +63,11 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
     ];
 
     const renderHeadline = () => {
+      // If headline is already a React node, return it as-is
+      if (typeof headline !== 'string') {
+        return headline;
+      }
+      
       // Special handling for CRUDgames.com branding
       if (headline.includes('CRUDgames.com')) {
         const parts = headline.split('CRUDgames.com');
@@ -87,7 +92,7 @@ export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
         return headline;
       }
 
-      const parts = headline.split(highlightedText);
+      const parts = (headline as string).split(highlightedText);
       if (parts.length === 1) {
         return headline;
       }

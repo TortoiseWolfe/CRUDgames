@@ -97,13 +97,13 @@ describe('Input', () => {
     expect(screen.getByText('Invalid input')).toBeInTheDocument();
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('aria-invalid', 'true');
-    expect(input).toHaveClass('border-red-500');
+    expect(input).toHaveClass('border-destructive');
   });
 
   it('renders with success state', () => {
     render(<Input id="i1" name="i1" success />);
     const input = screen.getByRole('textbox');
-    expect(input).toHaveClass('border-green-500');
+    expect(input).toHaveClass('border-accent');
   });
 
   it('renders with helper text', () => {
@@ -137,10 +137,10 @@ describe('Input', () => {
 
   it('renders different variants', () => {
     const { rerender } = render(<Input id="i1" name="i1" variant="default" />);
-    expect(screen.getByRole('textbox')).toHaveClass('bg-white');
+    expect(screen.getByRole('textbox')).toHaveClass('bg-input');
 
     rerender(<Input id="i1" name="i1" variant="filled" />);
-    expect(screen.getByRole('textbox')).toHaveClass('bg-gray-50');
+    expect(screen.getByRole('textbox')).toHaveClass('bg-card');
   });
 
   it('handles loading state', () => {

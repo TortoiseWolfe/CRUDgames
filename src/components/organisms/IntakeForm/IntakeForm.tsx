@@ -230,6 +230,7 @@ export function IntakeForm({
                   label="First Name"
                   placeholder="John"
                   required
+                  autoComplete="given-name"
                   {...register('firstName')}
                   error={errors.firstName?.message}
                   className={cn(
@@ -246,6 +247,7 @@ export function IntakeForm({
                   label="Last Name"
                   placeholder="Doe"
                   required
+                  autoComplete="family-name"
                   {...register('lastName')}
                   error={errors.lastName?.message}
                   className={cn(
@@ -264,6 +266,7 @@ export function IntakeForm({
               label="Email Address"
               placeholder="john@example.com"
               required
+              autoComplete="email"
               {...register('email')}
               error={errors.email?.message}
             />
@@ -274,6 +277,7 @@ export function IntakeForm({
               label="Phone Number"
               placeholder="(555) 123-4567"
               required
+              autoComplete="tel"
               {...register('phone')}
               error={errors.phone?.message}
             />
@@ -283,12 +287,14 @@ export function IntakeForm({
                 id="company"
                 label="Company"
                 placeholder="Acme Inc."
+                autoComplete="organization"
                 {...register('company')}
               />
               <Input
                 id="jobTitle"
                 label="Job Title"
                 placeholder="CEO"
+                autoComplete="organization-title"
                 {...register('jobTitle')}
               />
             </div>
