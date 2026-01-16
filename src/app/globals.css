@@ -1,7 +1,69 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap');
 
 @custom-variant dark (&:is(.dark *));
+
+/* Custom Font Classes */
+.font-typewriter {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+}
+
+.font-typewriter-alt {
+  font-family: 'Special Elite', 'Courier New', monospace;
+}
+
+/* Metal Surface Effects */
+.surface-metal-light {
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,0.2) 0%, 
+    transparent 40%, 
+    rgba(0,0,0,0.05) 100%);
+}
+
+.surface-metal-dark {
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,0.05) 0%, 
+    transparent 40%, 
+    rgba(0,0,0,0.2) 100%);
+}
+
+.shadow-cut-metal {
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.1),
+    inset 0 -1px 2px rgba(0,0,0,0.05),
+    0 1px 0 rgba(255,255,255,0.1);
+}
+
+.dark .shadow-cut-metal {
+  box-shadow: 
+    inset 0 2px 6px rgba(0,0,0,0.4),
+    inset 0 -1px 3px rgba(0,0,0,0.2),
+    0 1px 0 rgba(255,255,255,0.05);
+}
+
+.shadow-raised-metal {
+  box-shadow: 
+    0 1px 3px rgba(0,0,0,0.2),
+    0 -1px 2px rgba(255,255,255,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.dark .shadow-raised-metal {
+  box-shadow: 
+    0 1px 4px rgba(0,0,0,0.4),
+    0 -1px 2px rgba(255,255,255,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Text Embossing */
+.text-emboss {
+  text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+}
+
+.dark .text-emboss {
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+}
 
 /* Holographic Terminal Body Background */
 body {

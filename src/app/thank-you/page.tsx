@@ -22,9 +22,11 @@ function ThankYouContent() {
   const projectType = searchParams.get('projectType') || '';
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.gtag) {
+    // Track conversion if Google Ads is configured
+    const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID;
+    if (typeof window !== 'undefined' && window.gtag && conversionId) {
       window.gtag('event', 'conversion', {
-        send_to: 'AW-XXXXXXXXX/XXXXXXXXX',
+        send_to: conversionId,
         value: 1.0,
         currency: 'USD',
       });

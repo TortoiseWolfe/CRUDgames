@@ -6,18 +6,18 @@ import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'inline-flex items-center rounded-sm font-mono font-bold uppercase tracking-wider transition-all duration-300 focus:outline-none backdrop-blur-md',
   {
     variants: {
       variant: {
-        default: 'bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-500',
-        primary: 'bg-blue-100 text-blue-800 hover:bg-blue-200 focus:ring-blue-500',
-        success: 'bg-green-100 text-green-800 hover:bg-green-200 focus:ring-green-500',
-        warning: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 focus:ring-yellow-500',
-        danger: 'bg-red-100 text-red-800 hover:bg-red-200 focus:ring-red-500',
-        info: 'bg-cyan-100 text-cyan-800 hover:bg-cyan-200 focus:ring-cyan-500',
-        purple: 'bg-purple-100 text-purple-800 hover:bg-purple-200 focus:ring-purple-500',
-        outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
+        default: 'bg-black/80 text-cyan-400 border border-cyan-600/60 shadow-[0_0_20px_rgba(0,255,255,0.4),inset_0_0_10px_rgba(0,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,255,255,0.6)] hover:text-cyan-300',
+        primary: 'bg-black/80 text-blue-400 border border-blue-600/60 shadow-[0_0_20px_rgba(0,100,255,0.4),inset_0_0_10px_rgba(0,100,255,0.1)] hover:shadow-[0_0_30px_rgba(0,100,255,0.6)] hover:text-blue-300',
+        success: 'bg-black/80 text-green-400 border border-green-600/60 shadow-[0_0_20px_rgba(0,255,0,0.4),inset_0_0_10px_rgba(0,255,0,0.1)] hover:shadow-[0_0_30px_rgba(0,255,0,0.6)] hover:text-green-300',
+        warning: 'bg-black/80 text-amber-400 border border-amber-600/60 shadow-[0_0_20px_rgba(255,176,0,0.4),inset_0_0_10px_rgba(255,176,0,0.1)] hover:shadow-[0_0_30px_rgba(255,176,0,0.6)] hover:text-amber-300',
+        danger: 'bg-black/80 text-red-400 border border-red-600/60 shadow-[0_0_20px_rgba(255,0,0,0.4),inset_0_0_10px_rgba(255,0,0,0.1)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] hover:text-red-300',
+        info: 'bg-black/80 text-cyan-400 border border-cyan-600/60 shadow-[0_0_20px_rgba(0,255,255,0.4),inset_0_0_10px_rgba(0,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,255,255,0.6)] hover:text-cyan-300',
+        purple: 'bg-black/80 text-purple-400 border border-purple-600/60 shadow-[0_0_20px_rgba(128,0,255,0.4),inset_0_0_10px_rgba(128,0,255,0.1)] hover:shadow-[0_0_30px_rgba(128,0,255,0.6)] hover:text-purple-300',
+        outline: 'bg-transparent border-2 border-cyan-600/60 text-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:bg-cyan-900/30 hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]',
       },
       size: {
         sm: 'px-2 py-0.5 text-xs',
@@ -65,9 +65,9 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         {...props}
       >
         {icon && (
-          <span className="mr-1 -ml-0.5">{icon}</span>
+          <span className="mr-1 -ml-0.5 drop-shadow-[0_0_5px_currentColor]">{icon}</span>
         )}
-        {children}
+        <span className="drop-shadow-[0_0_3px_currentColor]">{children}</span>
         {showRemoveButton && (
           <button
             type="button"
@@ -76,7 +76,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
               onRemove?.();
             }}
             className={cn(
-              'ml-1 -mr-0.5 rounded-full p-0.5 hover:bg-black/10 focus:outline-none focus:ring-1 focus:ring-offset-0',
+              'ml-1 -mr-0.5 rounded-full p-0.5 hover:bg-white/20 focus:outline-none transition-all duration-200 hover:drop-shadow-[0_0_8px_currentColor]',
               size === 'sm' && 'ml-0.5',
               size === 'lg' && 'ml-1.5 p-1'
             )}

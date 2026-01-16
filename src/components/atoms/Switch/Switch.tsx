@@ -6,14 +6,14 @@ import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
 const switchVariants = cva(
-  'relative inline-flex shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'relative inline-flex shrink-0 cursor-pointer rounded-full border-2 transition-all duration-500 ease-in-out focus:outline-none',
   {
     variants: {
       variant: {
-        default: 'focus:ring-blue-500',
-        success: 'focus:ring-green-500',
-        warning: 'focus:ring-yellow-500',
-        danger: 'focus:ring-red-500',
+        default: 'focus:shadow-[0_0_15px_rgba(100,100,120,0.6)]',
+        success: 'focus:shadow-[0_0_15px_rgba(0,255,0,0.4)]',
+        warning: 'focus:shadow-[0_0_15px_rgba(255,140,0,0.4)]',
+        danger: 'focus:shadow-[0_0_15px_rgba(255,0,0,0.4)]',
       },
       size: {
         sm: 'h-5 w-9',
@@ -29,7 +29,7 @@ const switchVariants = cva(
 );
 
 const thumbVariants = cva(
-  'pointer-events-none inline-block rounded-full bg-white shadow-lg transform ring-0 transition duration-200 ease-in-out',
+  'pointer-events-none inline-block rounded-full transform ring-0 transition-all duration-500 ease-in-out',  
   {
     variants: {
       size: {
@@ -100,16 +100,31 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
     };
 
     const getBackgroundColor = () => {
-      if (isDisabled) return 'bg-gray-200';
-      if (!isChecked) return hasError ? 'bg-red-200' : 'bg-gray-200';
+      // Analog metal aesthetic with subtle lighting
+      if (isDisabled) return 'bg-gray-300 dark:bg-gray-800 border-gray-400 dark:border-gray-700 opacity-50';
       
-      if (hasError) return 'bg-red-600';
+      // OFF state - brushed metal with recessed groove
+      if (!isChecked) {
+        if (hasError) {
+          return 'bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 border-red-400 dark:border-red-700 shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]';
+        }
+        return 'bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 border-gray-400 dark:border-gray-700 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]';
+      }
+      
+      // ON state - metal with LED indicator glow
+      if (hasError) {
+        return 'bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-red-500 dark:border-red-600 shadow-[0_0_12px_rgba(239,68,68,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] dark:shadow-[0_0_20px_rgba(239,68,68,0.5),inset_0_1px_2px_rgba(0,0,0,0.3)]';
+      }
       
       switch (variant) {
-        case 'success': return 'bg-green-600';
-        case 'warning': return 'bg-yellow-600';
-        case 'danger': return 'bg-red-600';
-        default: return 'bg-blue-600';
+        case 'success': 
+          return 'bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-green-500 dark:border-green-600 shadow-[0_0_12px_rgba(34,197,94,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] dark:shadow-[0_0_20px_rgba(34,197,94,0.5),inset_0_1px_2px_rgba(0,0,0,0.3)]';
+        case 'warning': 
+          return 'bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-amber-500 dark:border-amber-600 shadow-[0_0_12px_rgba(245,158,11,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] dark:shadow-[0_0_20px_rgba(245,158,11,0.5),inset_0_1px_2px_rgba(0,0,0,0.3)]';
+        case 'danger': 
+          return 'bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-red-500 dark:border-red-600 shadow-[0_0_12px_rgba(239,68,68,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] dark:shadow-[0_0_20px_rgba(239,68,68,0.5),inset_0_1px_2px_rgba(0,0,0,0.3)]';
+        default: 
+          return 'bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 border-slate-500 dark:border-slate-600 shadow-[0_0_12px_rgba(100,116,139,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] dark:shadow-[0_0_20px_rgba(148,163,184,0.5),inset_0_1px_2px_rgba(0,0,0,0.3)]';
       }
     };
 
@@ -142,12 +157,19 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           className={cn(
             switchVariants({ variant: hasError ? 'danger' : variant, size }),
             getBackgroundColor(),
-            isDisabled && 'opacity-50 cursor-not-allowed',
-            hasError && 'ring-2 ring-red-500 ring-offset-2',
+            'relative overflow-hidden',
+            isDisabled && 'cursor-not-allowed',
+            hasError && 'ring-1 ring-red-800 ring-offset-1 ring-offset-black',
             className
           )}
           aria-hidden="true"
         >
+          {/* Metal texture overlay */}
+          {!isDisabled && (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full opacity-50">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10" />
+            </div>
+          )}
           {loading ? (
             <Loader2 className={cn(
               'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-gray-600',
@@ -160,7 +182,20 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               className={cn(
                 thumbVariants({ size }),
                 getTranslateClass(),
-                isDisabled && 'opacity-75'
+                // Chrome metal toggle with LED indicator
+                isDisabled ? 'bg-gray-400 dark:bg-gray-600' : 
+                isChecked ? cn(
+                  'bg-gradient-to-br from-white via-gray-100 to-gray-200 dark:from-gray-300 dark:via-gray-400 dark:to-gray-500',
+                  'shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(255,255,255,0.8)] dark:shadow-[0_2px_6px_rgba(0,0,0,0.4),inset_0_1px_2px_rgba(255,255,255,0.3)]',
+                  'after:absolute after:inset-1 after:rounded-full after:bg-gradient-to-br',
+                  hasError ? 'after:from-red-400/60 after:to-red-500/40' :
+                  variant === 'success' ? 'after:from-green-400/60 after:to-green-500/40' :
+                  variant === 'warning' ? 'after:from-amber-400/60 after:to-amber-500/40' :
+                  variant === 'danger' ? 'after:from-red-400/60 after:to-red-500/40' :
+                  'after:from-blue-400/60 after:to-blue-500/40',
+                  'after:animate-pulse'
+                ) :
+                'bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-600 dark:via-gray-500 dark:to-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(255,255,255,0.6)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.2)]'
               )}
             />
           )}
@@ -185,7 +220,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               <label
                 htmlFor={id}
                 className={cn(
-                  'text-sm font-medium text-gray-900',
+                  'text-sm font-mono font-bold text-gray-400 dark:text-gray-300',
                   disabled && 'opacity-50'
                 )}
               >
@@ -196,7 +231,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               <p
                 id={`${id}-description`}
                 className={cn(
-                  'text-sm text-gray-500',
+                  'text-sm font-mono text-gray-500 dark:text-gray-400',
                   disabled && 'opacity-50'
                 )}
               >
@@ -228,7 +263,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               <p
                 id={`${id}-description`}
                 className={cn(
-                  'text-sm text-gray-500',
+                  'text-sm font-mono text-gray-500 dark:text-gray-400',
                   disabled && 'opacity-50'
                 )}
               >
@@ -239,7 +274,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         )}
         </div>
         {errorMessage && (
-          <p className="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
+          <p className="text-sm font-mono text-red-400 mt-1 drop-shadow-[0_0_5px_currentColor]" role="alert">
             {errorMessage}
           </p>
         )}

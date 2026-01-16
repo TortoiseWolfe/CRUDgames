@@ -37,10 +37,10 @@ const shapeClasses = {
 };
 
 const statusColors = {
-  online: 'bg-green-500',
-  offline: 'bg-gray-400',
-  away: 'bg-yellow-500',
-  busy: 'bg-red-500',
+  online: 'bg-green-500 shadow-[0_0_10px_rgba(0,255,0,0.8)] animate-pulse',
+  offline: 'bg-gray-600',
+  away: 'bg-amber-500 shadow-[0_0_8px_rgba(255,176,0,0.6)]',
+  busy: 'bg-red-500 shadow-[0_0_10px_rgba(255,0,0,0.8)] animate-pulse',
 };
 
 const statusPositions = {
@@ -82,11 +82,14 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     const isClickable = !!onClick;
     
     const containerClasses = cn(
-      'relative inline-flex items-center justify-center overflow-hidden bg-gray-200 select-none',
+      'relative inline-flex items-center justify-center overflow-hidden select-none',
+      'bg-black border-2 border-green-900/50',
+      'shadow-[inset_0_0_20px_rgba(0,255,0,0.1)]',
       sizeClasses[size],
       shapeClasses[shape],
-      isClickable && 'cursor-pointer hover:opacity-90 transition-opacity',
-      isClickable && 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+      isClickable && 'cursor-pointer hover:border-green-500/50 transition-all duration-300',
+      isClickable && 'hover:shadow-[inset_0_0_30px_rgba(0,255,0,0.2),0_0_20px_rgba(0,255,0,0.3)]',
+      isClickable && 'focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:ring-offset-2 focus:ring-offset-black',
       className
     );
 
@@ -123,39 +126,57 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         aria-label={displayAlt + (status ? `, ${status}` : '')}
         {...props}
       >
+        {/* Surveillance camera scan lines */}
+        <div className="absolute inset-0 pointer-events-none z-20">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-500/5 to-transparent h-[2px] animate-[scan-line_4s_linear_infinite]" />
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,255,0,0.03)_2px,rgba(0,255,0,0.03)_4px)]" />
+        </div>
+        
+        {/* Night vision filter */}
+        <div className="absolute inset-0 bg-green-500/5 mix-blend-screen pointer-events-none z-10" />
+        
         {src && !imageError ? (
           <Image
             src={src}
             alt={displayAlt}
             fill
-            className="object-cover"
+            className="object-cover saturate-50 contrast-125 brightness-90"
             loading={priority ? 'eager' : loading}
             priority={priority}
             onError={() => setImageError(true)}
           />
         ) : displayInitials ? (
-          <span className="font-medium text-gray-700" aria-hidden="true">
+          <span className="font-mono font-bold text-green-400 drop-shadow-[0_0_4px_rgba(0,255,0,0.8)]" aria-hidden="true">
             {displayInitials}
           </span>
         ) : fallbackIcon ? (
-          <span className="text-gray-500" aria-hidden="true">
+          <span className="text-green-400 drop-shadow-[0_0_4px_rgba(0,255,0,0.8)]" aria-hidden="true">
             {fallbackIcon}
           </span>
         ) : (
-          <User className="h-[60%] w-[60%] text-gray-500" aria-hidden="true" />
+          <User className="h-[60%] w-[60%] text-green-400 drop-shadow-[0_0_4px_rgba(0,255,0,0.8)]" aria-hidden="true" />
         )}
         
         {status && (
-          <span
-            className={cn(
-              'absolute border-2 border-white',
-              statusDotSize[size],
-              statusColors[status],
-              statusPositions[statusPosition],
-              shapeClasses[shape]
+          <>
+            {/* Recording indicator for online status */}
+            {status === 'online' && (
+              <div className="absolute top-2 right-2 flex items-center gap-1 z-30">
+                <span className="text-red-500 text-xs font-mono uppercase tracking-wider drop-shadow-[0_0_4px_rgba(255,0,0,0.8)]">REC</span>
+                <span className="w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(255,0,0,1)] animate-pulse" />
+              </div>
             )}
-            aria-label={`Status: ${status}`}
-          />
+            <span
+              className={cn(
+                'absolute border-2 border-black z-30',
+                statusDotSize[size],
+                statusColors[status],
+                statusPositions[statusPosition],
+                shapeClasses[shape]
+              )}
+              aria-label={`Status: ${status}`}
+            />
+          </>
         )}
       </div>
     );

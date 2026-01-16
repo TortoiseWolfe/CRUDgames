@@ -95,8 +95,7 @@ export function ContactForm({
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
-      console.error('Contact form error:', error);
-      // Error is handled by the UI state
+      // Contact form error - handled by UI state
     } finally {
       setIsSubmitting(false);
     }

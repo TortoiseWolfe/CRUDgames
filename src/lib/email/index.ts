@@ -56,8 +56,7 @@ class UnifiedEmailService implements EmailService {
   async send(data: EmailData): Promise<EmailResponse> {
     // Development mode: mock successful submission
     if (process.env.NODE_ENV === 'development' && !this.isConfigured()) {
-      console.warn('No email service configured. Using mock service for development.');
-      console.log('Mock email data:', data);
+      // Mock service for development - no email service configured
       return {
         success: true,
         messageId: 'mock-' + Date.now(),
@@ -65,7 +64,7 @@ class UnifiedEmailService implements EmailService {
     }
     
     if (!this.isConfigured()) {
-      console.error('No email service is configured');
+      // No email service configured - returning error
       return {
         success: false,
         error: 'No email service is configured. Please check your environment variables.',
@@ -79,7 +78,7 @@ class UnifiedEmailService implements EmailService {
         return result;
       }
       
-      console.warn('Primary email service failed, trying fallback services...');
+      // Primary email service failed, trying fallback services
     }
 
     // Try fallback services

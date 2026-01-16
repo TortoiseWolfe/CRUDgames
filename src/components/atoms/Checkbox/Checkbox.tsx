@@ -67,17 +67,26 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     };
 
     const checkboxClasses = cn(
-      'appearance-none border-2 transition-all duration-300 backdrop-blur-sm',
-      'focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,255,0.8)]',
+      'appearance-none border-2 transition-all duration-300 backdrop-blur-md',
+      'focus:outline-none',
       'disabled:cursor-not-allowed disabled:opacity-30',
       sizeClasses[size],
       {
         'rounded-sm': variant === 'default',
         'rounded-full': variant === 'rounded',
-        'bg-white dark:bg-black/40 border-gray-300 dark:border-cyan-500/50 hover:border-gray-400 dark:hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] dark:hover:shadow-[0_0_15px_rgba(0,255,255,0.6)]': !hasError && !disabled && !isChecked,
-        'border-red-500 dark:border-red-500 hover:border-red-400 shadow-[0_0_15px_rgba(255,0,64,0.6)]': hasError && !isChecked,
-        'bg-blue-600 dark:bg-cyan-900/60 border-blue-600 dark:border-cyan-400 hover:bg-blue-700 dark:hover:bg-cyan-800/70 hover:border-blue-700 dark:hover:border-cyan-300 shadow-[0_0_20px_rgba(59,130,246,0.6)] dark:shadow-[0_0_20px_rgba(0,255,255,0.8)]': isChecked && !hasError && !disabled,
-        'bg-red-600 dark:bg-red-900/60 border-red-600 dark:border-red-400 shadow-[0_0_20px_rgba(255,0,64,0.8)]': isChecked && hasError,
+        // Unchecked state with heavy CRT glow
+        'bg-black/80 dark:bg-black/95 border-cyan-600/50 dark:border-cyan-400/60': !hasError && !disabled && !isChecked,
+        'hover:border-cyan-400 dark:hover:border-cyan-300': !hasError && !disabled && !isChecked,
+        'hover:shadow-[0_0_30px_rgba(0,255,255,0.5),0_0_50px_rgba(0,255,255,0.3),inset_0_0_20px_rgba(0,255,255,0.1)]': !hasError && !disabled && !isChecked,
+        'focus:shadow-[0_0_40px_rgba(0,255,255,0.7),0_0_60px_rgba(0,255,255,0.4)]': !hasError && !disabled && !isChecked,
+        // Error unchecked
+        'border-red-400 shadow-[0_0_30px_rgba(255,0,0,0.6),0_0_50px_rgba(255,0,0,0.3)]': hasError && !isChecked,
+        // Checked state with heavy glow
+        'bg-cyan-900/80 dark:bg-cyan-900/90 border-cyan-400 dark:border-cyan-300': isChecked && !hasError && !disabled,
+        'shadow-[0_0_40px_rgba(0,255,255,0.8),0_0_60px_rgba(0,255,255,0.5),inset_0_0_20px_rgba(0,255,255,0.3)]': isChecked && !hasError && !disabled,
+        'hover:shadow-[0_0_50px_rgba(0,255,255,1),0_0_80px_rgba(0,255,255,0.6)]': isChecked && !hasError && !disabled,
+        // Error checked
+        'bg-red-900/80 dark:bg-red-900/90 border-red-400 shadow-[0_0_40px_rgba(255,0,0,0.8),0_0_60px_rgba(255,0,0,0.5)]': isChecked && hasError,
       }
     );
 
@@ -124,9 +133,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             {isChecked && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 {indeterminate ? (
-                  <Minus className={cn('text-white dark:text-cyan-100', iconSizeClasses[size])} />
+                  <Minus className={cn('text-cyan-300 dark:text-cyan-200 drop-shadow-[0_0_10px_currentColor]', iconSizeClasses[size])} />
                 ) : (
-                  <Check className={cn('text-white dark:text-cyan-100', iconSizeClasses[size])} />
+                  <Check className={cn('text-cyan-300 dark:text-cyan-200 drop-shadow-[0_0_10px_currentColor]', iconSizeClasses[size])} />
                 )}
               </div>
             )}
@@ -137,22 +146,22 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 <label 
                   htmlFor={id}
                   className={cn(
-                    'text-sm font-mono font-semibold cursor-pointer',
-                    hasError ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-cyan-300',
+                    'text-sm font-mono font-semibold cursor-pointer tracking-wider',
+                    hasError ? 'text-red-400 drop-shadow-[0_0_5px_currentColor]' : 'text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]',
                     disabled && 'cursor-not-allowed opacity-30'
                   )}
                 >
                   {label}
-                  {required && <span className="text-red-500 dark:text-red-400 ml-1 animate-pulse" aria-label="required">*</span>}
+                  {required && <span className="text-red-400 ml-1 animate-pulse drop-shadow-[0_0_8px_rgba(255,0,0,1)]" aria-label="required">*</span>}
                 </label>
               )}
               {description && !hasError && (
-                <p id={descriptionId} className="text-muted-foreground text-base mt-1">
+                <p id={descriptionId} className="text-cyan-600/70 dark:text-cyan-500/60 text-sm font-mono mt-1">
                   {description}
                 </p>
               )}
               {hasError && errorMessage && (
-                <p id={errorId} className="text-destructive text-base mt-1" role="alert">
+                <p id={errorId} className="text-red-400 text-sm font-mono mt-1 drop-shadow-[0_0_5px_currentColor]" role="alert">
                   {errorMessage}
                 </p>
               )}

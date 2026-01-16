@@ -65,13 +65,18 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
 
 
     const radioClasses = cn(
-      'appearance-none border-2 rounded-full transition-all duration-200 bg-white dark:bg-gray-900',
-      'focus:outline-none focus:ring-4 focus:ring-offset-2',
+      'appearance-none border-2 rounded-full transition-all duration-300',
+      'bg-black/80 dark:bg-black/95',
+      'focus:outline-none',
       'disabled:cursor-not-allowed disabled:opacity-50',
       sizeClasses[size],
       {
-        'border-gray-400 dark:border-cyan-500/50 hover:border-blue-500 dark:hover:border-cyan-400 focus:border-blue-500 dark:focus:border-cyan-400 focus:ring-blue-200 dark:focus:ring-cyan-900': !hasError && !disabled,
-        'border-red-500 hover:border-red-600 focus:border-red-600 focus:ring-red-200': hasError,
+        'border-cyan-600/50 dark:border-cyan-400/60': !hasError && !disabled,
+        'hover:border-cyan-400 dark:hover:border-cyan-300': !hasError && !disabled,
+        'hover:shadow-[0_0_30px_rgba(0,255,255,0.5),0_0_50px_rgba(0,255,255,0.3)]': !hasError && !disabled,
+        'focus:border-cyan-300 dark:focus:border-cyan-200': !hasError && !disabled,
+        'focus:shadow-[0_0_40px_rgba(0,255,255,0.7),0_0_60px_rgba(0,255,255,0.4)]': !hasError && !disabled,
+        'border-red-400 shadow-[0_0_30px_rgba(255,0,0,0.6),0_0_50px_rgba(255,0,0,0.3)]': hasError,
       }
     );
 
@@ -89,9 +94,10 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       <div className={cn('w-full', className)} ref={ref}>
         {label && (
           <div className="mb-2">
-            <label className="block text-sm font-mono text-gray-700 dark:text-cyan-300">
-              {'> '}{label}
-              {required && <span className="text-red-500 dark:text-red-400 ml-1 animate-pulse" aria-label="required">*</span>}
+            <label className="block text-sm font-mono font-semibold text-gray-800 dark:text-cyan-300 dark:text-shadow-[0_0_8px_rgba(0,255,255,0.6)]">
+              <span className="text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">{'> '}</span>
+              <span className="drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]">{label}</span>
+              {required && <span className="text-red-400 ml-1 animate-pulse drop-shadow-[0_0_8px_rgba(255,0,0,1)]" aria-label="required">*</span>}
             </label>
           </div>
         )}
@@ -105,11 +111,12 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           aria-required={required}
           className={cn(
             'flex p-3 rounded-sm border-2 transition-all duration-300',
+            'bg-black/60 dark:bg-black/80 backdrop-blur-md',
             orientation === 'vertical' ? 'flex-col space-y-4' : 'flex-row flex-wrap gap-4 justify-between',
             {
-              'border-red-500 dark:border-red-500 shadow-[0_0_10px_rgba(255,0,64,0.5)]': hasError,
-              'border-green-500 dark:border-green-400 shadow-[0_0_10px_rgba(57,255,20,0.5)]': success && !hasError,
-              'border-gray-300 dark:border-cyan-500/50': !hasError && !success,
+              'border-red-400 shadow-[0_0_30px_rgba(255,0,0,0.6),0_0_60px_rgba(255,0,0,0.3),inset_0_0_30px_rgba(255,0,0,0.2)]': hasError,
+              'border-green-400 shadow-[0_0_30px_rgba(0,255,0,0.6),0_0_60px_rgba(0,255,0,0.3),inset_0_0_30px_rgba(0,255,0,0.2)]': success && !hasError,
+              'border-cyan-600/40 dark:border-cyan-400/60 shadow-[0_0_20px_rgba(0,255,255,0.15),inset_0_0_20px_rgba(0,255,255,0.08)]': !hasError && !success,
             },
             className
           )}
@@ -132,9 +139,9 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
                     onChange={() => handleChange(option.value)}
                     aria-describedby={option.description ? `${optionId}-description` : undefined}
                     className={cn(radioClasses, {
-                      'border-[#ff4500] dark:border-[#ff4500] bg-[#ff4500] dark:bg-[#ff4500] shadow-[0_0_15px_rgba(255,68,0,0.8)]': isChecked && option.isHalloween && !hasError && !isDisabled,
-                      'border-blue-600 dark:border-cyan-400 bg-blue-600 dark:bg-cyan-400': isChecked && !option.isHalloween && !hasError && !isDisabled,
-                      'border-red-600 bg-red-600': isChecked && hasError,
+                      'border-[#ff4500] bg-[#ff4500]/80 shadow-[0_0_40px_rgba(255,68,0,1),0_0_60px_rgba(255,68,0,0.6)]': isChecked && option.isHalloween && !hasError && !isDisabled,
+                      'border-cyan-400 dark:border-cyan-300 bg-cyan-900/80 dark:bg-cyan-900/90 shadow-[0_0_40px_rgba(0,255,255,0.8),0_0_60px_rgba(0,255,255,0.5)]': isChecked && !option.isHalloween && !hasError && !isDisabled,
+                      'border-red-400 bg-red-900/80 shadow-[0_0_40px_rgba(255,0,0,0.8),0_0_60px_rgba(255,0,0,0.5)]': isChecked && hasError,
                     })}
                   />
                   {isChecked && (
@@ -142,10 +149,10 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
                       <div className={cn(
                         'rounded-full',
                         option.isHalloween 
-                          ? 'bg-[#ff9900] dark:bg-[#ff9900] shadow-[0_0_20px_rgba(255,68,0,0.9)]'
+                          ? 'bg-[#ff9900] shadow-[0_0_25px_rgba(255,153,0,1)]'
                           : hasError 
-                            ? 'bg-red-200 dark:bg-red-900 shadow-[0_0_8px_rgba(255,0,64,0.8)]'
-                            : 'bg-cyan-200 dark:bg-cyan-900 shadow-[0_0_8px_rgba(0,255,255,0.8)]',
+                            ? 'bg-red-400 shadow-[0_0_15px_rgba(255,0,0,1)]'
+                            : 'bg-cyan-300 shadow-[0_0_15px_rgba(0,255,255,1)]',
                         size === 'sm' ? 'h-1.5 w-1.5' : size === 'md' ? 'h-2 w-2' : 'h-2.5 w-2.5'
                       )} />
                     </div>
@@ -155,12 +162,12 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
                   <label
                     htmlFor={optionId}
                     className={cn(
-                      'text-lg font-semibold cursor-pointer',
+                      'text-base font-semibold cursor-pointer font-mono tracking-wider',
                       option.isHalloween 
                         ? '' 
                         : hasError 
-                          ? 'text-red-600 dark:text-red-400' 
-                          : 'text-gray-900 dark:text-cyan-100',
+                          ? 'text-red-400 drop-shadow-[0_0_5px_currentColor]' 
+                          : 'text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]',
                       isDisabled && 'cursor-not-allowed opacity-50',
                       option.customLabelClass
                     )}
@@ -175,7 +182,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
                     {option.label}
                   </label>
                   {option.description && (
-                    <p id={`${optionId}-description`} className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                    <p id={`${optionId}-description`} className="text-cyan-600/70 dark:text-cyan-500/60 text-sm font-mono mt-1">
                       {option.description}
                     </p>
                   )}
@@ -187,13 +194,13 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         
         <div className="mt-2">
           {helperText && !hasError && (
-            <p id={helperId} className="text-base text-gray-600 dark:text-gray-400">
+            <p id={helperId} className="text-sm text-cyan-600/70 dark:text-cyan-500/60 font-mono">
               {helperText}
             </p>
           )}
           
           {hasError && errorMessage && (
-            <p id={errorId} className="text-base text-red-600 dark:text-red-400" role="alert">
+            <p id={errorId} className="text-sm text-red-400 font-mono drop-shadow-[0_0_5px_currentColor]" role="alert">
               {errorMessage}
             </p>
           )}

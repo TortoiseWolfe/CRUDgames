@@ -18,13 +18,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   ariaExpanded?: boolean;
 }
 
-const buttonVariants = {
-  primary: 'border-2 font-mono',
-  secondary: 'border-2 font-mono',
-  danger: 'border-2 font-mono',
-  ghost: 'border-2 font-mono',
-  link: 'font-mono',
-};
 
 const buttonSizes = {
   sm: 'h-10 px-4 text-xs',
@@ -58,22 +51,64 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Build dynamic classes based on variant and disabled state
     const getVariantClasses = () => {
       if (isDisabled) {
-        // Disabled state - gray everything out, no glows
-        return 'bg-gray-300 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-600 cursor-not-allowed opacity-60';
+        // Disabled state - muted metal appearance
+        return 'bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed opacity-60';
       }
       
-      // Enabled states with variant-specific colors
+      // Balanced light/dark themes with subtle effects
       switch (variant) {
         case 'primary':
-          return 'bg-blue-600 dark:bg-cyan-900/50 border-blue-500 dark:border-cyan-500/60 text-white dark:text-cyan-100 shadow-lg dark:shadow-[0_0_10px_rgba(0,255,255,0.3)] hover:border-blue-600 dark:hover:border-cyan-400 hover:bg-blue-700 dark:hover:bg-cyan-800/60 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] dark:hover:shadow-[0_0_25px_rgba(0,255,255,0.8)] hover:scale-105 backdrop-blur-sm';
+          // Metallic blue with raised effect
+          return cn(
+            'relative overflow-hidden',
+            'bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900',
+            'border border-t-blue-400 border-b-blue-800 dark:border-t-gray-600 dark:border-b-black',
+            'text-white dark:text-cyan-300',
+            'shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]',
+            'hover:from-blue-400 hover:via-blue-500 hover:to-blue-600 dark:hover:from-gray-600 dark:hover:via-gray-700 dark:hover:to-gray-800',
+            'active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3),inset_0_-1px_2px_rgba(0,0,0,0.1)] dark:active:shadow-[inset_0_2px_6px_rgba(0,0,0,0.5)]',
+            'transition-all duration-200'
+          );
         case 'secondary':
-          return 'bg-amber-600 dark:bg-amber-900/50 border-amber-500 dark:border-amber-500/60 text-white dark:text-amber-100 shadow-lg dark:shadow-[0_0_10px_rgba(255,176,0,0.3)] hover:border-amber-600 dark:hover:border-amber-400 hover:bg-amber-700 dark:hover:bg-amber-800/60 hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] dark:hover:shadow-[0_0_25px_rgba(255,176,0,0.6)] hover:scale-105 backdrop-blur-sm';
+          // Brushed aluminum
+          return cn(
+            'relative overflow-hidden',
+            'bg-gradient-to-b from-gray-300 via-gray-200 to-gray-400 dark:from-gray-700 dark:via-gray-600 dark:to-gray-800',
+            'border border-t-white border-b-gray-500 dark:border-t-gray-500 dark:border-b-gray-900',
+            'text-gray-800 dark:text-gray-200',
+            'shadow-[0_2px_4px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[0_2px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]',
+            'hover:from-gray-200 hover:via-gray-100 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:via-gray-500 dark:hover:to-gray-700',
+            'active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),inset_0_-1px_2px_rgba(0,0,0,0.05)] dark:active:shadow-[inset_0_2px_6px_rgba(0,0,0,0.4)]',
+            'transition-all duration-200'
+          );
         case 'danger':
-          return 'bg-red-600 dark:bg-red-900/50 border-red-600 dark:border-red-400 text-white dark:text-red-100 hover:bg-red-700 dark:hover:bg-red-800/60 hover:border-red-700 dark:hover:border-red-300 hover:shadow-[0_0_25px_rgba(220,38,38,0.6)] dark:hover:shadow-[0_0_25px_rgba(255,0,64,0.8)] hover:scale-105 backdrop-blur-sm';
+          // Metallic red with warning feel
+          return cn(
+            'relative overflow-hidden',
+            'bg-gradient-to-b from-red-500 via-red-600 to-red-700 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900',
+            'border border-t-red-400 border-b-red-800 dark:border-t-gray-600 dark:border-b-black',
+            'text-white dark:text-red-300',
+            'shadow-[0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[0_2px_4px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]',
+            'hover:from-red-400 hover:via-red-500 hover:to-red-600 dark:hover:from-gray-600 dark:hover:via-gray-700 dark:hover:to-gray-800',
+            'active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3),inset_0_-1px_2px_rgba(0,0,0,0.1)] dark:active:shadow-[inset_0_2px_6px_rgba(0,0,0,0.5)]',
+            'transition-all duration-200'
+          );
         case 'ghost':
-          return 'bg-gray-100/50 dark:bg-cyan-950/30 border-gray-400 dark:border-cyan-500/50 text-gray-800 dark:text-cyan-200 hover:bg-gray-200 dark:hover:bg-cyan-900/40 hover:border-gray-500 dark:hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] dark:hover:shadow-[0_0_20px_rgba(0,255,255,0.6)] hover:scale-105 backdrop-blur-sm';
+          // Etched metal
+          return cn(
+            'relative',
+            'bg-transparent dark:bg-transparent',
+            'border border-gray-400 dark:border-gray-600',
+            'text-gray-700 dark:text-gray-300',
+            'shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.2)]',
+            'hover:bg-gray-100 dark:hover:bg-gray-800',
+            'hover:shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] dark:hover:shadow-[inset_0_1px_4px_rgba(0,0,0,0.3)]',
+            'active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)] dark:active:shadow-[inset_0_2px_5px_rgba(0,0,0,0.4)]',
+            'transition-all duration-200'
+          );
         case 'link':
-          return 'bg-transparent text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 underline-offset-4 hover:underline';
+          // Simple text link
+          return 'bg-transparent text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline-offset-4 hover:underline transition-all duration-200';
         default:
           return '';
       }
@@ -84,10 +119,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={cn(
-          'inline-flex items-center justify-center gap-2 font-bold rounded-sm transition-all duration-300',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-          !isDisabled && 'active:scale-[0.95]',
-          buttonVariants[variant],
+          'inline-flex items-center justify-center gap-2 font-medium font-mono tracking-wide transition-all duration-200 overflow-hidden',
+          variant !== 'link' && 'border',
+          'focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500/50 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-900',
           buttonSizes[size],
           getVariantClasses(),
           fullWidth && 'w-full',
@@ -101,10 +135,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading}
         {...props}
       >
-        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {!loading && leftIcon && <span className="inline-flex">{leftIcon}</span>}
-        {children}
-        {!loading && rightIcon && <span className="inline-flex">{rightIcon}</span>}
+        <span className="relative z-10 flex items-center gap-2">
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+          {!loading && leftIcon && <span className="inline-flex">{leftIcon}</span>}
+          {children}
+          {!loading && rightIcon && <span className="inline-flex">{rightIcon}</span>}
+        </span>
       </button>
     );
   }

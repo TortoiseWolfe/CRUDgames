@@ -111,23 +111,33 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     const variantClasses = {
-      default: 'bg-white dark:bg-black/40 backdrop-blur-sm border-gray-300 dark:border-cyan-500/50',
-      filled: 'bg-gray-50 dark:bg-black/60 backdrop-blur-md border-gray-400 dark:border-cyan-500/60',
-      ghost: 'bg-transparent border-transparent hover:border-gray-300 dark:hover:border-cyan-500/50',
+      default: 'bg-black/80 dark:bg-black/95 backdrop-blur-md border-cyan-600/40 dark:border-cyan-400/60',
+      filled: 'bg-black/90 dark:bg-black backdrop-blur-lg border-cyan-600/50 dark:border-cyan-400/70',
+      ghost: 'bg-transparent border-transparent hover:border-cyan-400/60 dark:hover:border-cyan-300/80',
     };
     
     const textareaClasses = cn(
-      'w-full text-gray-900 dark:text-cyan-100 font-mono placeholder:text-gray-400 dark:placeholder:text-cyan-800/60',
-      'border-2 rounded-sm transition-all duration-300',
+      'w-full font-mono transition-all duration-300',
+      'text-cyan-400 dark:text-cyan-300 tracking-wider',
+      'placeholder:text-cyan-700/50 dark:placeholder:text-cyan-600/40',
+      'drop-shadow-[0_0_2px_currentColor]',
+      'border-2 rounded-sm',
+      'shadow-[0_0_20px_rgba(0,255,255,0.15),inset_0_0_20px_rgba(0,255,255,0.08)]',
       'focus:outline-none focus:ring-0',
       'disabled:cursor-not-allowed disabled:opacity-30',
-      'read-only:bg-muted read-only:cursor-default',
+      'read-only:bg-black/60 read-only:cursor-default',
       sizeClasses[size],
       variantClasses[variant],
       {
-        'hover:border-gray-400 dark:hover:border-cyan-500/70 focus:border-blue-500 dark:focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(59,130,246,0.5)] dark:focus:shadow-[0_0_15px_rgba(0,255,255,0.6)]': !hasError && !success,
-        'border-red-500 dark:border-red-500 focus:shadow-[0_0_10px_rgba(255,0,64,0.5)]': hasError,
-        'border-green-500 dark:border-green-400 focus:shadow-[0_0_10px_rgba(57,255,20,0.5)]': success,
+        'hover:border-cyan-400 dark:hover:border-cyan-300': !hasError && !success,
+        'hover:shadow-[0_0_30px_rgba(0,255,255,0.4),0_0_50px_rgba(0,255,255,0.2),inset_0_0_20px_rgba(0,255,255,0.1)]': !hasError && !success,
+        'hover:text-cyan-300 dark:hover:text-cyan-200': !hasError && !success,
+        'focus:border-cyan-300 dark:focus:border-cyan-200': !hasError && !success,
+        'focus:shadow-[0_0_40px_rgba(0,255,255,0.6),0_0_80px_rgba(0,255,255,0.3),inset_0_0_30px_rgba(0,255,255,0.15)]': !hasError && !success,
+        'focus:bg-black/90 dark:focus:bg-black': !hasError && !success,
+        'focus:text-cyan-200 dark:focus:text-cyan-100': !hasError && !success,
+        'border-red-400 text-red-400 shadow-[0_0_30px_rgba(255,0,0,0.6),0_0_60px_rgba(255,0,0,0.3),inset_0_0_30px_rgba(255,0,0,0.2)]': hasError,
+        'border-green-400 text-green-400 shadow-[0_0_30px_rgba(0,255,0,0.6),0_0_60px_rgba(0,255,0,0.3),inset_0_0_30px_rgba(0,255,0,0.2)]': success,
         'resize-none': resize === 'none' || autoResize,
         'resize-y': resize === 'vertical' && !autoResize,
         'resize-x': resize === 'horizontal' && !autoResize,
@@ -151,14 +161,19 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label 
             htmlFor={id}
-            className="block text-sm font-mono text-gray-700 dark:text-cyan-300 mb-1"
+            className="block text-sm font-mono font-semibold text-gray-800 dark:text-cyan-300 dark:text-shadow-[0_0_8px_rgba(0,255,255,0.6)] mb-1"
           >
-            {'> '}{label}
-            {required && <span className="text-red-400 ml-1 animate-pulse" aria-label="required">*</span>}
+            <span className="text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">{'> '}</span>
+            <span className="drop-shadow-[0_0_6px_rgba(0,255,255,0.6)]">{label}</span>
+            {required && <span className="text-red-400 ml-1 animate-pulse drop-shadow-[0_0_8px_rgba(255,0,0,1)]" aria-label="required">*</span>}
           </label>
         )}
         
-        <div className="relative">
+        <div className="relative overflow-hidden">
+          {/* CRT scan line effect */}
+          <div className="absolute inset-0 pointer-events-none z-10 opacity-30">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent h-[2px] animate-[scan-line_3s_linear_infinite]" />
+          </div>
           <textarea
             ref={combinedRef}
             id={id}
@@ -182,20 +197,20 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {...props}
           />
           {loading && (
-            <Loader2 className="absolute right-2 top-2 h-4 w-4 text-muted-foreground animate-spin" />
+            <Loader2 className="absolute right-2 top-2 z-20 h-4 w-4 text-cyan-500 dark:text-cyan-400 animate-spin drop-shadow-[0_0_10px_currentColor]" />
           )}
         </div>
         
         <div className="mt-1 flex justify-between items-start">
           <div className="flex-1">
             {helperText && !hasError && (
-              <p id={helperId} className="text-sm text-muted-foreground">
+              <p id={helperId} className="text-sm text-cyan-600/70 dark:text-cyan-500/60 font-mono">
                 {helperText}
               </p>
             )}
             
             {hasError && errorMessage && (
-              <p id={errorId} className="text-sm text-destructive" role="alert">
+              <p id={errorId} className="text-sm text-red-400 font-mono drop-shadow-[0_0_5px_currentColor]" role="alert">
                 {errorMessage}
               </p>
             )}
@@ -205,8 +220,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             <span 
               id={countId}
               className={cn(
-                'text-sm ml-2',
-                charCount > maxLength ? 'text-destructive' : 'text-muted-foreground'
+                'text-sm ml-2 font-mono',
+                charCount > maxLength ? 'text-red-400 drop-shadow-[0_0_5px_currentColor]' : 'text-cyan-600/70 dark:text-cyan-500/60'
               )}
               aria-live="polite"
               aria-atomic="true"

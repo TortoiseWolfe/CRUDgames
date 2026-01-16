@@ -12,6 +12,8 @@ export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> 
   helperText?: string;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'inline';
+  techStyle?: 'phosphor' | 'terminal' | 'lcd' | 'amber' | 'military';
+  showPrompt?: boolean;
   as?: React.ElementType;
   children: React.ReactNode;
 }
@@ -26,31 +28,56 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
     helperText,
     size = 'md',
     variant = 'default',
+    techStyle = 'phosphor',
+    showPrompt = true,
     as: Component = 'label',
     children,
     className,
     ...props
   }, ref) => {
     const sizeClasses = {
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'text-lg',
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-base',
     };
 
     const hasError = !!error;
     const errorMessage = typeof error === 'string' ? error : '';
     
+    const getTechStyleClasses = () => {
+      if (disabled) {
+        return 'text-gray-600 dark:text-gray-500 opacity-50';
+      }
+      
+      if (hasError) {
+        return 'text-red-400 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] dark:text-red-300';
+      }
+      
+      switch (techStyle) {
+        case 'terminal':
+          return 'text-green-400 dark:text-green-300 drop-shadow-[0_0_5px_rgba(0,255,0,0.8)]';
+        case 'lcd':
+          return 'text-blue-400 dark:text-blue-300 drop-shadow-[0_0_5px_rgba(0,100,255,0.8)]';
+        case 'amber':
+          return 'text-amber-400 dark:text-amber-300 drop-shadow-[0_0_5px_rgba(255,176,0,0.8)]';
+        case 'military':
+          return 'text-yellow-600 dark:text-yellow-500 bg-black/80 px-2 py-0.5 border border-yellow-600/60 shadow-[inset_0_0_10px_rgba(255,255,0,0.2)]';
+        default: // phosphor
+          return 'text-cyan-400 dark:text-cyan-300 drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]';
+      }
+    };
+    
     const labelClasses = cn(
-      'font-medium transition-colors duration-200',
+      'font-mono font-bold uppercase tracking-wider transition-all duration-200',
       sizeClasses[size],
       {
-        'block mb-1': variant === 'default',
+        'block mb-2': variant === 'default',
         'inline-flex items-center': variant === 'inline',
-        'text-gray-700 dark:text-gray-300': !hasError && !disabled,
-        'text-red-700 dark:text-red-400': hasError && !disabled,
-        'text-gray-400 dark:text-gray-600 cursor-not-allowed': disabled,
-        'cursor-pointer': !disabled && Component === 'label',
+        'cursor-not-allowed': disabled,
+        'cursor-pointer hover:brightness-125': !disabled && Component === 'label',
       },
+      getTechStyleClasses(),
+      techStyle === 'military' && 'inline-block',
       className
     );
 
@@ -60,34 +87,50 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
           ref={ref}
           htmlFor={Component === 'label' ? htmlFor : undefined}
           className={labelClasses}
+          aria-required={required}
+          aria-invalid={hasError}
+          aria-disabled={disabled}
           {...props}
         >
+          {showPrompt && techStyle === 'terminal' && (
+            <span className="mr-1 animate-pulse">{'>'}</span>
+          )}
+          {showPrompt && techStyle === 'military' && (
+            <span className="mr-1">[</span>
+          )}
           {children}
+          {showPrompt && techStyle === 'military' && (
+            <span className="ml-1">]</span>
+          )}
           {required && (
             <span 
-              className="text-red-500 ml-1" 
+              className="text-red-400 ml-1 drop-shadow-[0_0_5px_currentColor] animate-pulse" 
               aria-label="required"
+              role="presentation"
             >
               *
             </span>
           )}
           {optional && (
             <span 
-              className="text-gray-500 ml-1 text-sm" 
+              className="text-gray-400 dark:text-gray-500 ml-1 text-xs opacity-80" 
               aria-label="optional"
+              role="presentation"
             >
-              (optional)
+              (OPT)
             </span>
           )}
         </Component>
         {helperText && !errorMessage && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-xs font-mono text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-wider opacity-80">
+            <span className="text-green-500 mr-1">{'//'}</span>
             {helperText}
           </p>
         )}
         {errorMessage && (
-          <p className="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
-            {errorMessage}
+          <p className="text-xs font-mono text-red-400 dark:text-red-300 mt-1 uppercase tracking-wider drop-shadow-[0_0_5px_currentColor]" role="alert">
+            <span className="mr-1 animate-pulse">!</span>
+            ERROR: {errorMessage}
           </p>
         )}
       </div>

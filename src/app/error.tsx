@@ -11,8 +11,10 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
+    // TODO: Log the error to an error reporting service (e.g., Sentry)
+    // if (typeof window !== 'undefined' && window.Sentry) {
+    //   window.Sentry.captureException(error);
+    // }
   }, [error]);
 
   return (
